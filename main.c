@@ -116,17 +116,30 @@ u8 control_player()
 	return (direct);
 }
 		
-void player_collision(u8 map[WIDTH_LEVEL][HIGH_LEVEL])
-{
-	if (map[(player.x)/4][player.y/8+2]==EMPTY&&map[(player.x+6)/4][player.y/8+2]==EMPTY)
-	{
-		player.y+=2;
-		set_sprite(0,player.x,player.y,20);
-		swap_screen();
-		player_collision(map);
-	}
+// void player_collision(u8 map[WIDTH_LEVEL][HIGH_LEVEL])
+// {
+	// if (map[(player.x)/4][player.y/8+2]==EMPTY&&map[(player.x+6)/4][player.y/8+2]==EMPTY)
+	// {
+		// player.y+=2;
+		// set_sprite(0,player.x,player.y,20);
+		// swap_screen();
+		// player_collision(map);
+	// }
 	
+// }
+
+u8 player_collision(u8 map[WIDTH_LEVEL][HIGH_LEVEL])
+{
+	u8 p_collision=#0x0;
+	//down
+	if (map[(player.x)/4][player.y/8+2]<16&&map[(player.x+6)/4][player.y/8+2]<16) p_collision=+#0x2;
+	//right
+	if (map[(player.x)/4+2][(player.y)/8+0]<32&&map[(player.x)/4+2][(player.y)/8+1]<32) p_collision=+#0x4;
+	//left
+	if (map[(player.x)/4][(player.y)/8]<32&&map[(player.x)/4][(player.y)/8+1]<32) p_collision=+#0x8;
+	return (p_collision);
 }
+
 
 void idle()
 {
@@ -159,14 +172,13 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 		i=0;
 		while (control_player()==#0x4)
 		{
-			if (map[(player.x)/4+2][(player.y)/8+0]==EMPTY
-				&&map[(player.x)/4+2][(player.y)/8+1]==EMPTY)
+			if ((player_collision(map)&#0x4)==#0x4)
 			{
 				player.x+=1;
 				set_sprite(0,player.x,player.y,i);
 				swap_screen();
 				//delay (2);
-				player_collision(map);
+				//player_collision(map);
 				i++;
 				if (i>7) i=0;
 			}
@@ -185,14 +197,13 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 		i=8;
 		while (control_player()==#0x8)
 		{
-			if (map[(player.x)/4][(player.y)/8]==EMPTY
-				&&map[(player.x)/4][(player.y)/8+1]==EMPTY)
+			if ((player_collision(map)&#0x8)==#0x8)
 			{
 				player.x-=1;
 				set_sprite(0,player.x,player.y,i);
 				swap_screen();
 				//delay (2);
-				player_collision(map);
+				//player_collision(map);
 				i++;
 				if (i>15) i=8;
 			}
@@ -215,7 +226,7 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 			swap_screen();
 			delay (i/2);
 		}
-		if (map[player.x/4][player.y/8+2]==EMPTY)
+		while ((player_collision(map)&#0x2)==#0x2)
 		{
 			player.y+=2;
 			set_sprite(0,player.x,player.y,20);
@@ -315,7 +326,7 @@ void main(void)
 	while (1)
 	{
 		player_move(control_player(),map);
-		player_collision(map);
+		//player_collision(map);
 	}
 	
 }
