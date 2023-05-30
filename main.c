@@ -7,7 +7,6 @@
 #define RIGHT 1
 #define LEFT 0
 
-#define EMPTY 51
 
 u32 t=0;
 
@@ -76,7 +75,7 @@ void draw_player(u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 			}
 
 	
-	set_sprite(0,player.x,player.y,12);
+	set_sprite(0,player.x,player.y,20);
 			
 	swap_screen();
 }
@@ -115,29 +114,44 @@ u8 control_player()
 	direct=dx+dy+fire;
 	return (direct);
 }
-		
-// void player_collision(u8 map[WIDTH_LEVEL][HIGH_LEVEL])
-// {
-	// if (map[(player.x)/4][player.y/8+2]==EMPTY&&map[(player.x+6)/4][player.y/8+2]==EMPTY)
-	// {
-		// player.y+=2;
-		// set_sprite(0,player.x,player.y,20);
-		// swap_screen();
-		// player_collision(map);
-	// }
+
+
+void output_string(u8 output_x, u8 output_y, u8* str)
+{
+	u8 n;
+	u8 save_output_x=output_x;
 	
-// }
+	select_image(IMG_FONT);
+	color_key (15);
+	
+	while(1)
+	{
+		n=*str++;
+		if(!n) break;
+		draw_tile_key(output_x,output_y,n-32);
+		output_x++;
+		if (output_x>=40)
+		{
+			output_x=save_output_x;
+			output_y++;
+		}
+	}
+}
+
 
 u8 player_collision(u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 {
-	u8 p_collision=#0x0;
+	static u8 collision;
+	
+	collision=0;
 	//down
-	if (map[(player.x)/4][player.y/8+2]<16&&map[(player.x+6)/4][player.y/8+2]<16) p_collision=+#0x2;
+	if ((map[player.x/4][player.y/8+2]<16)&&(map[(player.x+6)/4][player.y/8+2]<16)) collision+=#0x2;
 	//right
-	if (map[(player.x)/4+2][(player.y)/8+0]<32&&map[(player.x)/4+2][(player.y)/8+1]<32) p_collision=+#0x4;
+	if (map[player.x/4+2][player.y/8]<32&&map[player.x/4+2][player.y/8+1]<32) collision+=#0x4;
 	//left
-	if (map[(player.x)/4][(player.y)/8]<32&&map[(player.x)/4][(player.y)/8+1]<32) p_collision=+#0x8;
-	return (p_collision);
+	if (map[(player.x-1)/4][player.y/8]<32&&map[(player.x-1)/4][player.y/8+1]<32) collision+=#0x8;
+	
+	return (collision);
 }
 
 
@@ -177,14 +191,18 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 				player.x+=1;
 				set_sprite(0,player.x,player.y,i);
 				swap_screen();
-				//delay (2);
-				//player_collision(map);
 				i++;
 				if (i>7) i=0;
+				while ((player_collision(map)&#0x2)==#0x2)
+				{
+					player.y+=2;
+					set_sprite(0,player.x,player.y,20);
+					swap_screen();
+				}
 			}
 			else
 			{
-				set_sprite(0,player.x,player.y,0);
+				set_sprite(0,player.x+1,player.y,0);
 				swap_screen();
 			}
 		}
@@ -202,14 +220,18 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 				player.x-=1;
 				set_sprite(0,player.x,player.y,i);
 				swap_screen();
-				//delay (2);
-				//player_collision(map);
 				i++;
 				if (i>15) i=8;
+				while ((player_collision(map)&#0x2)==#0x2)
+				{
+					player.y+=2;
+					set_sprite(0,player.x,player.y,20);
+					swap_screen();
+				}
 			}
 			else
 			{
-				set_sprite(0,player.x,player.y,8);
+				set_sprite(0,player.x-1,player.y,8);
 				swap_screen();
 			}
 		}
@@ -238,17 +260,19 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 	{
 		for (i=0;i<5;i++)
 		{
-			if (map[(player.x)/4+2][(player.y)/8+1]==EMPTY
-				&&map[(player.x)/4+2][(player.y)/8+2]==EMPTY) player.x+=2;
+			if ((player_collision(map)&#0x4)==#0x4) player.x+=1;
 			player.y-=2;
 			set_sprite(0,player.x,player.y,18);
 			swap_screen();
-			delay (i);
 		}
-		if (map[player.x/4][player.y/8+2]==EMPTY)
+
+		while ((player_collision(map)&#0x2)==#0x2)
 		{
-			if (map[(player.x)/4+2][(player.y)/8+1]==EMPTY
-				&&map[(player.x)/4+2][(player.y)/8+2]==EMPTY) player.x+=2;
+			if (i>0&&(player_collision(map)&#0x4)==#0x4)
+			{
+				i-=1;
+				player.x+=1;
+			}
 			player.y+=2;
 			set_sprite(0,player.x,player.y,18);
 			swap_screen();
@@ -261,17 +285,19 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 	{
 		for (i=0;i<5;i++)
 		{
-			if (map[(player.x)/4][(player.y)/8+1]==EMPTY
-				&&map[(player.x)/4][(player.y)/8+2]==EMPTY) player.x-=2;
+			if ((player_collision(map)&#0x8)==#0x8) player.x-=1;
 			player.y-=2;
 			set_sprite(0,player.x,player.y,19);
 			swap_screen();
-			delay (i);
 		}
-		if (map[player.x/4][player.y/8+2]==EMPTY)
+
+		while ((player_collision(map)&#0x2)==#0x2)
 		{
-			if (map[(player.x)/4][(player.y)/8+1]==EMPTY
-				&&map[(player.x)/4][(player.y)/8+2]==EMPTY) player.x-=2;
+			if (i>0&&(player_collision(map)&#0x8)==#0x8)
+			{
+				i-=1;
+				player.x-=1;
+			}
 			player.y+=2;
 			set_sprite(0,player.x,player.y,19);
 			swap_screen();
@@ -308,7 +334,9 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 
 void main(void)
 {
-	u8 map[WIDTH_LEVEL][HIGH_LEVEL];
+	u8 name[3];
+	
+	static u8 map[WIDTH_LEVEL][HIGH_LEVEL];
 	
 	pal_select(PAL_PLAYER);
 	clear_screen(0);
@@ -326,7 +354,12 @@ void main(void)
 	while (1)
 	{
 		player_move(control_player(),map);
-		//player_collision(map);
+
+		output_string(1, 1, "   ");
+		
+		itoa(player.x/4, name);
+		
+		output_string(1, 1, name);
 	}
 	
 }

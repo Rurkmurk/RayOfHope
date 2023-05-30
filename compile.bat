@@ -19,6 +19,7 @@ set palette.0=res\player.bmp
 rem список изображений, откуда брать графику
 
 set image.0=res\tile.bmp
+set image.1=res\font.bmp
 
 
 rem спрайты
