@@ -154,6 +154,8 @@ u8 player_collision(u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 	if (map[player.x/4][player.y/8]<32&&map[player.x/4][(player.y+15)/8]<32) collision+=#0x8;
 	//stairs
 	if ((map[(player.x+3)/4][(player.y+15)/8]>=16)&&(map[(player.x+3)/4][(player.y+15)/8]<32)) collision+=#0x20;
+	//lava
+	if ((map[(player.x+2)/4][(player.y+17)/8]>=32)&&(map[(player.x+5)/4][(player.y+17)/8]>=32)&&(map[(player.x+2)/4][(player.y+17)/8]<48)&&(map[(player.x+5)/4][(player.y+17)/8]<48)) collision+=#0x40;
 	
 	
 	
@@ -429,6 +431,20 @@ void player_move (u8 direct, u8 map[WIDTH_LEVEL][HIGH_LEVEL])
 				set_sprite(0,player.x,player.y,17);
 			swap_screen();
 		}
+		
+	//lava
+	if ((player_collision(map)&#0x40)==#0x40)
+	{
+		for (i=0;i<32;i++)
+		{
+			player.y+=1;
+			set_sprite(0,player.x,player.y,21);
+			swap_screen();
+		}
+		set_sprite(0,player.x,player.y,26);
+		swap_screen();
+		while (1);
+	}
 }
 
 
@@ -456,9 +472,7 @@ void main(void)
 		player_move(control_player(),map);
 
 		output_string(1, 1, "   ");
-		
 		itoa(player_collision(map)&#0x20, name);
-		
 		output_string(1, 1, name);
 	}
 	
