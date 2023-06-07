@@ -28,26 +28,26 @@ void load_level()
 	u16 i=0;
 	u8 buf[3];
 	
-	load_file("map", 30, 1);
+	load_file("map00001", 30, 1);
 		
 	for (y=0;y<HIGH_LEVEL;y++)
 		for (x=0;x<WIDTH_LEVEL;x++)
 		{
-			while ((get_mem(30,32768+i)!=',')&&(get_mem(30,32768+i)!=13))
+			if (get_mem(30,32768+i)==#0x0D) i+=2;
+			do
 			{
 				buf[j]=get_mem(30,32768+i)-48; // 48 is 30 in HEX
 				j++;
 				i++;
-			}
+			}while (get_mem(30,32768+i)!=#0x2C);
+			
 			
 			if (j==3) map[x][y]=100*buf[0]+10*buf[1]+buf[2];
 			else if (j==2) map[x][y]=10*buf[0]+buf[1];
 			else map[x][y]=buf[0];
 			
 			i++;
-			
-			if (get_mem(30,32768+i)==10) i++;
-			
+
 			j=0;
 		}
 }
