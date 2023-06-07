@@ -28,23 +28,26 @@ void load_level()
 	u16 i=0;
 	u8 buf[3];
 	
-	load_file("level001", 30, 1);
+	load_file("map", 30, 1);
 		
 	for (y=0;y<HIGH_LEVEL;y++)
 		for (x=0;x<WIDTH_LEVEL;x++)
 		{
-			do
+			while ((get_mem(30,32768+i)!=',')&&(get_mem(30,32768+i)!=13))
 			{
 				buf[j]=get_mem(30,32768+i)-48; // 48 is 30 in HEX
 				j++;
 				i++;
-			}while (get_mem(30,32768+i)!=',');
+			}
 			
 			if (j==3) map[x][y]=100*buf[0]+10*buf[1]+buf[2];
 			else if (j==2) map[x][y]=10*buf[0]+buf[1];
 			else map[x][y]=buf[0];
-
+			
 			i++;
+			
+			if (get_mem(30,32768+i)==10) i++;
+			
 			j=0;
 		}
 }
@@ -270,16 +273,28 @@ void player_move (u8 direct)
 		{
 			if ((player_collision()&#0x20)==#0x20)
 			{
-				player.y-=2;
+				player.y-=1;
 				set_sprite(0,player.x,player.y,23);
 				swap_screen();
-				player.y-=2;
+				player.y-=1;
+				set_sprite(0,player.x,player.y,23);
+				swap_screen();
+				player.y-=1;
 				set_sprite(0,player.x,player.y,24);
 				swap_screen();
-				player.y-=2;
+				player.y-=1;
+				set_sprite(0,player.x,player.y,24);
+				swap_screen();
+				player.y-=1;
 				set_sprite(0,player.x,player.y,25);
 				swap_screen();
-				player.y-=2;
+				player.y-=1;
+				set_sprite(0,player.x,player.y,25);
+				swap_screen();
+				player.y-=1;
+				set_sprite(0,player.x,player.y,24);
+				swap_screen();
+				player.y-=1;
 				set_sprite(0,player.x,player.y,24);
 				swap_screen();
 			}
@@ -332,23 +347,20 @@ void player_move (u8 direct)
 
 		while ((player_collision()&#0x2)==#0x2)
 		{
-			player.y+=1;
-			set_sprite(0,player.x,player.y,18);
-			swap_screen();
-			player.y+=1;
+			player.y+=2;
 			
-			if (i>0&&(player_collision()&#0x4)==#0x4)
+			if (i>1&&(player_collision()&#0x4)==#0x4)
 			{
 				i-=1;
 				player.x+=1;
 			}
-			
+
 			set_sprite(0,player.x,player.y,18);
 			swap_screen();
-			
 		}
 		player.last_direct=RIGHT;
 	}
+
 	//jump left
 	if (direct==#0x9)
 	{
@@ -371,15 +383,15 @@ void player_move (u8 direct)
 		while ((player_collision()&#0x2)==#0x2)
 		{
 			player.y+=2;
-			if (i>0&&(player_collision()&#0x8)==#0x8)
+			
+			if (i>1&&(player_collision()&#0x8)==#0x8)
 			{
 				i-=1;
 				player.x-=1;
 			}
-			
+
 			set_sprite(0,player.x,player.y,19);
 			swap_screen();
-			
 		}
 		player.last_direct=LEFT;
 	}
