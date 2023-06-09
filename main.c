@@ -33,7 +33,7 @@ void load_level()
 	for (y=0;y<HIGH_LEVEL;y++)
 		for (x=0;x<WIDTH_LEVEL;x++)
 		{
-			if (get_mem(30,32768+i)==#0x0D) i+=2;
+			
 			do
 			{
 				buf[j]=get_mem(30,32768+i)-48; // 48 is 30 in HEX
@@ -333,10 +333,10 @@ void player_move (u8 direct)
 		{
 			if ((player_collision()&#0x1)==#0x1)
 			{
-				player.y-=1;
-				set_sprite(0,player.x,player.y,18);
-				swap_screen();
-				player.y-=1;	
+				player.y-=2;
+				//set_sprite(0,player.x,player.y,18);
+				//swap_screen();
+				//player.y-=1;	
 			}
 			
 			if ((player_collision()&#0x4)==#0x4) player.x+=1;
@@ -344,11 +344,15 @@ void player_move (u8 direct)
 			set_sprite(0,player.x,player.y,18);
 			swap_screen();
 		}
-
+			
+		if ((player_collision()&#0x4)==#0x4) player.x+=1;
+		set_sprite(0,player.x,player.y,18);
+		swap_screen();
+		
 		while ((player_collision()&#0x2)==#0x2)
 		{
-			player.y+=2;
 			
+			player.y+=2;
 			if (i>1&&(player_collision()&#0x4)==#0x4)
 			{
 				i-=1;
@@ -357,6 +361,7 @@ void player_move (u8 direct)
 
 			set_sprite(0,player.x,player.y,18);
 			swap_screen();
+			
 		}
 		player.last_direct=RIGHT;
 	}
@@ -368,10 +373,10 @@ void player_move (u8 direct)
 		{
 			if ((player_collision()&#0x1)==#0x1)
 			{
-				player.y-=1;
-				set_sprite(0,player.x,player.y,19);
-				swap_screen();
-				player.y-=1;
+				player.y-=2;
+				//set_sprite(0,player.x,player.y,19);
+				//swap_screen();
+				//player.y-=1;
 			}
 			
 			if ((player_collision()&#0x8)==#0x8) player.x-=1;
@@ -382,16 +387,17 @@ void player_move (u8 direct)
 
 		while ((player_collision()&#0x2)==#0x2)
 		{
-			player.y+=2;
 			
+			player.y+=2;
 			if (i>1&&(player_collision()&#0x8)==#0x8)
 			{
-				i-=1;
+				i--;
 				player.x-=1;
 			}
 
 			set_sprite(0,player.x,player.y,19);
 			swap_screen();
+			
 		}
 		player.last_direct=LEFT;
 	}

@@ -41,6 +41,6 @@ set sample.0=
 
 call ..\evosdk\_compile.bat
 
-call ..\evosdk\trdtool.exe + %output% Level\map00001.0
+call ..\evosdk\trdtool.exe + %output% Level\map00001.map
 
 @if %error% ==0 ..\evosdk\tools\unreal_evo\emullvd %output%
