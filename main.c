@@ -144,25 +144,27 @@ void output_string(u8 output_x, u8 output_y, u8* str)
 }
 
 
-u8 player_collision()
+u16 player_collision()
 {
-	static u8 collision;
+	static u16 collision;
 	
 	collision=0;
 	//up
-	if ((map[(player.x+2)/4][(player.y+6)/8-1]<32)&&(map[(player.x+5)/4][(player.y+6)/8-1]<32)) collision+=#0x1;
+	if ((map[(player.x+2)/4][(player.y+1)/8]<32)&&(map[(player.x+5)/4][(player.y+1)/8]<32)) collision+=#0x1;
 	//down
-	if ((map[(player.x+2)/4][player.y/8+2]<16)&&(map[(player.x+5)/4][player.y/8+2]<16)) collision+=#0x2;
+	if ((map[(player.x+2)/4][(player.y+16)/8]<16)&&(map[(player.x+5)/4][(player.y+16)/8]<16)) collision+=#0x2;
 	//right
 	if (map[(player.x+7)/4][(player.y)/8]<32&&map[(player.x+7)/4][(player.y+15)/8]<32) collision+=#0x4;
 	//left
 	if (map[player.x/4][player.y/8]<32&&map[player.x/4][(player.y+15)/8]<32) collision+=#0x8;
-	//stairs
+	//stairs up
 	if ((map[(player.x+3)/4][(player.y+15)/8]>=16)&&(map[(player.x+3)/4][(player.y+15)/8]<32)) collision+=#0x20;
+	//stairs down
+	if ((map[(player.x+3)/4][(player.y+16)/8]>=16)&&(map[(player.x+3)/4][(player.y+16)/8]<32))collision+=#0x40;
 	//lava
-	if ((map[(player.x+2)/4][(player.y+17)/8]>=32)&&(map[(player.x+5)/4][(player.y+17)/8]>=32)&&(map[(player.x+2)/4][(player.y+17)/8]<48)&&(map[(player.x+5)/4][(player.y+17)/8]<48)) collision+=#0x40;
+	if ((map[(player.x+2)/4][(player.y+16)/8]>=32)&&(map[(player.x+5)/4][(player.y+16)/8]>=32)&&(map[(player.x+2)/4][(player.y+16)/8]<48)&&(map[(player.x+5)/4][(player.y+16)/8]<48)) collision+=#0x80;
 	//water
-	if ((map[(player.x+2)/4][(player.y+17)/8]>=48)&&(map[(player.x+5)/4][(player.y+17)/8]>=48)&&(map[(player.x+2)/4][(player.y+17)/8]<64)&&(map[(player.x+5)/4][(player.y+17)/8]<64)) collision+=#0x80;
+	if ((map[(player.x+2)/4][(player.y+16)/8]>=48)&&(map[(player.x+5)/4][(player.y+16)/8]>=48)&&(map[(player.x+2)/4][(player.y+16)/8]<64)&&(map[(player.x+5)/4][(player.y+16)/8]<64)) collision+=#0x100;
 	
 	
 	return (collision);
@@ -197,7 +199,7 @@ void idle()
 }
 
 
-void player_move (u8 direct)
+void player_move (u16 direct)
 {
 	u8 i,j;
 	
@@ -420,14 +422,14 @@ void player_move (u8 direct)
 	
 	//down
 	if (direct==#0x2)
-		if ((map[(player.x+3)/4][(player.y+17)/8]>=16)&&(map[(player.x+3)/4][(player.y+17)/8]<32))
+		if ((player_collision()&#0x40)==#0x40)
 		{
-			if (map[player.x/4][(player.y+17)/8]>15&&map[player.x/4][(player.y+17)/8]<32) player.x=player.x-(player.x%4);
+			if (map[player.x/4][(player.y+16)/8]>15&&map[player.x/4][(player.y+16)/8]<32) player.x=player.x-(player.x%4);
 			else player.x=player.x-(player.x%4)+4;
 					
 			while (control_player()==#0x2)
 			{
-				if ((map[(player.x+3)/4][(player.y+17)/8]>=16)&&(map[(player.x+3)/4][(player.y+17)/8]<32))
+				if ((player_collision()&#0x40)==#0x40)
 				{
 					player.y+=2;
 					set_sprite(0,player.x,player.y,23);
@@ -454,7 +456,7 @@ void player_move (u8 direct)
 		}
 		
 	//lava
-	if ((player_collision()&#0x40)==#0x40)
+	if ((player_collision()&#0x80)==#0x80)
 	{
 		for (i=0;i<8;i++)
 		{
@@ -475,7 +477,7 @@ void player_move (u8 direct)
 		while (1);
 	}
 	//water
-	if ((player_collision()&#0x80)==#0x80)
+	if ((player_collision()&#0x100)==#0x100)
 	{
 		for (i=0;i<3;i++)
 		{
@@ -492,7 +494,7 @@ void player_move (u8 direct)
 				swap_screen();
 			}
 		}
-		while ((player_collision()&#0x80)==#0x80)
+		while ((player_collision()&#0x100)==#0x100)
 		{
 			player.y+=1;
 			set_sprite(0,player.x,player.y,27);
