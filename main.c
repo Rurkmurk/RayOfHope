@@ -152,7 +152,7 @@ u16 player_collision()
 	//up
 	if ((map[(player.x+2)/4][(player.y+1)/8]<32)&&(map[(player.x+5)/4][(player.y+1)/8]<32)) collision+=#0x1;
 	//down
-	if ((map[(player.x+2)/4][(player.y+16)/8]<16)&&(map[(player.x+5)/4][(player.y+16)/8]<16)) collision+=#0x2;
+	if ((map[(player.x+3)/4][(player.y+16)/8]<16)&&(map[(player.x+4)/4][(player.y+16)/8]<16)) collision+=#0x2;
 	//right
 	if (map[(player.x+7)/4][(player.y)/8]<32&&map[(player.x+7)/4][(player.y+15)/8]<32) collision+=#0x4;
 	//left
@@ -166,7 +166,6 @@ u16 player_collision()
 	//water
 	if ((map[(player.x+2)/4][(player.y+16)/8]>=48)&&(map[(player.x+5)/4][(player.y+16)/8]>=48)&&(map[(player.x+2)/4][(player.y+16)/8]<64)&&(map[(player.x+5)/4][(player.y+16)/8]<64)) collision+=#0x100;
 	
-	
 	return (collision);
 }
 
@@ -175,19 +174,22 @@ void idle()
 {
 	if ((player_collision()&#0x20)==#0x20)
 	{
-		set_sprite(0,player.x,player.y,24);
+		player.frame=23;
+		set_sprite(0,player.x,player.y,player.frame);
 		swap_screen();
 	}
 	else
 	{
 		if (t+250>time())
 		{
-			set_sprite(0,player.x,player.y,20);
+			player.frame=20;
+			set_sprite(0,player.x,player.y,player.frame);
 			swap_screen();
 		}
 		else if (t+300>time())
 		{
-			set_sprite(0,player.x,player.y,21);
+			player.frame=21;
+			set_sprite(0,player.x,player.y,player.frame);
 			swap_screen();
 		}
 		else
@@ -268,39 +270,21 @@ void player_move (u16 direct)
 	// stairs up
 	if (direct==#0x1&&(player_collision()&#0x21)==#0x21)
 	{
+		player.frame=23;
 		if (map[player.x/4][(player.y+15)/8]>15&&map[player.x/4][(player.y+15)/8]<32) player.x=player.x-(player.x%4);
 		else player.x=player.x-(player.x%4)+4;
 				
 		while (control_player()==#0x1)
-		{
-			if ((player_collision()&#0x20)==#0x20)
 			{
-				player.y-=1;
-				set_sprite(0,player.x,player.y,23);
-				swap_screen();
-				player.y-=1;
-				set_sprite(0,player.x,player.y,23);
-				swap_screen();
-				player.y-=1;
-				set_sprite(0,player.x,player.y,24);
-				swap_screen();
-				player.y-=1;
-				set_sprite(0,player.x,player.y,24);
-				swap_screen();
-				player.y-=1;
-				set_sprite(0,player.x,player.y,25);
-				swap_screen();
-				player.y-=1;
-				set_sprite(0,player.x,player.y,25);
-				swap_screen();
-				player.y-=1;
-				set_sprite(0,player.x,player.y,24);
-				swap_screen();
-				player.y-=1;
-				set_sprite(0,player.x,player.y,24);
-				swap_screen();
+				if ((player_collision()&#0x20)==#0x20)
+				{
+					player.y-=1;
+					set_sprite(0,player.x,player.y,player.frame);
+					swap_screen();
+				}
+				player.frame++;
+				if (player.frame>26) player.frame=23;
 			}
-		}
 	}
 	
 	//jump up
@@ -331,25 +315,23 @@ void player_move (u16 direct)
 	//jump right
 	if (direct==#0x5)
 	{
-		for (i=0;i<5;i++)
+		for (i=0;i<4;i++)
 		{
-			if ((player_collision()&#0x1)==#0x1)
-			{
-				player.y-=2;
-				//set_sprite(0,player.x,player.y,18);
-				//swap_screen();
-				//player.y-=1;	
-			}
-			
+			if ((player_collision()&#0x1)==#0x1) player.y-=2;
+
 			if ((player_collision()&#0x4)==#0x4) player.x+=1;
 			
 			set_sprite(0,player.x,player.y,18);
 			swap_screen();
 		}
 			
-		if ((player_collision()&#0x4)==#0x4) player.x+=1;
-		set_sprite(0,player.x,player.y,18);
-		swap_screen();
+		for (j=0;j<4;j++)
+		{
+			if ((player_collision()&#0x4)==#0x4) player.x+=1;
+			set_sprite(0,player.x,player.y,18);
+			swap_screen();
+		}
+		
 		
 		while ((player_collision()&#0x2)==#0x2)
 		{
@@ -357,7 +339,7 @@ void player_move (u16 direct)
 			player.y+=2;
 			if (i>1&&(player_collision()&#0x4)==#0x4)
 			{
-				i-=1;
+				i--;
 				player.x+=1;
 			}
 
@@ -371,22 +353,23 @@ void player_move (u16 direct)
 	//jump left
 	if (direct==#0x9)
 	{
-		for (i=0;i<5;i++)
+		for (i=0;i<4;i++)
 		{
-			if ((player_collision()&#0x1)==#0x1)
-			{
-				player.y-=2;
-				//set_sprite(0,player.x,player.y,19);
-				//swap_screen();
-				//player.y-=1;
-			}
-			
+			if ((player_collision()&#0x1)==#0x1) player.y-=2;
+
 			if ((player_collision()&#0x8)==#0x8) player.x-=1;
 			
 			set_sprite(0,player.x,player.y,19);
 			swap_screen();
 		}
-
+		
+		for (j=0;j<4;j++)
+		{
+			if ((player_collision()&#0x8)==#0x8) player.x-=1;
+			set_sprite(0,player.x,player.y,19);
+			swap_screen();
+		}
+		
 		while ((player_collision()&#0x2)==#0x2)
 		{
 			
@@ -424,6 +407,7 @@ void player_move (u16 direct)
 	if (direct==#0x2)
 		if ((player_collision()&#0x40)==#0x40)
 		{
+			player.frame=23;
 			if (map[player.x/4][(player.y+16)/8]>15&&map[player.x/4][(player.y+16)/8]<32) player.x=player.x-(player.x%4);
 			else player.x=player.x-(player.x%4)+4;
 					
@@ -431,19 +415,12 @@ void player_move (u16 direct)
 			{
 				if ((player_collision()&#0x40)==#0x40)
 				{
-					player.y+=2;
-					set_sprite(0,player.x,player.y,23);
-					swap_screen();
-					player.y+=2;
-					set_sprite(0,player.x,player.y,24);
-					swap_screen();
-					player.y+=2;
-					set_sprite(0,player.x,player.y,25);
-					swap_screen();
-					player.y+=2;
-					set_sprite(0,player.x,player.y,24);
+					player.y+=1;
+					set_sprite(0,player.x,player.y,player.frame);
 					swap_screen();
 				}
+				player.frame++;
+				if (player.frame>26) player.frame=23;
 			}
 		}
 		else
@@ -464,13 +441,13 @@ void player_move (u16 direct)
 			set_sprite(0,player.x,player.y,21);
 			swap_screen();
 		}
-		set_sprite(0,player.x,player.y,26);
-		swap_screen();
-		set_sprite(0,player.x,player.y,28);
+		set_sprite(0,player.x,player.y,27);
 		swap_screen();
 		set_sprite(0,player.x,player.y,29);
 		swap_screen();
 		set_sprite(0,player.x,player.y,30);
+		swap_screen();
+		set_sprite(0,player.x,player.y,31);
 		swap_screen();
 		set_sprite(0,player.x,player.y,SPRITE_END);
 		swap_screen();
@@ -497,7 +474,7 @@ void player_move (u16 direct)
 		while ((player_collision()&#0x100)==#0x100)
 		{
 			player.y+=1;
-			set_sprite(0,player.x,player.y,27);
+			set_sprite(0,player.x,player.y,28);
 			swap_screen();
 		}
 		
