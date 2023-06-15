@@ -4,11 +4,16 @@
 
 #define	HIGH_LEVEL	25
 #define	WIDTH_LEVEL	40
+
 #define RIGHT 1
 #define LEFT 0
 
+#define PLAYER 240
+#define LAVA 242
 
 u32 t=0;
+u8 lava_summ=0;
+
 static u8 map[WIDTH_LEVEL][HIGH_LEVEL];
 
 struct
@@ -19,6 +24,13 @@ struct
 	u8 frame;
 	u8 last_direct;
 }player;
+
+struct
+{
+	u8 x[4];	
+	u8 y;
+	u8 tile[4];
+}lava[2];
 
 
 void load_level()
@@ -57,6 +69,8 @@ void draw_level()
 {
 	u8 x, y;
 	
+	select_image(IMG_TILE);
+	
 	for (y=0; y<HIGH_LEVEL; y++)
 		for (x=0; x<WIDTH_LEVEL; x++)
 			draw_tile(x,y,map[x][y]);
@@ -71,17 +85,44 @@ void draw_player()
 	
 	for (y=0; y<HIGH_LEVEL; y++)
 		for (x=0; x<WIDTH_LEVEL; x++)
-			if (map[x][y]==240)
+			if (map[x][y]==PLAYER)
 			{
 				player.x=4*x;
 				player.y=8*(y-1);
 				map[x][y]=0;
 				break;
 			}
-
-	
 	set_sprite(0,player.x,player.y,20);
 			
+	swap_screen();
+}
+
+
+void draw_terrain()
+{
+	u8 x, y;
+	
+	u8 n=0;
+	u8 m=0;
+	
+	select_image(IMG_TILE);
+	
+	for (y=0; y<HIGH_LEVEL; y++)
+		for (x=0; x<WIDTH_LEVEL; x++)
+			if (map[x][y]==LAVA)
+			{
+				lava[n].x[m]=x;
+				lava[n].y=y;
+				lava[n].tile[m]=32+m;
+				draw_tile(lava[n].x[m],lava[n].y,lava[n].tile[m]);
+				m++;
+				if (m>3)
+				{
+					lava_summ++;
+					m=0;
+					n++;
+				}
+			}
 	swap_screen();
 }
 
@@ -162,7 +203,7 @@ u16 player_collision()
 	//stairs down
 	if ((map[(player.x+3)/4][(player.y+16)/8]>=16)&&(map[(player.x+3)/4][(player.y+16)/8]<32))collision+=#0x40;
 	//lava
-	if ((map[(player.x+2)/4][(player.y+16)/8]>=32)&&(map[(player.x+5)/4][(player.y+16)/8]>=32)&&(map[(player.x+2)/4][(player.y+16)/8]<48)&&(map[(player.x+5)/4][(player.y+16)/8]<48)) collision+=#0x80;
+	if ((map[(player.x+2)/4][(player.y+16)/8]==LAVA)&&(map[(player.x+5)/4][(player.y+16)/8]==LAVA)) collision+=#0x80;
 	//water
 	if ((map[(player.x+2)/4][(player.y+16)/8]>=48)&&(map[(player.x+5)/4][(player.y+16)/8]>=48)&&(map[(player.x+2)/4][(player.y+16)/8]<64)&&(map[(player.x+5)/4][(player.y+16)/8]<64)) collision+=#0x100;
 	
@@ -170,27 +211,55 @@ u16 player_collision()
 }
 
 
+void update()
+{
+	u8 n,m;
+	u8 tmp;
+	//player
+	set_sprite(0,player.x,player.y,player.frame);
+	
+	//lava
+	select_image(IMG_TILE);
+	for (n=0;n<lava_summ;n++)
+	{
+		tmp=lava[n].tile[0];
+		lava[n].tile[0]=lava[n].tile[1];
+		lava[n].tile[1]=lava[n].tile[2];
+		lava[n].tile[2]=lava[n].tile[3];
+		lava[n].tile[3]=tmp;
+		
+		for (m=0;m<4;m++)
+		{
+			draw_tile(lava[n].x[m],lava[n].y,lava[n].tile[m]);
+		}
+	}	
+	
+
+	swap_screen();
+}
+
+
+
+
+
 void idle()
 {
 	if ((player_collision()&#0x20)==#0x20)
 	{
 		player.frame=23;
-		set_sprite(0,player.x,player.y,player.frame);
-		swap_screen();
+		update();
 	}
 	else
 	{
 		if (t+250>time())
 		{
 			player.frame=20;
-			set_sprite(0,player.x,player.y,player.frame);
-			swap_screen();
+			update();
 		}
 		else if (t+300>time())
 		{
 			player.frame=21;
-			set_sprite(0,player.x,player.y,player.frame);
-			swap_screen();
+			update();
 		}
 		else
 		{
@@ -220,7 +289,7 @@ void player_move (u16 direct)
 				swap_screen();
 				i++;
 				if (i>7) i=0;
-				if ((player_collision()&#0x2)==#0x2) player.x+=1;
+				if ((player_collision()&#0x2)==#0x2) player.x+=2;
 				while ((player_collision()&#0x2)==#0x2)
 				{
 					player.y+=2;
@@ -250,7 +319,7 @@ void player_move (u16 direct)
 				swap_screen();
 				i++;
 				if (i>15) i=8;
-				if ((player_collision()&#0x2)==#0x2) player.x-=1;
+				if ((player_collision()&#0x2)==#0x2) player.x-=2;
 				while ((player_collision()&#0x2)==#0x2)
 				{
 					player.y+=2;
@@ -278,7 +347,7 @@ void player_move (u16 direct)
 			{
 				if ((player_collision()&#0x20)==#0x20)
 				{
-					player.y-=1;
+					player.y-=2;
 					set_sprite(0,player.x,player.y,player.frame);
 					swap_screen();
 				}
@@ -288,30 +357,31 @@ void player_move (u16 direct)
 	}
 	
 	//jump up
-	if (direct==#0x1&&(player_collision()&#0x20)!=#0x20)
-	{
-		set_sprite(0,player.x,player.y,22);
-		swap_screen();
-		set_sprite(0,player.x,player.y,22);
-		swap_screen();
-		set_sprite(0,player.x,player.y,20);
-		swap_screen();
-		set_sprite(0,player.x,player.y,21);
-		swap_screen();
-		for (i=0;i<5;i++)
-		{
-			if ((player_collision()&#0x1)==#0x1) player.y-=2;
-			set_sprite(0,player.x,player.y,21);
-			swap_screen();
-			delay (i/2);
-		}
-		while ((player_collision()&#0x2)==#0x2)
-		{
-			player.y+=2;
-			set_sprite(0,player.x,player.y,21);
-			swap_screen();
-		}
-	}
+	// if (direct==#0x1&&(player_collision()&#0x20)!=#0x20)
+	// {
+		// set_sprite(0,player.x,player.y,22);
+		// swap_screen();
+		// set_sprite(0,player.x,player.y,22);
+		// swap_screen();
+		// set_sprite(0,player.x,player.y,20);
+		// swap_screen();
+		// set_sprite(0,player.x,player.y,21);
+		// swap_screen();
+		// for (i=0;i<5;i++)
+		// {
+			// if ((player_collision()&#0x1)==#0x1) player.y-=2;
+			// set_sprite(0,player.x,player.y,21);
+			// swap_screen();
+			// delay (i/2);
+		// }
+		// while ((player_collision()&#0x2)==#0x2)
+		// {
+			// player.y+=2;
+			// set_sprite(0,player.x,player.y,21);
+			// swap_screen();
+		// }
+	// }
+	
 	//jump right
 	if (direct==#0x5)
 	{
@@ -337,11 +407,11 @@ void player_move (u16 direct)
 		{
 			
 			player.y+=2;
-			if (i>1&&(player_collision()&#0x4)==#0x4)
-			{
-				i--;
-				player.x+=1;
-			}
+			// if (i>1&&(player_collision()&#0x4)==#0x4)
+			// {
+				// i--;
+				// player.x+=1;
+			// }
 
 			set_sprite(0,player.x,player.y,18);
 			swap_screen();
@@ -374,11 +444,11 @@ void player_move (u16 direct)
 		{
 			
 			player.y+=2;
-			if (i>1&&(player_collision()&#0x8)==#0x8)
-			{
-				i--;
-				player.x-=1;
-			}
+			// if (i>1&&(player_collision()&#0x8)==#0x8)
+			// {
+				// i--;
+				// player.x-=1;
+			// }
 
 			set_sprite(0,player.x,player.y,19);
 			swap_screen();
@@ -415,7 +485,7 @@ void player_move (u16 direct)
 			{
 				if ((player_collision()&#0x40)==#0x40)
 				{
-					player.y+=1;
+					player.y+=2;
 					set_sprite(0,player.x,player.y,player.frame);
 					swap_screen();
 				}
@@ -489,7 +559,7 @@ void main(void)
 	
 	
 	
-	pal_select(PAL_PLAYER);
+	pal_select(PAL_PALETTE0);
 	clear_screen(0);
 	select_image(IMG_TILE);
 	
@@ -500,14 +570,18 @@ void main(void)
 	draw_level();
 	
 	draw_player();
+	
+	draw_terrain();
 
 	
 	while (1)
 	{
+		border (2);
 		player_move(control_player());
+		border (3);
 
 		output_string(1, 1, "   ");
-		itoa(player_collision()&#0x20, name);
+		itoa(lava_summ, name);
 		output_string(1, 1, name);
 	}
 	
