@@ -13,7 +13,7 @@
 #define WATER_PLANTS 242
 #define LAVA 243
 
-u32 t=0;
+u32 t=0, t_idle=0;
 u8 lava_summ=0;
 u8 water_summ=0;
 u8 n_frame=0;
@@ -85,8 +85,6 @@ void draw_level()
 	for (y=0; y<HIGH_LEVEL; y++)
 		for (x=0; x<WIDTH_LEVEL; x++)
 			draw_tile(x,y,map[x][y]);
-
-	//swap_screen();
 }
 
 
@@ -140,8 +138,6 @@ void init_terrain()
 				}
 			}
 		}	
-		
-	swap_screen();
 }
 
 
@@ -158,9 +154,7 @@ void draw_player()
 				map[x][y]=0;
 				break;
 			}
-	set_sprite(0,player.x,player.y,20);
-			
-	swap_screen();
+	player.frame=20;
 }
 
 
@@ -194,7 +188,7 @@ u8 control_player()
 	{
 		fire=#0x10;
 	}
-	if(key!=FALSE) t=time();
+	if(key!=FALSE) t_idle=time();
 	direct=dx+dy+fire;
 	return (direct);
 }
@@ -204,10 +198,8 @@ void output_string(u8 output_x, u8 output_y, u8* str)
 {
 	u8 n;
 	u8 save_output_x=output_x;
-	
 	select_image(IMG_FONT);
 	color_key (15);
-	
 	while(1)
 	{
 		n=*str++;
@@ -315,6 +307,7 @@ void update()
 	if (n_frame==0) n_frame=1;
 	else n_frame=0;
 
+	border (13);
 	swap_screen();
 }
 
@@ -331,19 +324,19 @@ void idle()
 	}
 	else
 	{
-		if (t+250>time())
+		if (t_idle+250>time())
 		{
 			player.frame=20;
 			update();
 		}
-		else if (t+300>time())
+		else if (t_idle+300>time())
 		{
 			player.frame=21;
 			update();
 		}
 		else
 		{
-			t=time();
+			t_idle=time();
 		}
 	}
 	
@@ -354,7 +347,7 @@ void player_move (u16 direct)
 {
 	u8 i,j;
 	
-	if (direct==#0x0) idle();
+	if (direct==#0x0||direct==#0x1) idle();
 	
 	//move right
 	if (direct==#0x4)
@@ -532,16 +525,16 @@ void player_move (u16 direct)
 	//fire left
 	if (direct==#0xA)
 	{
-		set_sprite(0,player.x,player.y,17);
-		swap_screen();
+		player.frame=17;
+		update();
 		player.last_direct=LEFT;
 	}
 	
 	//fire right
 	if (direct==#0x6)
 	{
-		set_sprite(0,player.x,player.y,16);
-		swap_screen();
+		player.frame=16;
+		update();
 		player.last_direct=RIGHT;
 	}
 	
@@ -576,22 +569,19 @@ void player_move (u16 direct)
 	//lava
 	if ((player_collision()&#0x80)==#0x80)
 	{
-		for (i=0;i<8;i++)
+		for (i=0;i<16;i++)
 		{
 			player.y+=1;
-			set_sprite(0,player.x,player.y,21);
-			swap_screen();
+			player.frame=21;
+			update();
 		}
-		set_sprite(0,player.x,player.y,27);
-		swap_screen();
-		set_sprite(0,player.x,player.y,29);
-		swap_screen();
-		set_sprite(0,player.x,player.y,30);
-		swap_screen();
-		set_sprite(0,player.x,player.y,31);
-		swap_screen();
-		set_sprite(0,player.x,player.y,SPRITE_END);
-		swap_screen();
+		for (i=0;i<3;i++)
+		{
+			player.frame=29+i;
+			update();
+		}
+		player.frame=27;
+		update();
 		while (1);
 	}
 	//water
@@ -602,27 +592,27 @@ void player_move (u16 direct)
 			for (j=0;j<4;j++)
 			{
 				player.y+=1;
-				set_sprite(0,player.x,player.y,21);
-				swap_screen();
+				player.frame=21;
+				update();
 			}
 			for (j=0;j<4;j++)
 			{
 				player.y+=1;
-				set_sprite(0,player.x,player.y,22);
-				swap_screen();
+				player.frame=22;
+				update();
 			}
 		}
 		while ((map[(player.x+3)/4][(player.y+16)/8]!=WATER_PLANTS))
 		{
 			player.y+=1;
-			set_sprite(0,player.x,player.y,28);
-			swap_screen();
+			player.frame=28;
+			update();
 		}
 		for (i=0;i<8;i++)
 		{
 			player.y+=1;
-			set_sprite(0,player.x,player.y,28);
-			swap_screen();
+			player.frame=28;
+			update();
 		}
 		
 		while (1);
@@ -633,8 +623,6 @@ void player_move (u16 direct)
 void main(void)
 {
 	u8 name[3];
-	
-	
 	
 	pal_select(PAL_PALETTE0);
 	clear_screen(0);
@@ -655,11 +643,12 @@ void main(void)
 	{
 		border (2);
 		player_move(control_player());
-		border (3);
+		
 
 		output_string(1, 1, "   ");
 		itoa(n_frame, name);
 		output_string(1, 1, name);
+		
 	}
 	
 }
