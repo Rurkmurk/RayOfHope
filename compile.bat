@@ -2,12 +2,12 @@
 
 rem имя SCL файла
 
-set output=grotto.scl
+set output=atom.scl
 
 rem сообщение, которое отображается при загрузке
 rem 32 символа, стандартный шрифт
 
-set title="             SIVERT"
+set title="          ATOM FOR PEACE"
 
 rem список изображений, откуда брать палитры
 rem в программе они вызываются по автоматически генерируемым

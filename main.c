@@ -1,82 +1,11 @@
 #include <evo.h>
 #include "resources.h"
 #include <additions.h>
-
-#define	HIGH_LEVEL	25
-#define	WIDTH_LEVEL	40
-
-#define RIGHT 1
-#define LEFT 0
-
-#define PLAYER 240
-#define WATER 241
-#define WATER_PLANTS 242
-#define LAVA 243
-
-u32 t=0, t_idle=0;
-u8 lava_summ=0;
-u8 water_summ=0;
-u8 n_frame=0;
-
-static u8 map[WIDTH_LEVEL][HIGH_LEVEL];
-
-struct
-{
-	u8 x;	
-	u8 y;
-	u8 healt;
-	u8 frame;
-	u8 last_direct;
-}player;
-
-struct
-{
-	u8 x[4];	
-	u8 y[2];
-	u8 tile[8];
-}lava[2];
-
-struct
-{
-	u8 x[4];	
-	u8 y[2];
-	u8 tile[8];
-}water[2];
+#include "init.h"
+#include "load_level.h"
 
 
-void load_level()
-{
-	u8 x, y;
-	u8 j=0;
-	u16 i=0;
-	u8 buf[3];
-	
-	load_file("map00001", 30, 1);
-		
-	for (y=0;y<HIGH_LEVEL;y++)
-		for (x=0;x<WIDTH_LEVEL;x++)
-		{
-			
-			do
-			{
-				buf[j]=get_mem(30,32768+i)-48; // 48 is 30 in HEX
-				j++;
-				i++;
-			}while (get_mem(30,32768+i)!=#0x2C);
-			
-			
-			if (j==3) map[x][y]=100*buf[0]+10*buf[1]+buf[2];
-			else if (j==2) map[x][y]=10*buf[0]+buf[1];
-			else map[x][y]=buf[0];
-			
-			i++;
-
-			j=0;
-		}
-}
-
-
-void draw_level()
+void draw_screen()
 {
 	u8 x, y;
 	
@@ -88,7 +17,7 @@ void draw_level()
 }
 
 
-void init_terrain()
+void init_screen()
 {
 	u8 x, y;
 	
@@ -137,16 +66,6 @@ void init_terrain()
 					i++;
 				}
 			}
-		}	
-}
-
-
-void draw_player()
-{
-	u8 x, y;
-	
-	for (y=0; y<HIGH_LEVEL; y++)
-		for (x=0; x<WIDTH_LEVEL; x++)
 			if (map[x][y]==PLAYER)
 			{
 				player.x=4*x;
@@ -154,19 +73,18 @@ void draw_player()
 				map[x][y]=0;
 				break;
 			}
-	player.frame=20;
+			player.frame=20;
+		}	
 }
 
 
-u8 control_player()
+void control_player()
 {
 	u8 key;
 	u8 dx=0, dy=0, fire=0;
-	u8 direct=0;
 	
-	//vsync();
+	
 	key=joystick();
-	//vsync();
 	key=joystick();
 	if(key&JOY_UP)
 	{
@@ -189,8 +107,7 @@ u8 control_player()
 		fire=#0x10;
 	}
 	if(key!=FALSE) t_idle=time();
-	direct=dx+dy+fire;
-	return (direct);
+	player.new_direct=dx+dy+fire;
 }
 
 
@@ -250,7 +167,7 @@ void update()
 	set_sprite(0,player.x,player.y,player.frame);
 	
 		
-	if (t+5<time())
+	if (t+10<time())
 	{
 		//lava anim
 		select_image(IMG_TILE);
@@ -350,75 +267,74 @@ void idle()
 }
 
 
-void player_move (u16 direct)
+void player_move()
 {
-	u8 i,j;
+	static u8 i;
+	u8 j;
 	
-	if (direct==#0x0||direct==#0x1) idle();
+	// idle
+	if (player.new_direct==#0x0||player.new_direct==#0x1) idle();
 	
 	//move right
-	if (direct==#0x4)
+	if (player.new_direct==#0x4)
 	{
-		i=0;
-		while (control_player()==#0x4)
+		//i=0;
+
+
+		if ((player_collision()&#0x4)==#0x4)
 		{
-			if ((player_collision()&#0x4)==#0x4)
+			player.x+=1;
+			player.frame=i;
+			update();
+			i=(i<7)?++i:0;
+			if ((player_collision()&#0x2)==#0x2) player.x+=2;
+			while ((player_collision()&#0x2)==#0x2)
 			{
-				player.x+=1;
-				player.frame=i;
-				update();
-				i++;
-				if (i>7) i=0;
-				if ((player_collision()&#0x2)==#0x2) player.x+=2;
-				while ((player_collision()&#0x2)==#0x2)
-				{
-					player.y+=2;
-					
-					player.frame=21;
-					update();
-				}
-			}
-			else
-			{
-				player.frame=0;
+				player.y+=2;
+				
+				player.frame=21;
 				update();
 			}
 		}
+		else
+		{
+			player.frame=0;
+			update();
+		}
+
 		player.last_direct=RIGHT;
 	}
 
 	//move left
-	if (direct==#0x8)
+	if (player.new_direct==#0x8)
 	{
-		i=8;
-		while (control_player()==#0x8)
+		//i=8;
+		
+		if ((player_collision()&#0x8)==#0x8)
 		{
-			if ((player_collision()&#0x8)==#0x8)
+			player.x-=1;
+			player.frame=i;
+			update();
+			i=(i<15)?++i:8;
+			if ((player_collision()&#0x2)==#0x2) player.x-=2;
+			while ((player_collision()&#0x2)==#0x2)
 			{
-				player.x-=1;
-				player.frame=i;
-				update();
-				i++;
-				if (i>15) i=8;
-				if ((player_collision()&#0x2)==#0x2) player.x-=2;
-				while ((player_collision()&#0x2)==#0x2)
-				{
-					player.y+=2;
-					player.frame=21;
-					update();
-				}
-			}
-			else
-			{
-				player.frame=8;
+				player.y+=2;
+				player.frame=21;
 				update();
 			}
 		}
+		else
+		{
+			player.frame=8;
+			update();
+		}
+
 		player.last_direct=LEFT;
 	}
 	
 	// stairs up
-	if (direct==#0x1&&(player_collision()&#0x21)==#0x21)
+	/* if (direct==#0x1&&(player_collision()&#0x21)==#0x21)
 	{
 		player.frame=23;
 		if (map[player.x/4][(player.y+15)/8]>15&&map[player.x/4][(player.y+15)/8]<32) player.x=player.x-(player.x%4);
@@ -434,7 +350,7 @@ void player_move (u16 direct)
 				player.frame++;
 				if (player.frame>26) player.frame=23;
 			}
-	}
+	} */
 	
 	//jump up
 	// if (direct==#0x1&&(player_collision()&#0x20)!=#0x20)
@@ -463,7 +379,7 @@ void player_move (u16 direct)
 	// }
 	
 	//jump right
-	if (direct==#0x5)
+	/* if (direct==#0x5)
 	{
 		player.frame=18;
 		for (i=0;i<4;i++)
@@ -494,10 +410,10 @@ void player_move (u16 direct)
 			
 		}
 		player.last_direct=RIGHT;
-	}
+	} */
 
 	//jump left
-	if (direct==#0x9)
+	/* if (direct==#0x9)
 	{
 		player.frame=19;
 		for (i=0;i<4;i++)
@@ -527,26 +443,26 @@ void player_move (u16 direct)
 			
 		}
 		player.last_direct=LEFT;
-	}
+	} */
 	
 	//fire left
-	if (direct==#0xA)
+	/* if (direct==#0xA)
 	{
 		player.frame=17;
 		update();
 		player.last_direct=LEFT;
-	}
+	} */
 	
 	//fire right
-	if (direct==#0x6)
+	/* if (direct==#0x6)
 	{
 		player.frame=16;
 		update();
 		player.last_direct=RIGHT;
-	}
+	} */
 	
 	//down
-	if (direct==#0x2)
+	/* if (direct==#0x2)
 		if ((player_collision()&#0x40)==#0x40)
 		{
 			player.frame=23;
@@ -571,7 +487,7 @@ void player_move (u16 direct)
 			else
 				player.frame=17;
 			update();
-		}
+		} */
 		
 	//lava
 	if ((player_collision()&#0x80)==#0x80)
@@ -640,18 +556,17 @@ void main(void)
 	
 	load_level();
 	
-	draw_level();
+	draw_screen();
 	
-	draw_player();
-	
-	init_terrain();
+	init_screen();
 
 	
 	while (1)
 	{
-		border (2);
-		player_move(control_player());
-		border (0);
+
+		control_player();
+		player_move();
+
 
 		output_string(1, 1, "   ");
 		itoa(n_frame, name);
