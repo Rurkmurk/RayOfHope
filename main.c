@@ -314,7 +314,6 @@ void update()
 		else n_frame=0;
 		t=time();
 	}
-	border (13);
 	swap_screen();
 	
 }
@@ -652,7 +651,7 @@ void main(void)
 	{
 		border (2);
 		player_move(control_player());
-		
+		border (0);
 
 		output_string(1, 1, "   ");
 		itoa(n_frame, name);
