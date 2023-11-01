@@ -7,7 +7,8 @@
 #define LEFT 0
 
 #define PLAYER 240
-#define WATER 241
+#define WATER_WAVE 241
+#define WATER 52
 #define WATER_PLANTS 242
 #define LAVA 243
 
@@ -42,5 +43,6 @@ struct
 	u8 y[2];
 	u8 tile[8];
 }water[2];
+
 
 #endif
