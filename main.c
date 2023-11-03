@@ -144,8 +144,8 @@ u16 player_collision()
 
 void update_player()
 {
-	//player anim
 	set_sprite(0,player.x,player.y,player.frame);
+	
 }
 
 void update_terrain()
@@ -153,7 +153,7 @@ void update_terrain()
 	u8 n,m;
 	u8 tmp;
 		
-	if (t+10<time())
+	if (t_terrain+10<time())
 	{
 		//lava anim
 		select_image(IMG_TILE);
@@ -215,7 +215,7 @@ void update_terrain()
 		
 		if (n_frame==0) n_frame=1;
 		else n_frame=0;
-		t=time();
+		t_terrain=time();
 	}
 	swap_screen();
 }
@@ -225,57 +225,120 @@ void player_logic()
 	static u8 i;
 	u8 j;
 	
-	// drop down
-	if ((player_collision()&#0x2)==#0x2)
-	{
-		player.y+=2;
-		player.frame=21;
-		return;
-	}
+	if (!player.healt) return;
 	
+	if (t_player+3<time()){
+
 	// idle
-	if (player.new_direct==#0x0||player.new_direct==#0x1)
+	if ((player.new_direct==#0x0)&&((player.old_direct&JUMP)!=JUMP))
 	{
 		if (t_idle+250>time()) player.frame=20;
 		else if (t_idle+300>time()) player.frame=21;
 		else t_idle=time();
 	}
 	
-	//move right
-	if (player.new_direct==#0x4)
+	// drop down
+	if ((player_collision()&#0x2)==#0x2&&!player.gravity)
 	{
-		if (player.last_direct!=RIGHT) i=0;
-		if ((player_collision()&#0x4)==#0x4)
+		if ((player.h_velocity>0)&&(player_collision()&RIGHT)==RIGHT)
 		{
 			player.x+=1;
-			player.frame=i;
-			i=(i<7)?++i:0;
+			player.h_velocity--;
+			player.frame=18;
+		}
+		else if ((player.h_velocity<0)&&(player_collision()&LEFT)==LEFT)
+		{
+			player.x-=1;
+			player.h_velocity++;
+			player.frame=19;
+		}
+		else
+		{
+			player.frame=21;
+		}
+		player.y+=1;
+		return;
+	}		
+	
+	//move right
+	if ((player.new_direct^RIGHT)==#0x0)
+	{
+		if ((player.old_direct&RIGHT)!=RIGHT)
+		{
+			player.frame=0;
+			player.old_direct^=RIGHT;
+		}
+		if ((player_collision()&RIGHT)==RIGHT)
+		{
+			player.x+=1;
+			player.frame=(player.frame<7)?++player.frame:0;
 		}
 		else
 		{
 			player.frame=0;
 		}
-
-		player.last_direct=RIGHT;
 	}
 
 	//move left
-	if (player.new_direct==#0x8)
+	if ((player.new_direct^LEFT)==#0x0)
 	{
-		if (player.last_direct!=LEFT) i=8;
-		if ((player_collision()&#0x8)==#0x8)
+		if ((player.old_direct&LEFT)!=LEFT)
+		{
+			player.frame=8;
+			player.old_direct^=#0x8;
+		}
+		if ((player_collision()&LEFT)==LEFT)
 		{
 			player.x-=1;
-			player.frame=i;
-			i=(i<15)?++i:8;
+			player.frame=(player.frame<15)?++player.frame:8;
 		}
 		else
 		{
 			player.frame=8;
 		}
-		player.last_direct=LEFT;
+	}
+
+	//jump
+	if ((player.new_direct&JUMP)==JUMP||player.gravity)
+	{
+		if ((player.old_direct&JUMP)!=JUMP)
+		{
+			player.frame=22;
+			if ((player_collision()&#0x1)==#0x1)player.gravity=GRAVITY;
+			else player.gravity=0;
+			player.old_direct=player.new_direct;
+			return;
+		}
+		if ((player.old_direct&RIGHT)==RIGHT)
+		{
+			player.h_velocity=4;
+			player.frame=18;
+			player.y-=player.gravity;
+			player.gravity-=1;
+			if ((player_collision()&RIGHT)==RIGHT) player.x+=1;
+		}
+		else if ((player.old_direct&LEFT)==LEFT)
+		{
+			player.h_velocity=-4;
+			player.frame=19;
+			player.y-=player.gravity;
+			player.gravity-=1;
+			if ((player_collision()&LEFT)==LEFT) player.x-=1;
+		}
+		else
+		{
+			player.h_velocity=0;
+			player.frame=21;
+			player.y-=player.gravity;
+			player.gravity-=1;
+		}
+		if (!player.gravity)
+		{
+			player.old_direct=#0x0;
+		}
 	}
 	
+
 	// stairs up
 	/* if (direct==#0x1&&(player_collision()&#0x21)==#0x21)
 	{
@@ -321,39 +384,7 @@ void player_logic()
 		// }
 	// }
 	
-	//jump right
-	/* if (direct==#0x5)
-	{
-		player.frame=18;
-		for (i=0;i<4;i++)
-		{
-			if ((player_collision()&#0x1)==#0x1) player.y-=2;
-			if ((player_collision()&#0x4)==#0x4) player.x+=1;
-			update();
-		}
-			
-		for (j=0;j<4;j++)
-		{
-			if ((player_collision()&#0x4)==#0x4) player.x+=1;
-			update();
-		}
-		
-		
-		while ((player_collision()&#0x2)==#0x2)
-		{
-			
-			player.y+=2;
-			// if (i>1&&(player_collision()&#0x4)==#0x4)
-			// {
-				// i--;
-				// player.x+=1;
-			// }
-
-			update();
-			
-		}
-		player.last_direct=RIGHT;
-	} */
+	
 
 	//jump left
 	/* if (direct==#0x9)
@@ -385,7 +416,7 @@ void player_logic()
 			update();
 			
 		}
-		player.last_direct=LEFT;
+		player.old_direct=LEFT;
 	} */
 	
 	//fire left
@@ -393,7 +424,7 @@ void player_logic()
 	{
 		player.frame=17;
 		update();
-		player.last_direct=LEFT;
+		player.old_direct=LEFT;
 	} */
 	
 	//fire right
@@ -401,7 +432,7 @@ void player_logic()
 	{
 		player.frame=16;
 		update();
-		player.last_direct=RIGHT;
+		player.old_direct=RIGHT;
 	} */
 	
 	//down
@@ -425,7 +456,7 @@ void player_logic()
 		}
 		else
 		{
-			if (player.last_direct==RIGHT)
+			if (player.old_direct==RIGHT)
 				player.frame=16;
 			else
 				player.frame=17;
@@ -464,15 +495,17 @@ void player_logic()
 		player.frame=28;
 		player.healt=0;
 	}
+	t_player=time();}
 }
 
 
 void main(void)
 {
 	u8 name[3];
-	t=time();
-	
+	//t_terrain=time();
 	player.healt=100;
+	player.old_direct=0;
+	player.h_velocity=0;
 	
 	pal_select(PAL_PALETTE0);
 	clear_screen(0);
@@ -494,11 +527,10 @@ void main(void)
 		update_player();
 		update_terrain();
 
-		if (player.healt<=0) while(1);
 
-		//output_string(1, 1, "   ");
-		//itoa(n_frame, name);
-		//output_string(1, 1, "244");
+		output_string(1, 1, "   ");
+		itoa((player_collision()&#0x2), name);
+		output_string(1, 1, name);
 		
 	}
 	
