@@ -1,5 +1,5 @@
-#ifndef __LOAD_LEVEL
-#define __LOAD_LEVEL
+#ifndef _LOAD_LEVEL
+#define _LOAD_LEVEL
 
 void load_level()
 {
@@ -13,7 +13,6 @@ void load_level()
 	for (y=0;y<HIGH_LEVEL;y++)
 		for (x=0;x<WIDTH_LEVEL;x++)
 		{
-			
 			do
 			{
 				buf[j]=get_mem(30,32768+i)-48; // 48 is 30 in HEX
@@ -22,10 +21,9 @@ void load_level()
 			}
 			while (get_mem(30,32768+i)!=#0x2C);
 			
-			
-			if (j==3) map[x][y]=100*buf[0]+10*buf[1]+buf[2];
-			else if (j==2) map[x][y]=10*buf[0]+buf[1];
-			else map[x][y]=buf[0];
+			if (j==3) map[y][x]=100*buf[0]+10*buf[1]+buf[2];
+			else if (j==2) map[y][x]=10*buf[0]+buf[1];
+			else map[y][x]=buf[0];
 			
 			i++;
 

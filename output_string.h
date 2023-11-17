@@ -1,5 +1,5 @@
-#ifndef __OUTPUT_STRING
-#define __OUTPUT_STRING
+#ifndef _OUTPUT_STRING
+#define _OUTPUT_STRING
 
 void output_string(u8 output_x, u8 output_y, u8* str)
 {
