@@ -30,10 +30,10 @@ void init_screen()
 			{
 				lava[n].x[m]=x;
 				lava[n].y[0]=y;
-				lava[n].tile[m]=32+m;
+				lava[n].tile[m]=48+m;
 				draw_tile(lava[n].x[m],lava[n].y[0],lava[n].tile[m]);
 				lava[n].y[1]=y+1;
-				lava[n].tile[m+4]=36+m;
+				lava[n].tile[m+4]=52+m;
 				
 				m++;
 				if (m>3)
@@ -47,11 +47,11 @@ void init_screen()
 			{
 				water[i].x[j]=x;
 				water[i].y[0]=y;
-				water[i].tile[j]=48+j;
+				water[i].tile[j]=64+j;
 				draw_tile(water[i].x[j],water[i].y[0],water[i].tile[j]);
 				
 				water[i].y[1]=y+3;
-				water[i].tile[j+4]=56+j;
+				water[i].tile[j+4]=72+j;
 				draw_tile(water[i].x[j],water[i].y[1],water[i].tile[j+4]);
 				
 				j++;

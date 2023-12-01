@@ -1,12 +1,12 @@
 #ifndef _UPDATE_SCREEN
 #define _UPDATE_SCREEN
 
-void update_player()
+void update_sprite()
 {
+	//player
 	set_sprite(0,p.x,p.y,p.frame);
+	
 }
-
-
 
 void update_terrain()
 {
@@ -14,7 +14,7 @@ void update_terrain()
 	u8 tmp;
 
 	//if (t_terrain+10<time())
-	{
+	//{
 		//lava anim
 		select_image(IMG_TILE);
 		for (n=0;n<lava_summ;n++)
@@ -34,8 +34,8 @@ void update_terrain()
 			
 			for (m=0;m<4;m++)
 			{
-				//draw_tile(lava[n].x[m],lava[n].y[0],lava[n].tile[m]);
-				//draw_tile(lava[n].x[m],lava[n].y[1],lava[n].tile[m+4]);
+			//	draw_tile(lava[n].x[m],lava[n].y[0],lava[n].tile[m]);
+			//	draw_tile(lava[n].x[m],lava[n].y[1],lava[n].tile[m+4]);
 			}
 		}
 		
@@ -47,6 +47,7 @@ void update_terrain()
 			water[n].tile[1]=water[n].tile[2];
 			water[n].tile[2]=water[n].tile[3];
 			water[n].tile[3]=tmp;
+
 			
 			switch (n_frame)
 			{
@@ -64,17 +65,15 @@ void update_terrain()
 				break;
 			}
 			
-			/* for (m=0;m<4;m++)
+			 for (m=0;m<4;m++)
 			{
-				draw_tile(water[n].x[m],water[n].y[0],water[n].tile[m]);
-				draw_tile(water[n].x[m],water[n].y[1],water[n].tile[m+4]);
-			} */
+			//	draw_tile(water[n].x[m],water[n].y[0],water[n].tile[m]);
+			//	draw_tile(water[n].x[m],water[n].y[1],water[n].tile[m+4]);
+			} 
 		}	
-		
-		if (n_frame==0) n_frame=1;
-		else n_frame=0;
+		n_frame=n_frame==0?1:0;
 		//t_terrain=time();
-	}
+	//}
 
 
 }

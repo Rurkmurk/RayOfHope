@@ -1,6 +1,6 @@
 #include <evo.h>
 #include "resources.h"
-#include <additions.h>
+//#include <additions.h>
 #include "init_define.h"
 #include "output_string.h"
 #include "load_level.h"
@@ -15,7 +15,6 @@ void main(void)
 	u8 name[6];
 	
 	p.healt=100;
-	p.old_direct=0;
 	p.v_speed=0;
 	p.jump_impulse=7;
 	p.h_speed=1;
@@ -34,28 +33,31 @@ void main(void)
 	
 	while (1)
 	{
+				
 		control_player();
-
-		if (t_player+4<time())
+		
+		//if (t_player+2<time())
 		{
+			border (3);
 			player_logic();
-			t_player=time();
-		}	
-	
-		
+			border (0);
+			animation_player();
+		//	t_player=time();
+		}
+
+		update_terrain();
+
+		update_sprite();
 
 		
-		update_player();
-		
-		border (2);
-		update_terrain();
-		border (0);
 		
 		swap_screen();
+		
+		
 
-		output_string(1, 1, "      ");
-		itoa(p.v_speed, name);
-		output_string(1, 1, name);
+		// output_string(1, 1, "     ");
+		// itoa(p.new_status, name);
+		// output_string(1, 1, name);
 		
 	}
 	

@@ -1,25 +1,39 @@
 #ifndef _INIT_DEFINE
 #define _INIT_DEFINE
 
-#define	HIGH_LEVEL	25
+//map size
+#define	HIGH_LEVEL	23
 #define	WIDTH_LEVEL	40
 
+//player collizion
+#define IDLE		#0x0
+#define UP			#0x1
 #define DOWN		#0x2
 #define RIGHT 		#0x4
 #define LEFT 		#0x8
-#define UP			#0x1
-#define STAIRS_UP 	#0x20
-#define STAIRS_DOWN	#0x40
 #define GROUND		#0x10
+#define STAIRS	 	#0x20
 
 
-#define PLAYER 		240
-#define WATER_WAVE 	241
-#define WATER 		52
-#define WATER_PLANTS 242
-#define LAVA 		243
+//player status
 
-#define GRAVITY		3
+#define JUMP			UP
+#define STAIRS_STAND	#0x40
+#define JUMP_LEFT		JUMP+LEFT
+#define JUMP_RIGHT		JUMP+RIGHT
+#define DOWN_LEFT		DOWN+LEFT
+#define DOWN_RIGHT		DOWN+RIGHT
+#define FIRE_LEFT		JOY_FIRE+JOY_LEFT
+#define FIRE_RIGHT		JOY_FIRE+JOY_RIGHT
+
+//tile numbers
+#define PLAYER 			240
+#define WATER_WAVE 		241
+#define WATER 			68
+#define WATER_PLANTS	242
+#define LAVA 			243
+
+#define GRAVITY			2
 
 u32 t_terrain=0, t_player=0, t_idle=0;
 u8 lava_summ=0;
@@ -39,8 +53,9 @@ struct player
 	i8 v_speed;
 	i8 jump_impulse;
 	i8 h_speed;
-	u8 new_direct;
-	u8 old_direct;
+	u8 direct;
+	u8 new_status;
+	u8 old_status;
 } p;
 
 
