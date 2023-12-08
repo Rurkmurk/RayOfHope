@@ -45,7 +45,7 @@ void main(void)
 		//	t_player=time();
 		}
 
-		update_terrain();
+		//update_terrain();
 
 		update_sprite();
 
@@ -55,9 +55,9 @@ void main(void)
 		
 		
 
-		// output_string(1, 1, "     ");
-		// itoa(p.new_status, name);
-		// output_string(1, 1, name);
+		output_string(1, 1, "     ");
+		itoa(p.old_status, name);
+		output_string(1, 1, name);
 		
 	}
 	

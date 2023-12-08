@@ -200,10 +200,21 @@ void player_logic()
 	
 	// fire
 	
-	if ((p.direct&JOY_FIRE)==JOY_FIRE)
+	if ((p.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&GROUND)==GROUND)
 	{
-		if (p.old_status==LEFT) p.new_status=FIRE_LEFT;
-		else p.new_status=FIRE_RIGHT;
+		if (p.old_status==LEFT) p.new_status=DOWN_LEFT;
+		if (p.old_status==RIGHT) p.new_status=DOWN_RIGHT;
+	}	
+
+	
+	if (p.old_status==DOWN_LEFT&&(p.direct&JOY_FIRE)==JOY_FIRE)
+	{
+		p.new_status=FIRE_LEFT;
+	}	
+	
+	if (p.old_status==DOWN_RIGHT&&(p.direct&JOY_FIRE)==JOY_FIRE)
+	{
+		p.new_status=FIRE_RIGHT;
 	}	
 
 }
@@ -272,14 +283,24 @@ void animation_player()
 			p.frame=23;
 			break;
 			
-		case FIRE_LEFT:
+		case DOWN_LEFT:
 			p.frame=17;
+			p.old_status=DOWN_LEFT;
+			break;
+		
+		case FIRE_LEFT:
 			border (3);
+			p.new_status=DOWN_LEFT;
+			break;
+		
+		case DOWN_RIGHT:
+			p.frame=16;
+			p.old_status=DOWN_RIGHT;
 			break;
 		
 		case FIRE_RIGHT:
-			p.frame=16;
 			border (2);
+			p.new_status=DOWN_RIGHT;
 			break;
 			
 			
