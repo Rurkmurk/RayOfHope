@@ -14,10 +14,14 @@ void main(void)
 {
 	u8 name[6];
 	
+	p.deadly_height=-10;
 	p.healt=100;
+	p.speed=2;
 	p.v_speed=0;
 	p.jump_impulse=7;
-	p.h_speed=1;
+	p.h_step=1;
+	
+	
 	
 	pal_select(PAL_PALETTE0);
 	clear_screen(0);
@@ -31,18 +35,14 @@ void main(void)
 
 	init_screen();
 	
-	while (1)
-	{
+	for (;;) {
 				
 		control_player();
 		
-		//if (t_player+2<time())
-		{
-			border (3);
+		if (t_player+p.speed<time()) {
 			player_logic();
-			border (0);
 			animation_player();
-		//	t_player=time();
+			t_player=time();
 		}
 
 		//update_terrain();
@@ -56,7 +56,7 @@ void main(void)
 		
 
 		output_string(1, 1, "     ");
-		itoa(p.old_status, name);
+		itoa((p.healt), name);
 		output_string(1, 1, name);
 		
 	}

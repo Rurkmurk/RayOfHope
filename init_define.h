@@ -25,6 +25,7 @@
 #define DOWN_RIGHT		DOWN+RIGHT
 #define FIRE_LEFT		JOY_FIRE+JOY_LEFT
 #define FIRE_RIGHT		JOY_FIRE+JOY_RIGHT
+#define DEATH			#0x80
 
 //tile numbers
 #define PLAYER 			240
@@ -41,6 +42,8 @@ u8 water_summ=0;
 u8 n_frame=0;
 
 
+
+
 static u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
 struct player
@@ -52,10 +55,12 @@ struct player
 	i8 gravity;
 	i8 v_speed;
 	i8 jump_impulse;
-	i8 h_speed;
+	i8 h_step;
 	u8 direct;
 	u8 new_status;
 	u8 old_status;
+	u8 speed;
+	i8 deadly_height;
 } p;
 
 
