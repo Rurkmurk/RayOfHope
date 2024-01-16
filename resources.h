@@ -8,5 +8,6 @@
 
 
 #define SPR_PLAYER	0
-#define SPR_LAVA	32
+#define SPR_SHOT	32
+#define SPR_LAVA	40
 

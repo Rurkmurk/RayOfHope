@@ -6,7 +6,12 @@ void update_sprite()
 	//player
 	set_sprite(0,p.x,p.y,p.frame);
 	
+	//shot
+	set_sprite(1,s.x,s.y,s.frame);
+
+
 }
+
 
 void update_terrain()
 {

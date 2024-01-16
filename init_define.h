@@ -51,7 +51,7 @@ struct player
 	u8 x;	
 	u8 y;
 	u8 healt;
-	u8 frame;
+	u16 frame;
 	i8 gravity;
 	i8 v_speed;
 	i8 jump_impulse;
@@ -62,6 +62,16 @@ struct player
 	u8 speed;
 	i8 deadly_height;
 } p;
+
+struct shot
+{
+	u8 x;	
+	u8 y;
+	u8 n;	
+	u16 frame;
+	u8 direct;
+	u8 status;
+} s;
 
 
 struct

@@ -6,6 +6,7 @@
 #include "load_level.h"
 #include "init_screen.h"
 #include "player.h"
+#include "shot.h"
 #include "update_screen.h"
 
 
@@ -21,7 +22,8 @@ void main(void)
 	p.jump_impulse=7;
 	p.h_step=1;
 	
-	
+	s.n=0;
+	s.frame=SPRITE_END;
 	
 	pal_select(PAL_PALETTE0);
 	clear_screen(0);
@@ -45,18 +47,17 @@ void main(void)
 			t_player=time();
 		}
 
+		shot_logic();
+		
 		//update_terrain();
 
 		update_sprite();
-
-		
-		
 		swap_screen();
 		
 		
 
 		output_string(1, 1, "     ");
-		itoa((p.healt), name);
+		itoa((p.direct), name);
 		output_string(1, 1, name);
 		
 	}

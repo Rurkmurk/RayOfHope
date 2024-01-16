@@ -25,7 +25,8 @@ set image.1=res\font.bmp
 rem спрайты
 
 set sprite.0=res\player.bmp
-set sprite.1=res\lava.bmp
+set sprite.1=res\shot.bmp
+set sprite.2=res\lava.bmp
 
 rem набор звуковых эффектов, если нужен
 rem он может быть только один
