@@ -57,7 +57,7 @@ void main(void)
 		
 
 		output_string(1, 1, "     ");
-		itoa((p.direct), name);
+		itoa(shot_collision(), name);
 		output_string(1, 1, name);
 		
 	}
