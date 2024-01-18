@@ -15,14 +15,17 @@ void main(void)
 {
 	u8 name[6];
 	
-	p.deadly_height=-10;
+/* player setup ***********************************************************/
+	p.deadly_height=-15;
 	p.healt=100;
-	p.speed=2;
+	p.skip=2;
 	p.v_speed=0;
 	p.jump_impulse=7;
 	p.h_step=1;
-	
-	s.n=0;
+
+/* shot setup *************************************************************/
+	s.dist=20;
+	s.speed=2;
 	s.frame=SPRITE_END;
 	
 	pal_select(PAL_PALETTE0);
@@ -41,7 +44,7 @@ void main(void)
 				
 		control_player();
 		
-		if (t_player+p.speed<time()) {
+		if (t_player+p.skip<time()) {
 			player_logic();
 			animation_player();
 			t_player=time();

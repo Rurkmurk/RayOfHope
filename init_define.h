@@ -59,7 +59,7 @@ struct player
 	u8 direct;
 	u8 new_status;
 	u8 old_status;
-	u8 speed;
+	u8 skip;
 	i8 deadly_height;
 } p;
 
@@ -67,10 +67,11 @@ struct shot
 {
 	u8 x;	
 	u8 y;
-	u8 n;	
 	u16 frame;
 	u8 direct;
 	u8 status;
+	u8 dist;
+	u8 speed;
 } s;
 
 

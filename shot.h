@@ -18,7 +18,10 @@ u8 shot_collision()
 
 void shot_logic()
 {
-	static u8 n;
+	static u8 m, n;
+	
+	if (!s.direct)
+		return;
 	
 	switch (s.direct){
 		case RIGHT:
@@ -27,31 +30,16 @@ void shot_logic()
 				s.x=p.x+4;
 				s.y=p.y;
 				s.frame=SPR_SHOT+0;
-				s.n++;
+				m=0;
 				n=0;
 				return;
 			}
 			
-			if (!shot_collision()&&(s.n<50)){
-				s.x++;
+			if (!shot_collision()&&(m<s.dist)){
+				s.x+=s.speed;
 				s.frame=SPR_SHOT+1;
-				s.n++;
+				m++;
 				return;
-			}
-			
-			if (n<6){
-			s.frame=SPR_SHOT+2;
-			n++;
-			}
-			else if (n>=6&&n<10){
-			s.frame=SPR_SHOT+3;
-			n++;
-			}
-			else {
-			s.frame=SPRITE_END;
-			s.status=FALSE;
-			s.direct=FALSE;
-			s.n=0;
 			}
 		break;
 
@@ -61,35 +49,33 @@ void shot_logic()
 				s.x=p.x-4;
 				s.y=p.y;
 				s.frame=SPR_SHOT+4;
-				s.n++;
+				m=0;
 				n=0;
 				return;
 			}
 			
-			if (!shot_collision()&&(s.n<50)){
-				s.x--;
+			if (!shot_collision()&&(m<s.dist)){
+				s.x-=s.speed;
 				s.frame=SPR_SHOT+5;
-				s.n++;
+				m++;
 				return;
 			}
-			
-			if (n<6){
-			s.frame=SPR_SHOT+6;
-			n++;
-			}
-			else if (n>=6&&n<10){
-			s.frame=SPR_SHOT+7;
-			n++;
-			}
-			else {
-			s.frame=SPRITE_END;
-			s.status=FALSE;
-			s.direct=FALSE;
-			s.n=0;
-			}
 		break;
+	}	
+	
+	if (n<6){
+	s.frame=SPR_SHOT+2;
+	n++;
+	}
+	else if (n>=6&&n<10){
+	s.frame=SPR_SHOT+3;
+	n++;
+	}
+	else {
+	s.frame=SPRITE_END;
+	s.status=FALSE;
+	s.direct=FALSE;
 	}
 }
-
 
 #endif
