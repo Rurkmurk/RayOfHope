@@ -22,7 +22,7 @@ void control_player()
 		fire=JOY_FIRE;
 	}
 	if(key!=FALSE) t_idle=time();
-	p.direct=dx+dy+fire;
+	player.direct=dx+dy+fire;
 }
 
 
@@ -34,16 +34,16 @@ u16 player_collision()
 	
 	collision=0;
 	
-	pxl=(p.x+2)/4;
-	pxc=(p.x+3)/4;
-	pxr=(p.x+5)/4;
+	pxl=(player.x+2)/4;
+	pxc=(player.x+3)/4;
+	pxr=(player.x+5)/4;
 	
-	pyu=(p.y)/8;
-	pyc=(p.y+7)/8;
-	pyd=(p.y+15)/8;
+	pyu=(player.y)/8;
+	pyc=(player.y+7)/8;
+	pyd=(player.y+15)/8;
 	
-	py_stairs=(p.y+10)/8;
-	py_ground=(p.y+16)/8;
+	py_stairs=(player.y+10)/8;
+	py_ground=(player.y+16)/8;
 
 	//up
 	if ((map[pyu][pxl]>31)||(map[pyu][pxc]>31||(map[pyu][pxr]>31)))
@@ -61,7 +61,8 @@ u16 player_collision()
 	if ((map[py_ground][pxl]>95)&&(map[py_ground][pxl]<239)||(map[py_ground][pxr]>95)&&(map[py_ground][pxr]<239))
 		collision^=GROUND;
 	//stairs
-	if ((map[py_stairs][pxc]>31)&&(map[py_stairs][pxc]<48))
+	if ((map[py_stairs][pxl]>31)&&(map[py_stairs][pxl]<48)&&
+		(map[py_stairs][pxr]>31)&&(map[py_stairs][pxr]<48))
 		collision^=STAIRS;
 	//lava
 	if (map[py_ground][pxc]==LAVA)
@@ -87,228 +88,242 @@ void player_logic()
 	
 	u16 p_collision;
 	
-	if (!p.healt) {
-		if ((p.old_status!=WATER)&&(p.old_status!=LAVA)) p.new_status=DEATH;
+	if (!player.health) {
+		if ((player.old_status!=WATER)&&(player.old_status!=LAVA)) player.new_status=DEATH;
 		return;
 	}
 	
 	p_collision=player_collision();
 	
 	//idle
-	if (!p.direct&&p.new_status!=JUMP&&p.old_status!=STAIRS)
-		p.new_status=IDLE;
+	if (!player.direct&&player.new_status!=JUMP&&player.old_status!=STAIRS)
+		player.new_status=IDLE;
 	
 	//stairs stand
-	if (!p.direct&&(p_collision&STAIRS)==STAIRS)
-		p.new_status=STAIRS_STAND;
+	if (!player.direct&&(p_collision&STAIRS)==STAIRS)
+		player.new_status=STAIRS_STAND;
 	
 	//water 
 	if ((p_collision&#0x100)==#0x100) {
-		p.y++;
-		p.new_status=WATER;
+		player.y++;
+		player.new_status=WATER;
 		return;
 	}
 	if ((p_collision&#0x200)==#0x200) {
-		p.y+=4;
-		p.healt=0;
+		player.y+=4;
+		player.health=0;
 		return;
 	}
 
 	//lava
 	if ((p_collision&#0x80)==#0x80) {
-		p.y+=7;
-		p.new_status=LAVA;
-		p.healt=0;
+		player.y+=7;
+		player.new_status=LAVA;
+		player.health=0;
 		return;
 	}
 	
 	//up
-	if ((p.direct&JOY_UP)==JOY_UP) {
+	if ((player.direct&JOY_UP)==JOY_UP) {
 		if ((p_collision&STAIRS)==STAIRS) {
-			p.y-=2;
-			p.new_status=STAIRS;
+			player.y-=2;
+			player.new_status=STAIRS;
 		}
-		if ((p_collision&GROUND)==GROUND) {
-			p.v_speed=p.jump_impulse-GRAVITY;
-			p.new_status=JUMP;
+		if ((p_collision&GROUND)==GROUND&&player.new_status!=STAIRS) {
+			player.v_speed=player.jump_impulse-GRAVITY;
+			player.new_status=JUMP;
 		}
 	}
 	
-	if (p.v_speed>0) {
-		p.v_speed--;
-		for (j=0;j<=p.v_speed;j++) {
-			if ((player_collision()&UP)!=UP) p.y--;
+	if (player.v_speed>0) {
+		player.v_speed--;
+		for (j=0;j<=player.v_speed;j++) {
+			if ((player_collision()&UP)!=UP) player.y--;
 			else {
-				p.v_speed=0;
+				player.v_speed=0;
 				break;
 			}
 		}
 	}
 	
+	//left jump
+	if (player.direct==JOY_LEFT+JOY_UP){
+		player.new_status=JUMP_LEFT;
+		player.h_step=2;
+	}
+	//right jump
+	if (player.direct==JOY_RIGHT+JOY_UP){
+		player.new_status=JUMP_RIGHT;
+		player.h_step=2;
+	}
+	
 	// right 
-	if ((p.direct&JOY_RIGHT)==JOY_RIGHT&&(p_collision&RIGHT)!=RIGHT&&(p.direct&JOY_DOWN)!=JOY_DOWN) {
-		p.x+=p.h_step;
-		p.new_status=RIGHT;
+	if ((player.direct&JOY_RIGHT)==JOY_RIGHT&&(p_collision&RIGHT)!=RIGHT&&(player.direct&JOY_DOWN)!=JOY_DOWN) {
+		player.x+=player.h_step;
+		player.new_status=RIGHT;
 	}
 	if ((player_collision()&RIGHT)==RIGHT)
-		p.x-=p.h_step;
+		player.x-=player.h_step;
 	
 	//left
-	if ((p.direct&JOY_LEFT)==JOY_LEFT&&(p_collision&LEFT)!=LEFT&&(p.direct&JOY_DOWN)!=JOY_DOWN) {
-		p.x-=p.h_step;
-		p.new_status=LEFT;
+	if ((player.direct&JOY_LEFT)==JOY_LEFT&&(p_collision&LEFT)!=LEFT&&(player.direct&JOY_DOWN)!=JOY_DOWN) {
+		player.x-=player.h_step;
+		player.new_status=LEFT;
 	}
 	if ((player_collision()&LEFT)==LEFT)
-		p.x+=p.h_step;
+		player.x+=player.h_step;
 	
-	//left jump
-	if (p.direct==JOY_LEFT+JOY_UP)
-		p.new_status=JUMP_LEFT;
 	
-	//right jump
-	if (p.direct==JOY_RIGHT+JOY_UP)
-		p.new_status=JUMP_RIGHT;
 	
 	//down stairs
-	if ((p.direct&JOY_DOWN)==JOY_DOWN) {
+	if ((player.direct&JOY_DOWN)==JOY_DOWN) {
 		for (j=0;j<2;j++) {
 			if ((p_collision&STAIRS)==STAIRS&&(player_collision()&GROUND)!=GROUND) {
-				p.y+=1;
-				p.new_status=STAIRS;
+				player.y+=1;
+				player.new_status=STAIRS;
 			}
 			else break;
 		}
 	}
 	
 	// drop down
-	if ((p_collision&DOWN)!=DOWN&&p.v_speed<=0) {
-		p.v_speed-=GRAVITY;
-		for (j=0;j>p.v_speed;j--) {
+	if ((p_collision&DOWN)!=DOWN&&player.v_speed<=0) {
+		player.v_speed-=GRAVITY;
+		for (j=0;j>player.v_speed;j--) {
 			if ((player_collision()&DOWN)!=DOWN&&(p_collision&STAIRS)!=STAIRS) {
-				p.new_status=DOWN;
-				p.y++;
+				player.new_status=DOWN;
+				player.y++;
 			}
 			else {
-				if (p.v_speed<p.deadly_height)
-					p.healt-=50;
+				if (player.v_speed<player.deadly_height)
+					player.health-=5;
 
-				p.v_speed=0;
+				player.v_speed=0;
 				break;
 			}
 		}
 	}
 	
 	// fire
-	if ((p.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&GROUND)==GROUND) {
-		if (p.old_status==LEFT||p.old_status==DOWN_LEFT)
-			p.new_status=DOWN_LEFT;
-		if (p.old_status==RIGHT||p.old_status==DOWN_RIGHT)
-			p.new_status=DOWN_RIGHT;
+	if ((player.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&GROUND)==GROUND) {
+		if (player.old_status==LEFT)
+			player.new_status=DOWN_LEFT;
+		if (player.old_status==RIGHT||!player.old_status)
+			player.new_status=DOWN_RIGHT;
 	}	
 
-	if (p.old_status==DOWN_RIGHT&&(p.direct&(JOY_LEFT+JOY_DOWN))==(JOY_LEFT+JOY_DOWN)) {
-		p.new_status=DOWN_LEFT;
+	if (player.old_status==DOWN_RIGHT&&(player.direct&(JOY_LEFT+JOY_DOWN))==(JOY_LEFT+JOY_DOWN)) {
+		player.new_status=DOWN_LEFT;
 	}	
 	
-	if (p.old_status==DOWN_LEFT&&(p.direct&(JOY_RIGHT+JOY_DOWN))==(JOY_RIGHT+JOY_DOWN)) {
-		p.new_status=DOWN_RIGHT;
+	if (player.old_status==DOWN_LEFT&&(player.direct&(JOY_RIGHT+JOY_DOWN))==(JOY_RIGHT+JOY_DOWN)) {
+		player.new_status=DOWN_RIGHT;
 	}	
 	
-	if (p.old_status==DOWN_LEFT&&(p.direct&JOY_FIRE)==JOY_FIRE) {
-		s.direct=LEFT;
+	if (player.old_status==DOWN_LEFT&&(player.direct&JOY_FIRE)==JOY_FIRE) {
+		shot.direct=LEFT;
 	}	
 	
-	if (p.old_status==DOWN_RIGHT&&(p.direct&JOY_FIRE)==JOY_FIRE) {
-		//p.new_status=FIRE_RIGHT;
-		s.direct=RIGHT;
+	if (player.old_status==DOWN_RIGHT&&(player.direct&JOY_FIRE)==JOY_FIRE) {
+		shot.direct=RIGHT;
 	}	
 
 }
 
-void animation_player()
+void player_animation()
 {
-	switch (p.new_status) {
+	switch (player.new_status) {
 		
 		case DEATH:
-			p.frame=27;
+			player.frame=27;
 			break;
 		
 		case WATER:
-			p.frame=28;
-			p.old_status=WATER;
+			player.frame=28;
+			player.old_status=WATER;
 			break;
 			
 		case LAVA:
-			p.frame=31;
-			p.old_status=LAVA;
+			player.frame=31;
+			player.old_status=LAVA;
 			break;
 		
 		case RIGHT:
-			if ((p.old_status)!=RIGHT) {
-				p.old_status=RIGHT;
-				p.frame=0;
+			if ((player.old_status)!=RIGHT) {
+				player.old_status=RIGHT;
+				player.frame=0;
 			}
 			else {
-				p.frame=p.frame<7?++p.frame:0;
+				player.frame=player.frame<7?++player.frame:0;
 			}
 			break;
 		
 		case LEFT:
-			if ((p.old_status)!=LEFT) {
-				p.old_status=LEFT;
-				p.frame=8;
+			if ((player.old_status)!=LEFT) {
+				player.old_status=LEFT;
+				player.frame=8;
 			}
 			else {
-				p.frame=p.frame<15?++p.frame:8;
+				player.frame=player.frame<15?++player.frame:8;
 			}
 			break;
 			
 		case JUMP:
-			p.frame=22;
+			player.frame=22;
 			break;
 			
 		case JUMP_LEFT:
-			p.old_status=JUMP_LEFT;
-			p.frame=19;
+			player.old_status=JUMP_LEFT;
+			player.frame=19;
 			break;
 			
 		case JUMP_RIGHT:
-			p.old_status=JUMP_RIGHT;
-			p.frame=18;
+			player.old_status=JUMP_RIGHT;
+			player.frame=18;
 			break;
 			
 		case STAIRS:
-			if ((p.old_status)!=STAIRS) {
-				p.old_status=STAIRS;
-				p.frame=23;
+			if ((player.old_status)!=STAIRS) {
+				player.old_status=STAIRS;
+				player.frame=23;
 			}
 			else {
-				p.frame=p.frame<26?++p.frame:23;
+				player.frame=player.frame<26?++player.frame:23;
 			}
 			break;
 			
 		case STAIRS_STAND:
-			p.frame=23;
+			player.frame=23;
+			player.old_status=STAIRS_STAND;
 			break;
 			
 		case DOWN_LEFT:
-			p.frame=17;
-			p.old_status=DOWN_LEFT;
+			player.frame=17;
+			player.old_status=DOWN_LEFT;
 			break;
 		
 		case DOWN_RIGHT:
-			p.frame=16;
-			p.old_status=DOWN_RIGHT;
+			player.frame=16;
+			player.old_status=DOWN_RIGHT;
 			break;
 
 		default:
-			if (p.new_status==IDLE&&(player_collision()&STAIRS)!=STAIRS&&(p.healt!=0)) {
-				if (t_idle+200>time()) p.frame=20;
-				else if (t_idle+210>time()) p.frame=22;
-				else if (t_idle+230>time()) p.frame=21;
-				else if (t_idle+240>time()) p.frame=22;
-				else if (t_idle+260>time()) p.frame=21;
-				else t_idle=time();	
+			if (player.new_status==IDLE&&(player_collision()&STAIRS)!=STAIRS&&(player.health!=0)) {
+				if (t_idle+200>time())
+					player.frame=20;
+				else if (t_idle+210>time())
+					player.frame=22;
+				else if (t_idle+230>time())
+					player.frame=21;
+				else if (t_idle+240>time())
+					player.frame=22;
+				else if (t_idle+260>time())
+					player.frame=21;
+				else t_idle=time();
+				if (player.old_status==DOWN_RIGHT)
+					player.old_status=RIGHT;
+				if (player.old_status==DOWN_LEFT)
+					player.old_status=LEFT;
 			}
 	}
 }

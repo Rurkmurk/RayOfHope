@@ -7,26 +7,31 @@
 #include "init_screen.h"
 #include "player.h"
 #include "shot.h"
+#include "enemy.h"
 #include "update_screen.h"
 
 
 
-void main(void)
+void main()
 {
 	u8 name[6];
+	u8 slime_skip;
 	
 /* player setup ***********************************************************/
-	p.deadly_height=-15;
-	p.healt=100;
-	p.skip=2;
-	p.v_speed=0;
-	p.jump_impulse=7;
-	p.h_step=1;
+	player.deadly_height=-15;
+	player.skip=3;
+	player.v_speed=0;
+	player.jump_impulse=7;
+	player.h_step=1;
 
 /* shot setup *************************************************************/
-	s.dist=20;
-	s.speed=2;
-	s.frame=SPRITE_END;
+	shot.dist=20;
+	shot.speed=2;
+	shot.frame=SPRITE_END;
+	
+/* enemy setup ************************************************************/
+	slime_skip=5;
+/**************************************************************************/
 	
 	pal_select(PAL_PALETTE0);
 	clear_screen(0);
@@ -35,33 +40,38 @@ void main(void)
 	load_level();
 	
 	sprites_start();
-	
 	draw_screen();
-
 	init_screen();
 	
 	for (;;) {
-				
+		
 		control_player();
 		
-		if (t_player+p.skip<time()) {
+		if (t_player+player.skip<time()) {
 			player_logic();
-			animation_player();
+			player_animation();
 			t_player=time();
 		}
 
 		shot_logic();
 		
+		if (t_slime+slime_skip<time()) {
+			enemy_logic();
+			enemy_animation();
+			t_slime=time();
+		}
+
 		//update_terrain();
 
 		update_sprite();
+
 		swap_screen();
 		
 		
 
-		output_string(1, 1, "     ");
-		itoa(shot_collision(), name);
-		output_string(1, 1, name);
+		// output_string(0, 24, "     ");
+		// itoa(enemy[1].frame-SPR_B_SLIME, name);
+		// output_string(0, 24, name);
 		
 	}
 	

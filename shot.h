@@ -3,15 +3,25 @@
 
 u8 shot_collision()
 {
-	u8 collision=0;
-	u8 sxc, syc;
+	u8 n;
+	u8 collision=FALSE;
+	static u8 shot_enemy;
+	u8 sxl, sxr, sy;
 	
-	sxc=(s.x+3)/4;
+	sxl=(shot.x+1)/4;
+	sxr=(shot.x+6)/4;
+	sy=(shot.y+8)/8;
 
-	syc=(s.y+8)/8;
-
-	if (map[syc][sxc]>47)
+	if (map[sy][sxl]>47||map[sy][sxr]>47)
 		collision=TRUE;
+	
+	for (n=1;n<=enemy_summ;n++)
+		if (shot.y==enemy[n].y)
+			if (shot.x>enemy[n].x-2&&shot.x<enemy[n].x+4) {
+				collision=TRUE;
+				if (shot.frame==SPR_SHOT+4)
+					enemy[n].health--;
+			}
 	
 	return (collision);
 }
@@ -20,62 +30,66 @@ void shot_logic()
 {
 	static u8 m, n;
 	
-	if (!s.direct)
+	if (!shot.direct)
 		return;
 	
-	switch (s.direct){
+	switch (shot.direct){
 		case RIGHT:
-			if (s.status!=RIGHT){ 
-				s.status=RIGHT;
-				s.x=p.x+4;
-				s.y=p.y;
-				s.frame=SPR_SHOT+0;
+			if (shot.status!=RIGHT){ 
+				shot.status=RIGHT;
+				shot.x=player.x+4;
+				shot.y=player.y;
+				shot.frame=SPR_SHOT+0;
 				m=0;
 				n=0;
 				return;
 			}
 			
-			if (!shot_collision()&&(m<s.dist)){
-				s.x+=s.speed;
-				s.frame=SPR_SHOT+1;
+			if (!shot_collision()&&(m<shot.dist)){
+				shot.x+=shot.speed;
+				shot.frame=SPR_SHOT+1;
 				m++;
 				return;
 			}
 		break;
 
 		case LEFT:
-			if (s.status!=LEFT){ 
-				s.status=LEFT;
-				s.x=p.x-4;
-				s.y=p.y;
-				s.frame=SPR_SHOT+4;
+			if (shot.status!=LEFT){ 
+				shot.status=LEFT;
+				shot.x=player.x-4;
+				shot.y=player.y;
+				shot.frame=SPR_SHOT+2;
 				m=0;
 				n=0;
 				return;
 			}
 			
-			if (!shot_collision()&&(m<s.dist)){
-				s.x-=s.speed;
-				s.frame=SPR_SHOT+5;
+			if (!shot_collision()&&(m<shot.dist)){
+				shot.x-=shot.speed;
+				shot.frame=SPR_SHOT+3;
 				m++;
 				return;
 			}
 		break;
 	}	
 	
-	if (n<6){
-	s.frame=SPR_SHOT+2;
-	n++;
-	}
+	if (n==0){
+		shot.frame=SPR_SHOT+4;
+		n++;
+		}
+	else if (n>0&&n<6){
+		shot.frame=SPR_SHOT+5;
+		n++;
+		}
 	else if (n>=6&&n<10){
-	s.frame=SPR_SHOT+3;
-	n++;
-	}
+		shot.frame=SPR_SHOT+6;
+		n++;
+		}
 	else {
-	s.frame=SPRITE_END;
-	s.status=FALSE;
-	s.direct=FALSE;
-	}
+		shot.frame=SPRITE_END;
+		shot.status=FALSE;
+		shot.direct=FALSE;
+		}
 }
 
 #endif
