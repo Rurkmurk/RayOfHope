@@ -15,13 +15,13 @@
 void main()
 {
 	u8 name[6];
-	u8 slime_skip;
+	u8 enemy_skip;
 	
 /* player setup ***********************************************************/
 	player.deadly_height=-15;
 	player.skip=3;
 	player.v_speed=0;
-	player.jump_impulse=7;
+	player.jump_impulse=6;
 	player.h_step=1;
 
 /* shot setup *************************************************************/
@@ -30,8 +30,8 @@ void main()
 	shot.frame=SPRITE_END;
 	
 /* enemy setup ************************************************************/
-	slime_skip=5;
-/**************************************************************************/
+	enemy_skip=5;
+/***************************************************************************/
 	
 	pal_select(PAL_PALETTE0);
 	clear_screen(0);
@@ -53,14 +53,15 @@ void main()
 			t_player=time();
 		}
 
-		shot_logic();
 		
-		if (t_slime+slime_skip<time()) {
+		
+		if (t_slime+enemy_skip<time()) {
 			enemy_logic();
 			enemy_animation();
-			t_slime=time();
+			t_enemy=time();
 		}
-
+		
+		shot_logic();
 		//update_terrain();
 
 		update_sprite();
@@ -70,7 +71,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(enemy[1].frame-SPR_B_SLIME, name);
+		// itoa(enemy[2].health, name);
 		// output_string(0, 24, name);
 		
 	}

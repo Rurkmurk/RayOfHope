@@ -40,7 +40,7 @@
 
 #define GRAVITY			2
 
-u32 t_terrain=0, t_player=0, t_idle=0, t_slime=0;
+u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0;
 
 u8 lava_summ=0;
 u8 water_summ=0;
@@ -85,6 +85,7 @@ struct enemy
 	u8 y;
 	u8 direct;
 	u8 h_step;
+	u8 skip;
 	u8 type;
 	u8 health;
 	u16 frame;

@@ -1,0 +1,44 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level_snow.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "level_snow.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 927.75,
+                "y": 16
+            }
+        },
+        "tile_snow.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 3,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/GitHub/Atom/res",
+    "map.lastUsedFormat": "tmx",
+    "map.renderOrder": null,
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 160,
+    "openFiles": [
+        "level_snow.tmx"
+    ],
+    "project": "level_snow.tiled-project",
+    "recentFiles": [
+        "level_snow.tmx",
+        "tile_snow.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 8,
+        "width": 8
+    },
+    "tileset.type": 0
+}

@@ -46,7 +46,7 @@ u16 player_collision()
 	py_ground=(player.y+16)/8;
 
 	//up
-	if ((map[pyu][pxl]>31)||(map[pyu][pxc]>31||(map[pyu][pxr]>31)))
+	if ((map[pyu][pxl]>31)&&(map[pyu][pxr]>31))
 		collision^=UP;
 	//down
 	if ((map[py_ground][pxl]>47)||(map[py_ground][pxc]>47)||(map[py_ground][pxr]>47))
@@ -94,6 +94,8 @@ void player_logic()
 	}
 	
 	p_collision=player_collision();
+	
+	player.h_step=1;
 	
 	//idle
 	if (!player.direct&&player.new_status!=JUMP&&player.old_status!=STAIRS)
@@ -154,7 +156,7 @@ void player_logic()
 	//right jump
 	if (player.direct==JOY_RIGHT+JOY_UP){
 		player.new_status=JUMP_RIGHT;
-		player.h_step=2;
+		player.h_step=2; 
 	}
 	
 	// right 
