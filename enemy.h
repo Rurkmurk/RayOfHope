@@ -13,10 +13,10 @@ u8 enemy_collision(u8 n)
 	eyu=(enemy[n].y)/8;
 	eyd=(enemy[n].y+15)/8;
 	
-	if (map[eyd][exr]>47||map[eyd+1][exr]<80)
-		collision^=RIGHT;
-	if (map[eyd][exl]>47||map[eyd+1][exl]<80)
-		collision^=LEFT;
+	if (map[eyd][exr]==WALL||map[eyd+1][exr]==EMPTY)
+		collision^=COL_RIGHT;
+	if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY)
+		collision^=COL_LEFT;
 	return collision;
 }
 
@@ -30,15 +30,15 @@ void enemy_logic()
 		e_collision=enemy_collision(n);
 		
 		if (!enemy[n].health)
-			enemy[n].direct=DEATH;
+			enemy[n].direct=ST_DEATH;
 		
 		if (enemy[n].direct==RIGHT) {
-			if ((e_collision&RIGHT)!=RIGHT)
+			if ((e_collision&COL_RIGHT)!=COL_RIGHT)
 				enemy[n].x++;
 			else enemy[n].direct=LEFT;
 		}
 		if (enemy[n].direct==LEFT) {
-			if ((e_collision&LEFT)!=LEFT)
+			if ((e_collision&COL_LEFT)!=COL_LEFT)
 				enemy[n].x--;
 			else enemy[n].direct=RIGHT;
 		}
@@ -54,7 +54,7 @@ void enemy_animation()
 		if (enemy[n].type==B_SLIME) {
 			switch (enemy[n].direct) {
 				
-				case DEATH:
+				case ST_DEATH:
 					if (enemy[n].frame==SPR_B_SLIME+11){
 						enemy[n].direct=FALSE;
 						enemy[n].x=0;
@@ -85,7 +85,7 @@ void enemy_animation()
 		if (enemy[n].type==S_SLIME) {
 			switch (enemy[n].direct) {
 				
-				case DEATH:
+				case ST_DEATH:
 					if (enemy[n].frame==SPR_S_SLIME+11){
 						enemy[n].direct=FALSE;
 						enemy[n].x=0;

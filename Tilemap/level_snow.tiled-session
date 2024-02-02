@@ -7,13 +7,30 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
         "level_snow.tmx": {
-            "scale": 2,
+            "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 927.75,
-                "y": 16
+                "x": 1337.125,
+                "y": 119
             }
+        },
+        "level_snow.tmx#code": {
+            "scaleInDock": 5.5
+        },
+        "map.tmx": {
+            "scale": 2.46703125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 159.70612451706887,
+                "y": 92.21609981632783
+            }
+        },
+        "map.tmx#tile": {
+            "scaleInDock": 1
         },
         "tile_snow.tsx": {
             "dynamicWrapping": false,
@@ -21,20 +38,25 @@
             "scaleInEditor": 1
         }
     },
+    "last.exportedFilePath": "C:/GitHub/Atom/Level",
     "last.imagePath": "C:/GitHub/Atom/res",
+    "map.lastUsedExportFilter": "CSV файлы (*.csv)",
     "map.lastUsedFormat": "tmx",
     "map.renderOrder": null,
     "map.tileHeight": 8,
     "map.tileWidth": 8,
     "map.width": 160,
     "openFiles": [
-        "level_snow.tmx"
+        "level_snow.tmx",
+        "map.tmx"
     ],
     "project": "level_snow.tiled-project",
     "recentFiles": [
+        "map.tmx",
         "level_snow.tmx",
         "tile_snow.tsx"
     ],
+    "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 8,

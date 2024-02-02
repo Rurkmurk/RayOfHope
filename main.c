@@ -1,14 +1,14 @@
 #include <evo.h>
 #include "resources.h"
-//#include <additions.h>
 #include "init_define.h"
 #include "output_string.h"
 #include "load_level.h"
 #include "init_screen.h"
+#include "update_screen.h"
 #include "player.h"
 #include "shot.h"
 #include "enemy.h"
-#include "update_screen.h"
+
 
 
 
@@ -23,6 +23,10 @@ void main()
 	player.v_speed=0;
 	player.jump_impulse=6;
 	player.h_step=1;
+	player.x=8;
+	player.y=120;
+	player.health=10;
+	player.frame=20;
 
 /* shot setup *************************************************************/
 	shot.dist=20;
@@ -33,14 +37,15 @@ void main()
 	enemy_skip=5;
 /***************************************************************************/
 	
-	pal_select(PAL_PALETTE0);
+	pal_select(0);
 	clear_screen(0);
-	select_image(IMG_TILE);
 	
 	load_level();
-	
+	load_img();
 	sprites_start();
 	draw_screen();
+	
+	load_map();
 	init_screen();
 	
 	for (;;) {
@@ -55,7 +60,7 @@ void main()
 
 		
 		
-		if (t_slime+enemy_skip<time()) {
+		if (t_enemy+enemy_skip<time()) {
 			enemy_logic();
 			enemy_animation();
 			t_enemy=time();
@@ -70,9 +75,9 @@ void main()
 		
 		
 
-		// output_string(0, 24, "     ");
-		// itoa(enemy[2].health, name);
-		// output_string(0, 24, name);
+		output_string(0, 24, "     ");
+		itoa(player.health, name);
+		output_string(0, 24, name);
 		
 	}
 	

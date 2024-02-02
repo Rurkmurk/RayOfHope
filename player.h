@@ -46,37 +46,40 @@ u16 player_collision()
 	py_ground=(player.y+16)/8;
 
 	//up
-	if ((map[pyu][pxl]>31)&&(map[pyu][pxr]>31))
-		collision^=UP;
+	if ((map[pyu][pxl]!=0)&&(map[pyu][pxr]!=0))
+		collision^=COL_UP;
 	//down
-	if ((map[py_ground][pxl]>47)||(map[py_ground][pxc]>47)||(map[py_ground][pxr]>47))
-		collision^=DOWN;
+	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxc]==WALL)||(map[py_ground][pxr]==WALL))
+		collision^=COL_DOWN;
 	//right
-	if (map[pyu][pxr]>47||map[pyc][pxr]>47||map[pyd][pxr]>47)
-		collision^=RIGHT;
+	if (map[pyu][pxr]==WALL||map[pyc][pxr]==WALL||map[pyd][pxr]==WALL)
+		collision^=COL_RIGHT;
 	//left
-	if (map[pyu][pxl]>47||map[pyc][pxl]>47||map[pyd][pxl]>47)
-		collision^=LEFT;
+	if ((map[pyu][pxl]==WALL)||(map[pyc][pxl]==WALL)||(map[pyd][pxl]==WALL))
+		collision^=COL_LEFT;
 	//ground
-	if ((map[py_ground][pxl]>95)&&(map[py_ground][pxl]<239)||(map[py_ground][pxr]>95)&&(map[py_ground][pxr]<239))
-		collision^=GROUND;
+	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxr]==WALL))
+		collision^=COL_GROUND;
 	//stairs
-	if ((map[py_stairs][pxl]>31)&&(map[py_stairs][pxl]<48)&&
-		(map[py_stairs][pxr]>31)&&(map[py_stairs][pxr]<48))
-		collision^=STAIRS;
+	if (map[py_stairs][pxl]==STAIRS&&map[py_stairs][pxr]==STAIRS)
+		collision^=COL_STAIRS;
 	//lava
-	if (map[py_ground][pxc]==LAVA)
-		collision^=#0x80;
-	//water_wave
-	if ((map[py_ground][pxl]==WATER_WAVE)&&(map[py_ground][pxr]==WATER_WAVE))
-		collision^=DOWN;
+	if (map[py_ground][pxc]==6)
+		collision^=COL_LAVA;
 	//water
-	if (map[py_ground][pxc]==WATER)
-		collision^=#0x100;
+	if (map[py_ground][pxl]==WATER&&map[py_ground][pxr]==WATER)
+		collision^=COL_WATER;
 	//water plant
-	if (map[py_ground][pxc]==WATER_PLANTS)
-		collision^=#0x200;
+	if (map[py_ground][pxc]==WATERPLANT)
+		collision^=COL_WATERPLANT;
 	
+	//screen right
+	if (pxc==39)
+		collision^=COL_NEX_SCR;
+	
+	//screen left
+	if (pxc==0)
+		collision^=COL_PRV_SCR;
 	return (collision);
 }
 
@@ -86,10 +89,12 @@ void player_logic()
 {
 	i8 j;
 	
+	static u8 trig_jump;
+	
 	u16 p_collision;
 	
 	if (!player.health) {
-		if ((player.old_status!=WATER)&&(player.old_status!=LAVA)) player.new_status=DEATH;
+		if ((player.old_status!=ST_WATER)&&(player.old_status!=ST_LAVA)) player.new_status=ST_DEATH;
 		return;
 	}
 	
@@ -98,49 +103,50 @@ void player_logic()
 	player.h_step=1;
 	
 	//idle
-	if (!player.direct&&player.new_status!=JUMP&&player.old_status!=STAIRS)
-		player.new_status=IDLE;
-	
+	if (!player.direct&&player.new_status!=ST_JUMP&&player.old_status!=ST_STAIRS)
+		player.new_status=ST_IDLE;
+	 
 	//stairs stand
-	if (!player.direct&&(p_collision&STAIRS)==STAIRS)
+	if (!player.direct&&(p_collision&COL_STAIRS)==COL_STAIRS)
 		player.new_status=STAIRS_STAND;
 	
 	//water 
-	if ((p_collision&#0x100)==#0x100) {
+	if ((p_collision&COL_WATER)==COL_WATER) {
 		player.y++;
-		player.new_status=WATER;
+		player.new_status=ST_WATER;
 		return;
 	}
-	if ((p_collision&#0x200)==#0x200) {
+	if ((p_collision&COL_WATERPLANT)==COL_WATERPLANT) {
 		player.y+=4;
 		player.health=0;
 		return;
 	}
 
 	//lava
-	if ((p_collision&#0x80)==#0x80) {
+	if ((p_collision&COL_LAVA)==COL_LAVA) {
 		player.y+=7;
-		player.new_status=LAVA;
+		player.new_status=ST_LAVA;
 		player.health=0;
 		return;
 	}
 	
 	//up
 	if ((player.direct&JOY_UP)==JOY_UP) {
-		if ((p_collision&STAIRS)==STAIRS) {
+		if ((p_collision&COL_STAIRS)==COL_STAIRS) {
 			player.y-=2;
-			player.new_status=STAIRS;
+			player.new_status=ST_STAIRS;
 		}
-		if ((p_collision&GROUND)==GROUND&&player.new_status!=STAIRS) {
+		if ((p_collision&COL_GROUND)==COL_GROUND&&player.new_status!=ST_STAIRS&&trig_jump) {
 			player.v_speed=player.jump_impulse-GRAVITY;
-			player.new_status=JUMP;
+			player.new_status=ST_JUMP;
+			trig_jump=FALSE;
 		}
 	}
 	
 	if (player.v_speed>0) {
 		player.v_speed--;
 		for (j=0;j<=player.v_speed;j++) {
-			if ((player_collision()&UP)!=UP) player.y--;
+			if ((player_collision()&COL_UP)!=COL_UP) player.y--;
 			else {
 				player.v_speed=0;
 				break;
@@ -160,40 +166,44 @@ void player_logic()
 	}
 	
 	// right 
-	if ((player.direct&JOY_RIGHT)==JOY_RIGHT&&(p_collision&RIGHT)!=RIGHT&&(player.direct&JOY_DOWN)!=JOY_DOWN) {
+	if ((player.direct&JOY_RIGHT)==JOY_RIGHT&&(p_collision&COL_RIGHT)!=COL_RIGHT&&(player.direct&JOY_DOWN)!=JOY_DOWN) {
 		player.x+=player.h_step;
-		player.new_status=RIGHT;
+		player.new_status=ST_RIGHT;
 	}
-	if ((player_collision()&RIGHT)==RIGHT)
+	if ((player_collision()&COL_RIGHT)==COL_RIGHT)
 		player.x-=player.h_step;
+	if ((player_collision()&COL_NEX_SCR)==COL_NEX_SCR)
+		nex_screen();
+
 	
 	//left
-	if ((player.direct&JOY_LEFT)==JOY_LEFT&&(p_collision&LEFT)!=LEFT&&(player.direct&JOY_DOWN)!=JOY_DOWN) {
+	if ((player.direct&JOY_LEFT)==JOY_LEFT&&(p_collision&COL_LEFT)!=COL_LEFT&&(player.direct&JOY_DOWN)!=JOY_DOWN) {
 		player.x-=player.h_step;
-		player.new_status=LEFT;
+		player.new_status=ST_LEFT;
 	}
-	if ((player_collision()&LEFT)==LEFT)
+	if ((player_collision()&COL_LEFT)==COL_LEFT)
 		player.x+=player.h_step;
-	
+	if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR)
+		prv_screen();
 	
 	
 	//down stairs
 	if ((player.direct&JOY_DOWN)==JOY_DOWN) {
 		for (j=0;j<2;j++) {
-			if ((p_collision&STAIRS)==STAIRS&&(player_collision()&GROUND)!=GROUND) {
+			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(player_collision()&COL_GROUND)!=COL_GROUND) {
 				player.y+=1;
-				player.new_status=STAIRS;
+				player.new_status=ST_STAIRS;
 			}
 			else break;
 		}
 	}
 	
 	// drop down
-	if ((p_collision&DOWN)!=DOWN&&player.v_speed<=0) {
+	if ((p_collision&COL_DOWN)!=COL_DOWN&&player.v_speed<=0) {
 		player.v_speed-=GRAVITY;
 		for (j=0;j>player.v_speed;j--) {
-			if ((player_collision()&DOWN)!=DOWN&&(p_collision&STAIRS)!=STAIRS) {
-				player.new_status=DOWN;
+			if ((player_collision()&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS) {
+				player.new_status=ST_DOWN;
 				player.y++;
 			}
 			else {
@@ -207,10 +217,10 @@ void player_logic()
 	}
 	
 	// fire
-	if ((player.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&GROUND)==GROUND) {
-		if (player.old_status==LEFT)
+	if ((player.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&COL_GROUND)==COL_GROUND) {
+		if (player.old_status==ST_LEFT)
 			player.new_status=DOWN_LEFT;
-		if (player.old_status==RIGHT||!player.old_status)
+		if (player.old_status==ST_RIGHT||!player.old_status)
 			player.new_status=DOWN_RIGHT;
 	}	
 
@@ -230,29 +240,32 @@ void player_logic()
 		shot.direct=RIGHT;
 	}	
 
+	if ((player.direct&JOY_UP)!=JOY_UP)
+		trig_jump=TRUE;
+
 }
 
 void player_animation()
 {
 	switch (player.new_status) {
 		
-		case DEATH:
+		case ST_DEATH:
 			player.frame=27;
 			break;
 		
-		case WATER:
+		case ST_WATER:
 			player.frame=28;
-			player.old_status=WATER;
+			player.old_status=ST_WATER;
 			break;
 			
-		case LAVA:
+		case ST_LAVA:
 			player.frame=31;
-			player.old_status=LAVA;
+			player.old_status=ST_LAVA;
 			break;
 		
-		case RIGHT:
-			if ((player.old_status)!=RIGHT) {
-				player.old_status=RIGHT;
+		case ST_RIGHT:
+			if ((player.old_status)!=ST_RIGHT) {
+				player.old_status=ST_RIGHT;
 				player.frame=0;
 			}
 			else {
@@ -260,9 +273,9 @@ void player_animation()
 			}
 			break;
 		
-		case LEFT:
-			if ((player.old_status)!=LEFT) {
-				player.old_status=LEFT;
+		case ST_LEFT:
+			if ((player.old_status)!=ST_LEFT) {
+				player.old_status=ST_LEFT;
 				player.frame=8;
 			}
 			else {
@@ -270,7 +283,7 @@ void player_animation()
 			}
 			break;
 			
-		case JUMP:
+		case ST_JUMP:
 			player.frame=22;
 			break;
 			
@@ -284,9 +297,9 @@ void player_animation()
 			player.frame=18;
 			break;
 			
-		case STAIRS:
-			if ((player.old_status)!=STAIRS) {
-				player.old_status=STAIRS;
+		case ST_STAIRS:
+			if ((player.old_status)!=ST_STAIRS) {
+				player.old_status=ST_STAIRS;
 				player.frame=23;
 			}
 			else {
@@ -310,7 +323,8 @@ void player_animation()
 			break;
 
 		default:
-			if (player.new_status==IDLE&&(player_collision()&STAIRS)!=STAIRS&&(player.health!=0)) {
+			if (player.new_status==ST_IDLE&&(player_collision()&COL_STAIRS)!=COL_STAIRS&&
+			(player.health!=0)) {
 				if (t_idle+200>time())
 					player.frame=20;
 				else if (t_idle+210>time())
@@ -323,9 +337,9 @@ void player_animation()
 					player.frame=21;
 				else t_idle=time();
 				if (player.old_status==DOWN_RIGHT)
-					player.old_status=RIGHT;
+					player.old_status=ST_RIGHT;
 				if (player.old_status==DOWN_LEFT)
-					player.old_status=LEFT;
+					player.old_status=ST_LEFT;
 			}
 	}
 }

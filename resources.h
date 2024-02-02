@@ -1,9 +1,9 @@
 //Автоматически генерируемые идентификаторы ресурсов
 
-#define IMG_TILE	0
+#define IMG_TILE_SNOW	0
 #define IMG_FONT	1
 
-#define PAL_PALETTE0	0
+#define PAL_TILE_SNOW	0
 
 
 

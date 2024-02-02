@@ -14,11 +14,11 @@ rem в программе они вызываются по автоматически генерируемым
 rem идентификаторам в файле resources.h
 rem нумерация после точки должна быть возрастающей
 
-set palette.0=res\palette0.bmp
+set palette.0=res\tile_snow.bmp
 
 rem список изображений, откуда брать графику
 
-set image.0=res\tile.bmp
+set image.0=res\tile_snow.bmp
 set image.1=res\font.bmp
 
 
@@ -44,6 +44,6 @@ set sample.0=
 
 call ..\evosdk\_compile.bat
 
-call ..\evosdk\trdtool.exe + %output% Level\map00001.map
+call ..\evosdk\trdtool.exe + %output% Level\map0_img.map Level\map0_cod.map
 
 @if %error% ==0 ..\evosdk\tools\unreal_evo\emullvd %output%

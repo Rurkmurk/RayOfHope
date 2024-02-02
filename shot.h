@@ -12,7 +12,7 @@ u8 shot_collision()
 	sxr=(shot.x+6)/4;
 	sy=(shot.y+8)/8;
 
-	if (map[sy][sxl]>47||map[sy][sxr]>47)
+	if (map[sy][sxl]==WALL||map[sy][sxr]==WALL)
 		collision=TRUE;
 	
 	for (n=1;n<=enemy_summ;n++)
@@ -47,6 +47,11 @@ void shot_logic()
 			
 			if (!shot_collision()&&(m<shot.dist)){
 				shot.x+=shot.speed;
+				if (shot.x>152) {
+					m=shot.dist;
+					n=10;
+					return;
+				}
 				shot.frame=SPR_SHOT+1;
 				m++;
 				return;
@@ -66,6 +71,11 @@ void shot_logic()
 			
 			if (!shot_collision()&&(m<shot.dist)){
 				shot.x-=shot.speed;
+				if (shot.x<2) {
+					m=shot.dist;
+					n=10;
+					return;
+				}
 				shot.frame=SPR_SHOT+3;
 				m++;
 				return;
