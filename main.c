@@ -8,25 +8,26 @@
 #include "player.h"
 #include "shot.h"
 #include "enemy.h"
-
-
+#include "terrain.h"
 
 
 void main()
 {
 	u8 name[6];
-	u8 enemy_skip;
+
+	u8 water_skip;
 	
 /* player setup ***********************************************************/
-	player.deadly_height=-15;
+	player.deadly_height=-16;
 	player.skip=3;
 	player.v_speed=0;
-	player.jump_impulse=6;
+	player.jump_impulse=8;
 	player.h_step=1;
 	player.x=8;
 	player.y=120;
 	player.health=10;
-	player.frame=20;
+	player.frame=0;
+	player.ammo=0;
 
 /* shot setup *************************************************************/
 	shot.dist=20;
@@ -35,7 +36,11 @@ void main()
 	
 /* enemy setup ************************************************************/
 	enemy_skip=5;
-/***************************************************************************/
+
+/* terrain setup **********************************************************/
+	water_skip=7;
+	
+/**************************************************************************/
 	
 	pal_select(0);
 	clear_screen(0);
@@ -57,8 +62,6 @@ void main()
 			player_animation();
 			t_player=time();
 		}
-
-		
 		
 		if (t_enemy+enemy_skip<time()) {
 			enemy_logic();
@@ -66,8 +69,12 @@ void main()
 			t_enemy=time();
 		}
 		
+		if (t_water+water_skip<time()) {
+			water_animation();
+			t_water=time();
+		}
+		
 		shot_logic();
-		//update_terrain();
 
 		update_sprite();
 
@@ -76,7 +83,7 @@ void main()
 		
 
 		output_string(0, 24, "     ");
-		itoa(player.health, name);
+		itoa(waterplant_summ, name);
 		output_string(0, 24, name);
 		
 	}

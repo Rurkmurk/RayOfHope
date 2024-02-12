@@ -8,7 +8,9 @@
 
 
 #define SPR_PLAYER	0
-#define SPR_SHOT	32
-#define SPR_B_SLIME	39
-#define SPR_S_SLIME	51
+#define SPR_SHOT	44
+#define SPR_B_SLIME	51
+#define SPR_S_SLIME	63
+#define SPR_OWL	75
+#define SPR_WATER	87
 

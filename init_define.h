@@ -22,6 +22,7 @@
 
 
 /* player status **************************/
+
 #define ST_IDLE			#0x0
 #define ST_JUMP			#0x1
 #define ST_DOWN			#0x2
@@ -66,9 +67,9 @@
 
 /*****************************/
 
-#define GRAVITY			2
+#define GRAVITY			3
 
-u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0;
+u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0, t_water=0;
 
 u8 level=0;
 u8 screen=0;
@@ -77,8 +78,10 @@ u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
 u8 lava_summ=0;
 u8 water_summ=0;
-
+u8 waterplant_summ=0;
 u8 enemy_summ=0;
+
+u8 enemy_skip=0;
 
 struct player
 {
@@ -91,10 +94,10 @@ struct player
 	i8 jump_impulse;
 	i8 h_step;
 	u8 direct;
-	u16 new_status;
-	u16 old_status;
+	u16 status;
 	u8 skip;
 	i8 deadly_height;
+	u8 ammo;
 } player;
 
 struct shot
@@ -116,25 +119,24 @@ struct enemy
 	u8 h_step;
 	u8 skip;
 	u8 type;
+	u8 fly;
 	u8 health;
 	u16 frame;
 } enemy[10]; //max enemy summ
 
 
-
-struct
+struct water
 {
-	u8 x[4];	
-	u8 y[2];
-	u8 tile[8];
-}lava[2];
+	u8 x;	
+	u8 y;
+	u16 frame;
+}water[10];
 
-struct
+struct waterplant
 {
-	u8 x[4];	
-	u8 y[2];
-	u8 tile[8];
-}water[2];
-
+	u8 x;	
+	u8 y;
+	u16 frame;
+}waterplant[10];
 
 #endif

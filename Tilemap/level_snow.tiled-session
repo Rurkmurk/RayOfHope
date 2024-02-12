@@ -11,11 +11,11 @@
             "scaleInDock": 1
         },
         "level_snow.tmx": {
-            "scale": 4,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1337.125,
-                "y": 119
+                "x": 65.25,
+                "y": -6
             }
         },
         "level_snow.tmx#code": {
@@ -25,8 +25,8 @@
             "scale": 2.46703125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 159.70612451706887,
-                "y": 92.21609981632783
+                "x": 159.9087972639179,
+                "y": 92.41877256317692
             }
         },
         "map.tmx#tile": {
@@ -47,13 +47,12 @@
     "map.tileWidth": 8,
     "map.width": 160,
     "openFiles": [
-        "level_snow.tmx",
-        "map.tmx"
+        "level_snow.tmx"
     ],
     "project": "level_snow.tiled-project",
     "recentFiles": [
-        "map.tmx",
         "level_snow.tmx",
+        "map.tmx",
         "tile_snow.tsx"
     ],
     "tileset.embedInMap": true,
