@@ -2,6 +2,7 @@
 
 #define IMG_TILE_SNOW	0
 #define IMG_FONT	1
+#define IMG_BACK_SNOW	2
 
 #define PAL_TILE_SNOW	0
 

@@ -5,11 +5,23 @@ void draw_screen()
 {
 	u8 x, y;
 	
-	select_image(IMG_TILE_SNOW);
+	u16 addr;
 	
-	for (y=0; y<HIGH_LEVEL; y++)
-		for (x=0; x<WIDTH_LEVEL; x++)
-			draw_tile(x,y,map[y][x]);
+	addr=32768+40*screen;
+	
+	pal_select(0);
+	clear_screen(0);
+	
+	draw_image(0,0,IMG_BACK_SNOW);
+	
+	select_image(IMG_TILE_SNOW);
+	color_key(15);
+	for (y=0; y<HIGH_LEVEL; y++){
+		for (x=0; x<WIDTH_LEVEL; x++){
+			draw_tile_key(x,y,get_mem(61,addr++));
+		}
+		addr+=160;
+	}
 }
 
 
@@ -21,6 +33,7 @@ void init_screen()
 	
 	enemy_summ=0;
 	water_summ=0;
+	waterplant_summ=0;
 	
 	for (y=0; y<HIGH_LEVEL; y++)
 		for (x=0; x<WIDTH_LEVEL; x++) {

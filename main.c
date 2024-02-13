@@ -46,7 +46,7 @@ void main()
 	clear_screen(0);
 	
 	load_level();
-	load_img();
+	//load_img();
 	sprites_start();
 	draw_screen();
 	
