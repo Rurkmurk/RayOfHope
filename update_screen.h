@@ -27,7 +27,6 @@ void nex_screen()
 {
 	screen++;
 	player.x=1;
-	//load_img();
 	draw_screen();
 	load_map();
 	init_screen();
@@ -37,7 +36,6 @@ void prv_screen()
 {
 	screen--;
 	player.x=152;
-	//load_img();
 	draw_screen();
 	load_map();
 	init_screen();

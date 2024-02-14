@@ -55,7 +55,7 @@
 #define WALL			1
 #define STAIRS			2
 #define WATER	 		3
-#define WATERPLANT		4
+//#define WATERPLANT		4
 #define DANGER			5
 #define LAVA 			6
 #define EXIT			7

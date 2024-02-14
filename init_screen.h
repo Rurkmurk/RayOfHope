@@ -6,10 +6,9 @@ void draw_screen()
 	u8 x, y;
 	
 	u16 addr;
-	
 	addr=32768+40*screen;
 	
-	pal_select(0);
+	pal_select(level);
 	clear_screen(0);
 	
 	draw_image(0,0,IMG_BACK_SNOW);

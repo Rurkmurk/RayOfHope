@@ -67,12 +67,9 @@ u16 player_collision()
 	if (map[py_ground][pxc]==6)
 		collision^=COL_LAVA;
 	//water
-	if (map[py_ground][pxl]==WATER&&map[py_ground][pxr]==WATER)
+	if (map[pyc][pxl]==WATER||map[pyc][pxl+1]==WATER)
 		collision^=COL_WATER;
-	//water plant
-	if (map[py_ground][pxc]==WATERPLANT)
-		collision^=COL_WATERPLANT;
-	
+		
 	//screen right
 	if (pxc==39)
 		collision^=COL_NEX_SCR;
@@ -80,6 +77,7 @@ u16 player_collision()
 	//screen left
 	if (pxc==0)
 		collision^=COL_PRV_SCR;
+	
 	return (collision);
 }
 
@@ -113,15 +111,15 @@ void player_logic()
 	//water 
 	if ((p_collision&COL_WATER)==COL_WATER) {
 		player.y++;
+		if (player.y>142){
+			player.health=0;
+			player.status=ST_DEATH;
+			return;
+		}
 		player.status=ST_WATER;
 		return;
 	}
-	if ((p_collision&COL_WATERPLANT)==COL_WATERPLANT) {
-		player.y+=4;
-		player.health=0;
-		return;
-	}
-
+	
 	//lava
 	if ((p_collision&COL_LAVA)==COL_LAVA) {
 		player.y+=7;
@@ -220,7 +218,8 @@ void player_logic()
 	if ((p_collision&COL_DOWN)!=COL_DOWN&&player.v_speed<=0) {
 		player.v_speed-=GRAVITY;
 		for (j=0;j>player.v_speed;j--) {
-			if ((player_collision()&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS) {
+			if ((player_collision()&COL_DOWN)!=COL_DOWN&&(player_collision()&COL_WATER)!=COL_WATER
+			&&(p_collision&COL_STAIRS)!=COL_STAIRS) {
 				player.status=ST_DOWN;
 				player.y++;
 			}
@@ -274,7 +273,7 @@ void player_animation()
 			break;
 		
 		case ST_WATER:
-			player.frame=31;
+			player.frame=33;
 			break;
 			
 		case ST_LAVA:
@@ -340,10 +339,6 @@ void player_animation()
 				else if (t_idle+30>time())
 					player.frame=1;
 				else t_idle=time();
-				// if (player.old_status==DOWN_RIGHT)
-					// player.old_status=ST_RIGHT;
-				// if (player.old_status==DOWN_LEFT)
-					// player.old_status=ST_LEFT;
 			}
 	}
 }

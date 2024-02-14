@@ -46,7 +46,6 @@ void main()
 	clear_screen(0);
 	
 	load_level();
-	//load_img();
 	sprites_start();
 	draw_screen();
 	
@@ -83,7 +82,7 @@ void main()
 		
 
 		output_string(0, 24, "     ");
-		itoa(waterplant_summ, name);
+		itoa(player.y, name);
 		output_string(0, 24, name);
 		
 	}
