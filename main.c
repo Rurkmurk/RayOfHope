@@ -25,9 +25,9 @@ void main()
 	player.h_step=1;
 	player.x=8;
 	player.y=120;
-	player.health=10;
+	player.health=5;
 	player.frame=0;
-	player.ammo=0;
+	player.ammo=5;
 
 /* shot setup *************************************************************/
 	shot.dist=20;
@@ -38,7 +38,7 @@ void main()
 	enemy_skip=5;
 
 /* terrain setup **********************************************************/
-	water_skip=7;
+	water_skip=8;
 	
 /**************************************************************************/
 	
@@ -49,7 +49,7 @@ void main()
 	sprites_start();
 	draw_screen();
 	
-	load_map();
+	//load_map();
 	init_screen();
 	
 	for (;;) {
@@ -81,9 +81,9 @@ void main()
 		
 		
 
-		output_string(0, 24, "     ");
-		itoa(player.y, name);
-		output_string(0, 24, name);
+		// output_string(0, 24, "     ");
+		// itoa(player.y, name);
+		// output_string(0, 24, name);
 		
 	}
 	

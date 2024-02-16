@@ -1,8 +1,9 @@
 //Автоматически генерируемые идентификаторы ресурсов
 
 #define IMG_TILE_SNOW	0
-#define IMG_FONT	1
-#define IMG_BACK_SNOW	2
+#define IMG_BACK_SNOW	1
+#define IMG_TILE_HUD	2
+#define IMG_FONT	3
 
 #define PAL_TILE_SNOW	0
 

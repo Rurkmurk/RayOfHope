@@ -3,7 +3,7 @@
 
 void draw_screen()
 {
-	u8 x, y;
+	u8 x, y, n=0;
 	
 	u16 addr;
 	addr=32768+40*screen;
@@ -21,7 +21,37 @@ void draw_screen()
 		}
 		addr+=160;
 	}
+	
+	select_image(IMG_TILE_HUD);
+	for (y=22; y<25; y++)
+		for (x=0; x<40; x++){
+			draw_tile(x,y,n);
+			n++;
+		}
+	
 }
+
+
+
+
+
+// void load_map()
+// {
+	// u8 x, y;
+	// u16 i=0;
+	// u16 addr=0;
+	
+	// addr=32768+40*screen;
+	
+	// for (y=0;y<HIGH_LEVEL;y++){
+		// for (x=0;x<WIDTH_LEVEL;x++)
+		// {
+			// map[y][x]=get_mem(63,addr++);
+			
+		// }
+		// addr+=160;
+	// }
+// }
 
 
 void init_screen()
@@ -30,22 +60,20 @@ void init_screen()
 	
 	u8 n=0,m=0,i=0,j=0;
 	
+	u16 addr=0;
+	
+	addr=32768+40*screen;
+	
 	enemy_summ=0;
 	water_summ=0;
 	waterplant_summ=0;
 	
-	for (y=0; y<HIGH_LEVEL; y++)
+	for (y=0; y<HIGH_LEVEL; y++){
 		for (x=0; x<WIDTH_LEVEL; x++) {
 			
+			map[y][x]=get_mem(63,addr++);
+			
 			switch (map[y][x]) {
-				
-				// case PLAYER:
-					// player.x=4*x;
-					// player.y=8*(y-1);
-					// map[y][x]=0;
-					// player.health=10;
-					// player.frame=20;
-				// break;
 				
 				case WATER:
 					water_summ++;
@@ -103,8 +131,9 @@ void init_screen()
 					enemy_skip=4;
 				break;
 			}
-			
-		}	
+		}
+		addr+=160;
+	}
 }
 
 #endif

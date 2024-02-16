@@ -234,23 +234,23 @@ void load_level()
 	// }
 // }
 
-void load_map()
-{
-	u8 x, y;
-	u16 i=0;
-	u16 addr=0;
+// void load_map()
+// {
+	// u8 x, y;
+	// u16 i=0;
+	// u16 addr=0;
 	
-	addr=32768+40*screen;
+	// addr=32768+40*screen;
 	
-	for (y=0;y<HIGH_LEVEL;y++){
-		for (x=0;x<WIDTH_LEVEL;x++)
-		{
-			map[y][x]=get_mem(63,addr++);
+	// for (y=0;y<HIGH_LEVEL;y++){
+		// for (x=0;x<WIDTH_LEVEL;x++)
+		// {
+			// map[y][x]=get_mem(63,addr++);
 			
-		}
-		addr+=160;
-	}
-}
+		// }
+		// addr+=160;
+	// }
+// }
 
 
 

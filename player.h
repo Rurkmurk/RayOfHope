@@ -225,7 +225,7 @@ void player_logic()
 			}
 			else {
 				if (player.v_speed<player.deadly_height)
-					player.health-=2;
+					player.health--;
 
 				player.v_speed=0;
 				break;
@@ -251,11 +251,11 @@ void player_logic()
 		trig_left=FALSE;
 	}	
 	
-	if (player.status==DOWN_LEFT&&(player.direct&JOY_FIRE)==JOY_FIRE) {
+	if (player.status==DOWN_LEFT&&(player.direct&JOY_FIRE)==JOY_FIRE&&player.ammo) {
 		shot.direct=LEFT;
 	}	
 	
-	if (player.status==DOWN_RIGHT&&(player.direct&JOY_FIRE)==JOY_FIRE) {
+	if (player.status==DOWN_RIGHT&&(player.direct&JOY_FIRE)==JOY_FIRE&&player.ammo) {
 		shot.direct=RIGHT;
 	}	
 

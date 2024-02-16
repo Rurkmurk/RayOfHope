@@ -37,6 +37,7 @@ void shot_logic()
 		case RIGHT:
 			if (shot.status!=RIGHT){ 
 				shot.status=RIGHT;
+				player.ammo--;
 				shot.x=player.x+4;
 				shot.y=player.y;
 				shot.frame=SPR_SHOT+0;
@@ -61,6 +62,7 @@ void shot_logic()
 		case LEFT:
 			if (shot.status!=LEFT){ 
 				shot.status=LEFT;
+				player.ammo--;
 				shot.x=player.x-4;
 				shot.y=player.y;
 				shot.frame=SPR_SHOT+2;

@@ -20,6 +20,14 @@ void update_sprite()
 	
 	//shot
 	set_sprite(enemy_summ+waterplant_summ+water_summ+1,shot.x,shot.y,shot.frame);
+	
+	//hud
+	select_image(IMG_TILE_HUD);
+	for (n=0;n<5;n++)
+		draw_tile(4+n,23,120+(40*player.health)+n);
+	for (n=0;n<5;n++)
+		draw_tile(33+n,23,125+(40*player.ammo)+n);
+		
 }
 
 
@@ -28,7 +36,7 @@ void nex_screen()
 	screen++;
 	player.x=1;
 	draw_screen();
-	load_map();
+	//load_map();
 	init_screen();
 }
 
@@ -37,7 +45,7 @@ void prv_screen()
 	screen--;
 	player.x=152;
 	draw_screen();
-	load_map();
+	//load_map();
 	init_screen();
 }
 

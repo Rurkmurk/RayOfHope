@@ -19,9 +19,9 @@ set palette.0=res\tile_snow.bmp
 rem список изображений, откуда брать графику
 
 set image.0=res\tile_snow.bmp
-set image.1=res\font.bmp
-set image.2=res\back_snow.bmp
-
+set image.1=res\back_snow.bmp
+set image.2=res\tile_hud.bmp
+set image.4=res\font.bmp
 
 rem спрайты
 
