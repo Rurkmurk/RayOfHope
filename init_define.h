@@ -13,10 +13,12 @@
 #define COL_GROUND		#0x10
 #define COL_STAIRS	 	#0x20
 #define COL_WATER		#0x40
-#define COL_WATERPLANT	#0x80
+#define COL_DANGER		#0x80
 #define COL_LAVA		#0x100
 #define COL_NEX_SCR		#0x200
 #define COL_PRV_SCR		#0x400
+#define COL_ENEMY_LEFT	#0x800
+#define COL_ENEMY_RIGHT	#0x1000
 /*******************************************/
 
 
@@ -95,6 +97,7 @@ struct player
 	i8 h_step;
 	u8 direct;
 	u16 status;
+	u16 enemy_collision;
 	u8 skip;
 	i8 deadly_height;
 	u8 ammo;

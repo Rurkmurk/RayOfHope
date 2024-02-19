@@ -64,12 +64,16 @@ u16 player_collision()
 	if (map[py_stairs][pxl]==STAIRS&&map[py_stairs][pxr]==STAIRS)
 		collision^=COL_STAIRS;
 	//lava
-	if (map[py_ground][pxc]==6)
-		collision^=COL_LAVA;
+	// if (map[py_ground][pxc]==6)
+		// collision^=COL_LAVA;
 	//water
-	if (map[pyc][pxl]==WATER||map[pyc][pxl+1]==WATER)
+	if (map[pyc][pxr-1]==WATER||map[pyc][pxr]==WATER)
 		collision^=COL_WATER;
 		
+	//danger
+	if (map[pyd][pxc]==DANGER||map[pyu][pxc]==DANGER)
+		collision^=COL_DANGER;
+	
 	//screen right
 	if (pxc==39)
 		collision^=COL_NEX_SCR;
@@ -92,7 +96,8 @@ void player_logic()
 	u16 p_collision;
 	
 	if (!player.health) {
-		if ((player.status!=ST_WATER)&&(player.status!=ST_LAVA)) player.status=ST_DEATH;
+		if ((player.status!=ST_WATER)&&(player.status!=ST_LAVA))
+			player.status=ST_DEATH;
 		return;
 	}
 	
@@ -119,6 +124,11 @@ void player_logic()
 		player.status=ST_WATER;
 		return;
 	}
+	
+	//danger
+	if ((p_collision&COL_DANGER)==COL_DANGER)
+		player.health--;
+
 	
 	//lava
 	if ((p_collision&COL_LAVA)==COL_LAVA) {
@@ -233,6 +243,32 @@ void player_logic()
 		}
 	}
 	
+	//enemy collision
+	if (player.enemy_collision==COL_ENEMY_RIGHT){
+		player.health--;
+		for (j=0;j<2;j++){
+			if ((player_collision()&COL_LEFT)!=COL_LEFT)
+				player.x--;
+			if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR){
+				prv_screen();
+				player.enemy_collision=0;
+			}
+		}
+		
+	}
+	if (player.enemy_collision==COL_ENEMY_LEFT){
+		player.health--;
+		for (j=0;j<2;j++){
+			if ((player_collision()&COL_RIGHT)!=COL_RIGHT)
+				player.x++;
+			if ((player_collision()&COL_NEX_SCR)==COL_NEX_SCR){
+				nex_screen();
+				player.enemy_collision=0;
+			}
+		}
+	}
+	
+	
 	// fire
 	if ((player.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&COL_GROUND)==COL_GROUND) {
 		if (trig_left==TRUE)
@@ -334,9 +370,9 @@ void player_animation()
 		default:
 			if (player.status==ST_IDLE&&(player_collision()&COL_STAIRS)!=COL_STAIRS&&
 			(player.health!=0)) {
-				if (t_idle+20>time())
+				if (t_idle+30>time())
 					player.frame=0;
-				else if (t_idle+30>time())
+				else if (t_idle+50>time())
 					player.frame=1;
 				else t_idle=time();
 			}

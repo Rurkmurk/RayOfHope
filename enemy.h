@@ -27,8 +27,18 @@ u8 enemy_collision(u8 n)
 			if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY)
 				collision^=COL_LEFT;
 		break;
-		
 	}
+	
+	if (player.y+15>(enemy[n].y)&&player.y<(enemy[n].y+15)){
+		if (player.x+6==enemy[n].x||player.x+5==enemy[n].x){
+			player.enemy_collision=COL_ENEMY_RIGHT;
+		}
+		else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5){
+			player.enemy_collision=COL_ENEMY_LEFT;
+		}
+		else player.enemy_collision=0;
+	}
+	
 	return collision;
 }
 

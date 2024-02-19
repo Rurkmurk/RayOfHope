@@ -12,9 +12,9 @@
         },
         "level_snow.tmx": {
             "scale": 3,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 268.16666666666663,
+                "x": 889.1666666666666,
                 "y": 159.66666666666666
             }
         },

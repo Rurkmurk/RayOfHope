@@ -82,7 +82,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(player.y, name);
+		// itoa(player.health, name);
 		// output_string(0, 24, name);
 		
 	}
