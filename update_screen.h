@@ -30,23 +30,4 @@ void update_sprite()
 		
 }
 
-
-void nex_screen()
-{
-	screen++;
-	player.x=1;
-	draw_screen();
-	//load_map();
-	init_screen();
-}
-
-void prv_screen()
-{
-	screen--;
-	player.x=152;
-	draw_screen();
-	//load_map();
-	init_screen();
-}
-
 #endif

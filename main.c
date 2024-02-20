@@ -3,8 +3,8 @@
 #include "init_define.h"
 #include "output_string.h"
 #include "load_level.h"
-#include "init_screen.h"
 #include "update_screen.h"
+#include "init_screen.h"
 #include "player.h"
 #include "shot.h"
 #include "enemy.h"
@@ -16,6 +16,7 @@ void main()
 	u8 name[6];
 
 	u8 water_skip;
+	u8 enemy_skip;
 	
 /* player setup ***********************************************************/
 	player.deadly_height=-16;
@@ -23,11 +24,6 @@ void main()
 	player.v_speed=0;
 	player.jump_impulse=8;
 	player.h_step=1;
-	player.x=8;
-	player.y=120;
-	player.health=5;
-	player.frame=0;
-	player.ammo=5;
 
 /* shot setup *************************************************************/
 	shot.dist=20;
@@ -47,10 +43,8 @@ void main()
 	
 	load_level();
 	sprites_start();
-	draw_screen();
 	
-	//load_map();
-	init_screen();
+	start_level();
 	
 	for (;;) {
 		

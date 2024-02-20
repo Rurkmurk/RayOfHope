@@ -96,6 +96,8 @@ void player_logic()
 	u16 p_collision;
 	
 	if (!player.health) {
+		if (player.status==ST_DEATH)
+			start_level();
 		if ((player.status!=ST_WATER)&&(player.status!=ST_LAVA))
 			player.status=ST_DEATH;
 		return;
@@ -251,7 +253,6 @@ void player_logic()
 				player.x--;
 			if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR){
 				prv_screen();
-				player.enemy_collision=0;
 			}
 		}
 		
@@ -263,7 +264,6 @@ void player_logic()
 				player.x++;
 			if ((player_collision()&COL_NEX_SCR)==COL_NEX_SCR){
 				nex_screen();
-				player.enemy_collision=0;
 			}
 		}
 	}

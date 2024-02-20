@@ -83,7 +83,7 @@ u8 water_summ=0;
 u8 waterplant_summ=0;
 u8 enemy_summ=0;
 
-u8 enemy_skip=0;
+
 
 struct player
 {
