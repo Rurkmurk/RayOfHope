@@ -74,6 +74,30 @@ u16 player_collision()
 	if (map[pyd][pxc]==DANGER||map[pyu][pxc]==DANGER)
 		collision^=COL_DANGER;
 	
+	//ammo
+	if (map[pyd][pxl]==AMMO){
+		map[pyd][pxl]=0;
+		open_box(pyd, pxl);
+		player.ammo++;
+	}
+	if (map[pyd][pxl]==AMMO_FULL){
+		map[pyd][pxl]=0;
+		open_box(pyd, pxl);
+		player.ammo=AMMO_MAX;
+	}
+	
+	//health
+	if (map[pyd][pxl]==HEALTH){
+		map[pyd][pxl]=0;
+		open_box(pyd, pxl);
+		player.health++;
+	}
+	if (map[pyd][pxl]==HEALTH_FULL){
+		map[pyd][pxl]=0;
+		open_box(pyd, pxl);
+		player.health=HEALTH_MAX;
+	}
+	
 	//screen right
 	if (pxc==39)
 		collision^=COL_NEX_SCR;
@@ -95,6 +119,10 @@ void player_logic()
 	
 	u16 p_collision;
 	
+	p_collision=player_collision();
+	
+	player.h_step=1;
+	
 	if (!player.health) {
 		if (player.status==ST_DEATH)
 			start_level();
@@ -102,10 +130,6 @@ void player_logic()
 			player.status=ST_DEATH;
 		return;
 	}
-	
-	p_collision=player_collision();
-	
-	player.h_step=1;
 	
 	//idle
 	if (!player.direct&&player.status!=ST_JUMP&&player.status!=ST_STAIRS)
@@ -130,7 +154,6 @@ void player_logic()
 	//danger
 	if ((p_collision&COL_DANGER)==COL_DANGER)
 		player.health--;
-
 	
 	//lava
 	if ((p_collision&COL_LAVA)==COL_LAVA) {
@@ -187,7 +210,7 @@ void player_logic()
 	if ((player_collision()&COL_RIGHT)==COL_RIGHT)
 		player.x-=player.h_step;
 	if ((player_collision()&COL_NEX_SCR)==COL_NEX_SCR)
-		nex_screen();
+		nxt_screen();
 	
 	
 	//left
@@ -255,7 +278,7 @@ void player_logic()
 				prv_screen();
 			}
 		}
-		
+		player.enemy_collision=0;
 	}
 	if (player.enemy_collision==COL_ENEMY_LEFT){
 		player.health--;
@@ -263,9 +286,10 @@ void player_logic()
 			if ((player_collision()&COL_RIGHT)!=COL_RIGHT)
 				player.x++;
 			if ((player_collision()&COL_NEX_SCR)==COL_NEX_SCR){
-				nex_screen();
+				nxt_screen();
 			}
 		}
+		player.enemy_collision=0;
 	}
 	
 	

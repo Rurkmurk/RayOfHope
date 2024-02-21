@@ -22,7 +22,7 @@ void main()
 	player.deadly_height=-16;
 	player.skip=3;
 	player.v_speed=0;
-	player.jump_impulse=8;
+	player.jump_impulse=7;
 	player.h_step=1;
 
 /* shot setup *************************************************************/
@@ -43,9 +43,8 @@ void main()
 	
 	load_level();
 	sprites_start();
-	
 	start_level();
-	
+
 	for (;;) {
 		
 		control_player();
@@ -69,14 +68,14 @@ void main()
 		
 		shot_logic();
 
-		update_sprite();
+		update_screen();
 
 		swap_screen();
 		
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(player.health, name);
+		// itoa(player.ammo, name);
 		// output_string(0, 24, name);
 		
 	}

@@ -1,7 +1,7 @@
 #ifndef _UPDATE_SCREEN
 #define _UPDATE_SCREEN
 
-void update_sprite()
+void update_screen()
 {
 	u8 n;
 	//player
@@ -17,9 +17,11 @@ void update_sprite()
 		set_sprite(n+enemy_summ+water_summ,waterplant[n].x,waterplant[n].y,waterplant[n].frame);
 	}
 	
-	
 	//shot
 	set_sprite(enemy_summ+waterplant_summ+water_summ+1,shot.x,shot.y,shot.frame);
+	
+	//end
+	set_sprite(enemy_summ+waterplant_summ+water_summ+2,0,0,SPRITE_END);
 	
 	//hud
 	select_image(IMG_TILE_HUD);
@@ -28,6 +30,16 @@ void update_sprite()
 	for (n=0;n<5;n++)
 		draw_tile(33+n,23,125+(40*player.ammo)+n);
 		
+}
+
+void open_box (u8 y, u8 x)
+{
+	select_image(IMG_TILE_SNOW);
+	color_key(15);
+	draw_tile_key(x,y-1,216);
+	draw_tile_key(x+1,y-1,217);
+	draw_tile_key(x,y,232);
+	draw_tile_key(x+1,y,233);
 }
 
 #endif

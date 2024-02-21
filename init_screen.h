@@ -107,7 +107,7 @@ void init_screen()
 		}
 		addr+=160;
 	}
-	update_sprite();
+	update_screen();
 }
 
 void start_level()
@@ -117,8 +117,8 @@ void start_level()
 	player.x=8;
 	player.y=120;
 	player.health=5;
-	player.ammo=5;
-	player.frame=0;
+	player.ammo=0;
+	player.frame=1;
 	player.enemy_collision=0;
 	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
 		pal_bright(i);
@@ -132,7 +132,7 @@ void start_level()
 	}
 }
 
-void nex_screen()
+void nxt_screen()
 {
 	screen++;
 	player.x=1;

@@ -11,11 +11,11 @@
             "scaleInDock": 1
         },
         "level_snow.tmx": {
-            "scale": 3,
+            "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 889.1666666666666,
-                "y": 159.66666666666666
+                "x": 1443.25,
+                "y": 4
             }
         },
         "level_snow.tmx#code": {

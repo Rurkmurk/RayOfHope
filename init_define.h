@@ -19,6 +19,7 @@
 #define COL_PRV_SCR		#0x400
 #define COL_ENEMY_LEFT	#0x800
 #define COL_ENEMY_RIGHT	#0x1000
+#define COL_AMMO		#0x2000
 /*******************************************/
 
 
@@ -61,6 +62,11 @@
 #define DANGER			5
 #define LAVA 			6
 #define EXIT			7
+#define HEALTH_FULL		8
+#define HEALTH			9
+#define AMMO_FULL		10
+#define AMMO			11
+
 
 #define PLAYER 			16
 #define OWL				17
@@ -69,7 +75,9 @@
 
 /*****************************/
 
-#define GRAVITY			3
+#define GRAVITY			2
+#define AMMO_MAX		5
+#define HEALTH_MAX		5
 
 u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0, t_water=0;
 
