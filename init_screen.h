@@ -1,6 +1,20 @@
 #ifndef _INIT_SCREEN
 #define _INIT_SCREEN
 
+void draw_hud()
+{
+	u8 x, y, n=0;
+	
+	pal_select(level);
+	clear_screen(0);
+	select_image(IMG_TILE_HUD);
+	for (y=22; y<25; y++)
+		for (x=0; x<40; x++){
+			draw_tile(x,y,n);
+			n++;
+		}
+}
+
 void draw_screen()
 {
 	u8 x, y, n=0;
@@ -8,8 +22,7 @@ void draw_screen()
 	u16 addr;
 	addr=32768+40*screen;
 	
-	pal_select(level);
-	clear_screen(0);
+	
 	
 	draw_image(0,0,IMG_BACK_SNOW);
 	
@@ -19,15 +32,10 @@ void draw_screen()
 		for (x=0; x<WIDTH_LEVEL; x++){
 			draw_tile_key(x,y,get_mem(61,addr++));
 		}
-		addr+=160;
+		addr+=level_size-40;
 	}
 	
-	select_image(IMG_TILE_HUD);
-	for (y=22; y<25; y++)
-		for (x=0; x<40; x++){
-			draw_tile(x,y,n);
-			n++;
-		}
+	swap_screen();
 }
 
 void init_screen()
@@ -47,7 +55,7 @@ void init_screen()
 	for (y=0; y<HIGH_LEVEL; y++){
 		for (x=0; x<WIDTH_LEVEL; x++) {
 			
-			map[y][x]=get_mem(63,addr++);
+			map[y][x]=get_mem(PAGE_COD,addr++);
 			
 			switch (map[y][x]) {
 				
@@ -75,6 +83,7 @@ void init_screen()
 					enemy[enemy_summ].type=B_SLIME;
 					enemy[enemy_summ].fly=FALSE;
 					enemy[enemy_summ].health=2;
+					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].direct=LEFT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_B_SLIME;
@@ -87,6 +96,7 @@ void init_screen()
 					enemy[enemy_summ].type=S_SLIME;
 					enemy[enemy_summ].fly=FALSE;
 					enemy[enemy_summ].health=1;
+					enemy[enemy_summ].skip=7;
 					enemy[enemy_summ].direct=RIGHT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_S_SLIME;
@@ -99,15 +109,16 @@ void init_screen()
 					enemy[enemy_summ].type=OWL;
 					enemy[enemy_summ].fly=TRUE;
 					enemy[enemy_summ].health=1;
+					enemy[enemy_summ].skip=5;
 					enemy[enemy_summ].direct=LEFT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_OWL;
 				break;
 			}
 		}
-		addr+=160;
+		addr+=level_size-40;
 	}
-	update_screen();
+	enemy_skip=enemy[enemy_summ].skip;
 }
 
 void start_level()
@@ -124,6 +135,8 @@ void start_level()
 		pal_bright(i);
 		delay(3);
 	}
+	load_level();
+	draw_hud();
 	draw_screen();
 	init_screen();
 	for (i=BRIGHT_MIN;i<=BRIGHT_MID;i++){
@@ -137,8 +150,9 @@ void nxt_screen()
 	screen++;
 	player.x=1;
 	player.enemy_collision=0;
-	draw_screen();
 	init_screen();
+	draw_screen();
+	update_screen();
 }
 
 void prv_screen()
@@ -146,8 +160,9 @@ void prv_screen()
 	screen--;
 	player.x=152;
 	player.enemy_collision=0;
-	draw_screen();
 	init_screen();
+	draw_screen();
+	update_screen();
 }
 
 #endif

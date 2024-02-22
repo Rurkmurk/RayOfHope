@@ -5,6 +5,8 @@
 #define	HIGH_LEVEL		22
 #define	WIDTH_LEVEL		40
 
+#define PAGE_IMG		61
+#define PAGE_COD		63
 /* collizion ************************/
 #define COL_UP			#0x1
 #define COL_DOWN		#0x2
@@ -82,6 +84,7 @@
 u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0, t_water=0;
 
 u8 level=0;
+u16 level_size;
 u8 screen=0;
 u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
@@ -90,6 +93,7 @@ u8 lava_summ=0;
 u8 water_summ=0;
 u8 waterplant_summ=0;
 u8 enemy_summ=0;
+u8 enemy_skip;
 
 
 

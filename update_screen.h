@@ -29,17 +29,33 @@ void update_screen()
 		draw_tile(4+n,23,120+(40*player.health)+n);
 	for (n=0;n<5;n++)
 		draw_tile(33+n,23,125+(40*player.ammo)+n);
+	
+	swap_screen();
 		
 }
 
 void open_box (u8 y, u8 x)
 {
+	u16 addr;
+	
 	select_image(IMG_TILE_SNOW);
 	color_key(15);
 	draw_tile_key(x,y-1,216);
 	draw_tile_key(x+1,y-1,217);
 	draw_tile_key(x,y,232);
 	draw_tile_key(x+1,y,233);
+	
+	addr=32768+(40*screen)+((level_size*(y-1))+x);
+	put_mem(PAGE_IMG,addr,216);
+	addr=32768+(40*screen)+((level_size*(y-1))+x+1);
+	put_mem(PAGE_IMG,addr,217);
+	addr=32768+(40*screen)+((level_size*y)+x);
+	put_mem(PAGE_IMG,addr,232);
+	addr=32768+(40*screen)+((level_size*y)+x+1);
+	put_mem(PAGE_IMG,addr,233);
+	
+	addr=32768+(40*screen)+(level_size*y+x);
+	put_mem(PAGE_COD,addr,0);
 }
 
 #endif

@@ -12,10 +12,10 @@
         },
         "level_snow.tmx": {
             "scale": 2,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1443.25,
-                "y": 4
+                "x": 1520.25,
+                "y": 65.5
             }
         },
         "level_snow.tmx#code": {

@@ -16,7 +16,7 @@ void main()
 	u8 name[6];
 
 	u8 water_skip;
-	u8 enemy_skip;
+	
 	
 /* player setup ***********************************************************/
 	player.deadly_height=-16;
@@ -31,7 +31,7 @@ void main()
 	shot.frame=SPRITE_END;
 	
 /* enemy setup ************************************************************/
-	enemy_skip=5;
+	enemy_skip=0;
 
 /* terrain setup **********************************************************/
 	water_skip=8;
@@ -41,7 +41,6 @@ void main()
 	pal_select(0);
 	clear_screen(0);
 	
-	load_level();
 	sprites_start();
 	start_level();
 
@@ -70,13 +69,13 @@ void main()
 
 		update_screen();
 
-		swap_screen();
+		
 		
 		
 
-		// output_string(0, 24, "     ");
-		// itoa(player.ammo, name);
-		// output_string(0, 24, name);
+		output_string(0, 24, "     ");
+		itoa(player.x, name);
+		output_string(0, 24, name);
 		
 	}
 	

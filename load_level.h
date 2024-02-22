@@ -181,7 +181,7 @@ void load_level()
 			else if (j==2) nn=10*buf[0]+buf[1];
 			else nn=buf[0];
 			
-			put_mem(61,addr_put++,nn);
+			put_mem(PAGE_IMG,addr_put++,nn);
 			
 			if (get_mem(60,addr_get+i)==#0x3B)
 				break;
@@ -206,14 +206,14 @@ void load_level()
 			else if (j==2) nn=10*buf[0]+buf[1];
 			else nn=buf[0];
 			
-			put_mem(63,addr_put++,nn);
+			put_mem(PAGE_COD,addr_put++,nn);
 			
 			if (get_mem(62,addr_get+i)==#0x3B)
 				break;
 			i++;
 			j=0;
 		}
-
+		level_size=(addr_put-32768)/22;
 }
 
 
