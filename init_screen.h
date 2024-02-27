@@ -30,11 +30,11 @@ void draw_screen()
 	color_key(15);
 	for (y=0; y<HIGH_LEVEL; y++){
 		for (x=0; x<WIDTH_LEVEL; x++){
-			draw_tile_key(x,y,get_mem(61,addr++));
+			draw_tile_key(x,y,get_mem(PAGE_GFX,addr++));
 		}
-		addr+=level_size-40;
+		addr+=(level_size-1)*40;
 	}
-	
+	set_sprite(0,0,0,SPRITE_END);
 	swap_screen();
 }
 
@@ -55,7 +55,7 @@ void init_screen()
 	for (y=0; y<HIGH_LEVEL; y++){
 		for (x=0; x<WIDTH_LEVEL; x++) {
 			
-			map[y][x]=get_mem(PAGE_COD,addr++);
+			map[y][x]=get_mem(PAGE_MAP,addr++);
 			
 			switch (map[y][x]) {
 				
@@ -116,7 +116,7 @@ void init_screen()
 				break;
 			}
 		}
-		addr+=level_size-40;
+		addr+=(level_size-1)*40;
 	}
 	enemy_skip=enemy[enemy_summ].skip;
 }
@@ -136,6 +136,7 @@ void start_level()
 		delay(3);
 	}
 	load_level();
+	clear_screen(0);
 	draw_hud();
 	draw_screen();
 	init_screen();

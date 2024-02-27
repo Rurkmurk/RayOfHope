@@ -73,9 +73,9 @@ void main()
 		
 		
 
-		// output_string(0, 24, "     ");
-		// itoa(player.x, name);
-		// output_string(0, 24, name);
+		output_string(0, 24, "     ");
+		itoa(player.x, name);
+		output_string(0, 24, name);
 		
 	}
 	

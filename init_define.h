@@ -5,8 +5,8 @@
 #define	HIGH_LEVEL		22
 #define	WIDTH_LEVEL		40
 
-#define PAGE_IMG		61
-#define PAGE_COD		63
+#define PAGE_GFX		60
+#define PAGE_MAP		61
 /* collizion ************************/
 #define COL_UP			#0x1
 #define COL_DOWN		#0x2

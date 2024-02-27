@@ -31,7 +31,6 @@ void update_screen()
 		draw_tile(33+n,23,125+(40*player.ammo)+n);
 	
 	swap_screen();
-		
 }
 
 void open_box (u8 y, u8 x)
@@ -45,17 +44,17 @@ void open_box (u8 y, u8 x)
 	draw_tile_key(x,y,232);
 	draw_tile_key(x+1,y,233);
 	
-	addr=32768+(40*screen)+((level_size*(y-1))+x);
-	put_mem(PAGE_IMG,addr,216);
-	addr=32768+(40*screen)+((level_size*(y-1))+x+1);
-	put_mem(PAGE_IMG,addr,217);
-	addr=32768+(40*screen)+((level_size*y)+x);
-	put_mem(PAGE_IMG,addr,232);
-	addr=32768+(40*screen)+((level_size*y)+x+1);
-	put_mem(PAGE_IMG,addr,233);
+	addr=32768+(40*screen)+((40*level_size*(y-1))+x);
+	put_mem(PAGE_GFX,addr,216);
+	addr=32768+(40*screen)+((40*level_size*(y-1))+x+1);
+	put_mem(PAGE_GFX,addr,217);
+	addr=32768+(40*screen)+((40*level_size*y)+x);
+	put_mem(PAGE_GFX,addr,232);
+	addr=32768+(40*screen)+((40*level_size*y)+x+1);
+	put_mem(PAGE_GFX,addr,233);
 	
-	addr=32768+(40*screen)+(level_size*y+x);
-	put_mem(PAGE_COD,addr,0);
+	addr=32768+(40*screen)+(40*level_size*y+x);
+	put_mem(PAGE_MAP,addr,0);
 }
 
 #endif

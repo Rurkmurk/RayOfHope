@@ -147,11 +147,17 @@ void load_file(u8 *filename,u8 page,u8 saveload)
 
 void load_level()
 {
+	u8 j=0;
+	u16 i=0;
+	u16 addr_get=32768;
+	u16 addr_put=32768;
+	u8 buf[3];
+	u8 nn;
+	
 	switch (level) {
 		case 0:
-			load_file("gfxlev_1", PAGE_GFX, 1);
-			load_file("maplev_1", PAGE_MAP, 1);
-			level_size=5;
+			load_file("map0_img", 60, 1);
+			load_file("map0_cod", 62, 1);
 		break;
 		case 1:
 			load_file("map1_img", 60, 1);
@@ -162,6 +168,52 @@ void load_level()
 			load_file("map2_cod", 62, 1);
 		break;
 	}
+	
+		for(;;){
+			do {
+				buf[j]=get_mem(60,addr_get+i)-48; // 48 is 30 in HEX
+				j++;
+				i++;
+			}
+			while (get_mem(60,addr_get+i)!=#0x2C&&get_mem(60,addr_get+i)!=#0x3B);
+			
+			if (j==3) nn=100*buf[0]+10*buf[1]+buf[2];
+			else if (j==2) nn=10*buf[0]+buf[1];
+			else nn=buf[0];
+			
+			put_mem(PAGE_IMG,addr_put++,nn);
+			
+			if (get_mem(60,addr_get+i)==#0x3B)
+				break;
+			i++;
+			j=0;
+		}
+		
+		j=0;
+		i=0;
+		addr_get=32768;
+		addr_put=32768;
+		
+		for(;;){
+			do {
+				buf[j]=get_mem(62,addr_get+i)-48; // 48 is 30 in HEX
+				j++;
+				i++;
+			}
+			while (get_mem(62,addr_get+i)!=#0x2C&&get_mem(62,addr_get+i)!=#0x3B);
+			
+			if (j==3) nn=100*buf[0]+10*buf[1]+buf[2];
+			else if (j==2) nn=10*buf[0]+buf[1];
+			else nn=buf[0];
+			
+			put_mem(PAGE_COD,addr_put++,nn);
+			
+			if (get_mem(62,addr_get+i)==#0x3B)
+				break;
+			i++;
+			j=0;
+		}
+		level_size=(addr_put-32768)/22;
 }
 
 

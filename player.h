@@ -74,7 +74,7 @@ u16 player_collision()
 	if (map[pyd][pxc]==DANGER||map[pyu][pxc]==DANGER)
 		collision^=COL_DANGER;
 	
-	//ammo
+	//box ammo
 	if (map[pyd][pxl]==AMMO){
 		map[pyd][pxl]=0;
 		open_box(pyd, pxl);
@@ -86,7 +86,7 @@ u16 player_collision()
 		player.ammo=AMMO_MAX;
 	}
 	
-	//health
+	//box health
 	if (map[pyd][pxl]==HEALTH){
 		map[pyd][pxl]=0;
 		open_box(pyd, pxl);
