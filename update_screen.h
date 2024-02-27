@@ -22,16 +22,20 @@ void update_screen()
 	
 	//end
 	set_sprite(enemy_summ+waterplant_summ+water_summ+2,0,0,SPRITE_END);
-	
-	//hud
+		
+	swap_screen();
+}
+
+void update_hud()
+{
+	u8 n;
 	select_image(IMG_TILE_HUD);
 	for (n=0;n<5;n++)
 		draw_tile(4+n,23,120+(40*player.health)+n);
 	for (n=0;n<5;n++)
 		draw_tile(33+n,23,125+(40*player.ammo)+n);
-	
-	swap_screen();
 }
+
 
 void open_box (u8 y, u8 x)
 {
@@ -43,6 +47,8 @@ void open_box (u8 y, u8 x)
 	draw_tile_key(x+1,y-1,217);
 	draw_tile_key(x,y,232);
 	draw_tile_key(x+1,y,233);
+	
+	update_hud();
 	
 	addr=32768+(40*screen)+((40*level_size*(y-1))+x);
 	put_mem(PAGE_GFX,addr,216);

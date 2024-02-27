@@ -77,13 +77,13 @@ u16 player_collision()
 	//box ammo
 	if (map[pyd][pxl]==AMMO){
 		map[pyd][pxl]=0;
-		open_box(pyd, pxl);
 		player.ammo++;
+		open_box(pyd, pxl);
 	}
 	if (map[pyd][pxl]==AMMO_FULL){
 		map[pyd][pxl]=0;
-		open_box(pyd, pxl);
 		player.ammo=AMMO_MAX;
+		open_box(pyd, pxl);
 	}
 	
 	//box health
@@ -144,6 +144,7 @@ void player_logic()
 		player.y++;
 		if (player.y>142){
 			player.health=0;
+			update_hud();
 			player.status=ST_DEATH;
 			return;
 		}
@@ -152,14 +153,17 @@ void player_logic()
 	}
 	
 	//danger
-	if ((p_collision&COL_DANGER)==COL_DANGER)
+	if ((p_collision&COL_DANGER)==COL_DANGER){
 		player.health--;
+		update_hud();
+	}
 	
 	//lava
 	if ((p_collision&COL_LAVA)==COL_LAVA) {
 		player.y+=7;
 		player.status=ST_LAVA;
 		player.health=0;
+		update_hud();
 		return;
 	}
 	
@@ -259,8 +263,10 @@ void player_logic()
 				player.y++;
 			}
 			else {
-				if (player.v_speed<player.deadly_height)
+				if (player.v_speed<player.deadly_height){
 					player.health--;
+					update_hud();
+				}
 
 				player.v_speed=0;
 				break;
@@ -271,6 +277,7 @@ void player_logic()
 	//enemy collision
 	if (player.enemy_collision==COL_ENEMY_RIGHT){
 		player.health--;
+		update_hud();
 		for (j=0;j<2;j++){
 			if ((player_collision()&COL_LEFT)!=COL_LEFT)
 				player.x--;
@@ -282,6 +289,7 @@ void player_logic()
 	}
 	if (player.enemy_collision==COL_ENEMY_LEFT){
 		player.health--;
+		update_hud();
 		for (j=0;j<2;j++){
 			if ((player_collision()&COL_RIGHT)!=COL_RIGHT)
 				player.x++;

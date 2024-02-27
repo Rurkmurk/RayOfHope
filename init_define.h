@@ -93,8 +93,6 @@ u8 lava_summ=0;
 u8 water_summ=0;
 u8 waterplant_summ=0;
 u8 enemy_summ=0;
-u8 enemy_skip;
-
 
 
 struct player
@@ -133,6 +131,7 @@ struct enemy
 	u16 direct;
 	u8 h_step;
 	u8 skip;
+	u8 skip_count;
 	u8 type;
 	u8 fly;
 	u8 health;

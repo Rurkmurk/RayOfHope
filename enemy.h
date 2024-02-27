@@ -42,8 +42,59 @@ u8 enemy_collision(u8 n)
 	return collision;
 }
 
+
+void enemy_animation(u8 n)
+{
+	u8 n_spr=0;
+	
+		
+	switch (enemy[n].type) {
+		case B_SLIME:
+			n_spr=SPR_B_SLIME;
+		break;
+		case S_SLIME:
+			n_spr=SPR_S_SLIME;
+		break;
+		case OWL:
+			n_spr=SPR_OWL;
+		break;
+	}
+
+	switch (enemy[n].direct) {
+		
+		case ST_DEATH:
+			if (enemy[n].frame==n_spr+11){
+				enemy[n].direct=FALSE;
+				enemy[n].x=0;
+				enemy[n].y=184;
+				break;
+			}
+			if (enemy[n].frame<n_spr+7)
+				enemy[n].frame=n_spr+7;
+			enemy[n].frame++;
+			break;
+		
+		case RIGHT:
+			if (enemy[n].frame>(n_spr+3))
+				enemy[n].frame=n_spr;
+			enemy[n].frame=enemy[n].frame<(n_spr+3)?++enemy[n].frame:(n_spr+0);
+			break;
+		
+		case LEFT:
+			if (enemy[n].frame<(n_spr+4))
+				enemy[n].frame=n_spr+4;
+			enemy[n].frame=enemy[n].frame<(n_spr+7)?++enemy[n].frame:(n_spr+4);
+			break;
+		
+		default:
+			break;
+	}
+}
+
+
 void enemy_logic()
 {
+
 	u8 e_collision;
 	u8 n;
 	
@@ -55,65 +106,26 @@ void enemy_logic()
 			enemy[n].direct=ST_DEATH;
 		
 		if (enemy[n].direct==RIGHT) {
-			if ((e_collision&COL_RIGHT)!=COL_RIGHT)
-				enemy[n].x++;
+			if ((e_collision&COL_RIGHT)!=COL_RIGHT){
+				enemy[n].skip_count++;
+				if (enemy[n].skip_count>=enemy[n].skip){
+					enemy[n].x++;
+					enemy[n].skip_count=0;
+					enemy_animation(n);
+				}
+			}
 			else enemy[n].direct=LEFT;
 		}
 		if (enemy[n].direct==LEFT) {
-			if ((e_collision&COL_LEFT)!=COL_LEFT)
-				enemy[n].x--;
-			else enemy[n].direct=RIGHT;
-		}
-	}
-}
-
-void enemy_animation()
-{
-	u8 n;
-	u8 n_spr=0;
-	
-	for (n=1;n<=enemy_summ;n++){
-		
-		switch (enemy[n].type) {
-			case B_SLIME:
-				n_spr=SPR_B_SLIME;
-			break;
-			case S_SLIME:
-				n_spr=SPR_S_SLIME;
-			break;
-			case OWL:
-				n_spr=SPR_OWL;
-			break;
-		}
-
-		switch (enemy[n].direct) {
-			
-			case ST_DEATH:
-				if (enemy[n].frame==n_spr+11){
-					enemy[n].direct=FALSE;
-					enemy[n].x=0;
-					enemy[n].y=184;
-					break;
+			if ((e_collision&COL_LEFT)!=COL_LEFT){
+				enemy[n].skip_count++;
+				if (enemy[n].skip_count>=enemy[n].skip){
+					enemy[n].x--;
+					enemy[n].skip_count=0;
+					enemy_animation(n);
 				}
-				if (enemy[n].frame<n_spr+7)
-					enemy[n].frame=n_spr+7;
-				enemy[n].frame++;
-				break;
-			
-			case RIGHT:
-				if (enemy[n].frame>(n_spr+3))
-					enemy[n].frame=n_spr;
-				enemy[n].frame=enemy[n].frame<(n_spr+3)?++enemy[n].frame:(n_spr+0);
-				break;
-			
-			case LEFT:
-				if (enemy[n].frame<(n_spr+4))
-					enemy[n].frame=n_spr+4;
-				enemy[n].frame=enemy[n].frame<(n_spr+7)?++enemy[n].frame:(n_spr+4);
-				break;
-			
-			default:
-				break;
+			}
+			else enemy[n].direct=RIGHT;
 		}
 	}
 }

@@ -63,6 +63,7 @@ void shot_logic()
 			if (shot.status!=LEFT){ 
 				shot.status=LEFT;
 				player.ammo--;
+				update_hud();
 				shot.x=player.x-4;
 				shot.y=player.y;
 				shot.frame=SPR_SHOT+2;

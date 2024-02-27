@@ -3,16 +3,10 @@
 
 void draw_hud()
 {
-	u8 x, y, n=0;
-	
 	pal_select(level);
 	clear_screen(0);
-	select_image(IMG_TILE_HUD);
-	for (y=22; y<25; y++)
-		for (x=0; x<40; x++){
-			draw_tile(x,y,n);
-			n++;
-		}
+	draw_image(0,22,IMG_TILE_HUD);
+	update_hud();
 }
 
 void draw_screen()
@@ -110,6 +104,7 @@ void init_screen()
 					enemy[enemy_summ].fly=TRUE;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=5;
+					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=LEFT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_OWL;
@@ -118,7 +113,6 @@ void init_screen()
 		}
 		addr+=(level_size-1)*40;
 	}
-	enemy_skip=enemy[enemy_summ].skip;
 }
 
 void start_level()

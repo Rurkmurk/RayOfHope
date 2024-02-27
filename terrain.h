@@ -1,7 +1,7 @@
 #ifndef _TERRAIN
 #define _TERRAIN
 
-void water_animation()
+void terrain_animation()
 {
 	u8 n;
 	for (n=1;n<=water_summ;n++){
@@ -13,7 +13,6 @@ void water_animation()
 			water[n].frame-=36;
 			waterplant[n].frame-=36;
 		}
-			
 	}
 }
 

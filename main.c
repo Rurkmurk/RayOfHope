@@ -31,7 +31,7 @@ void main()
 	shot.frame=SPRITE_END;
 	
 /* enemy setup ************************************************************/
-	enemy_skip=0;
+
 
 /* terrain setup **********************************************************/
 	water_skip=8;
@@ -48,22 +48,18 @@ void main()
 		
 		control_player();
 		
-		if (t_player+player.skip<time()) {
+		if (t_player+3<time()) {
 			player_logic();
 			player_animation();
 			t_player=time();
 		}
-		
-		if (t_enemy+enemy_skip<time()) {
-			enemy_logic();
-			enemy_animation();
-			t_enemy=time();
+
+		if (t_player+2==time()) {
+			terrain_animation();
+			//t_water=time();
 		}
 		
-		if (t_water+water_skip<time()) {
-			water_animation();
-			t_water=time();
-		}
+		enemy_logic();
 		
 		shot_logic();
 
@@ -74,7 +70,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(player.x, name);
+		// itoa(enemy[1].skip_count, name);
 		// output_string(0, 24, name);
 		
 	}
