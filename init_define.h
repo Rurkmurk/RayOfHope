@@ -21,7 +21,7 @@
 #define COL_PRV_SCR		#0x400
 #define COL_ENEMY_LEFT	#0x800
 #define COL_ENEMY_RIGHT	#0x1000
-#define COL_AMMO		#0x2000
+#define COL_STALACT		#0x2000
 /*******************************************/
 
 
@@ -133,7 +133,7 @@ struct enemy
 	u8 skip;
 	u8 skip_count;
 	u8 type;
-	u8 fly;
+	u8 status;
 	u8 health;
 	u16 frame;
 } enemy[10]; //max enemy summ

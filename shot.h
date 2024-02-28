@@ -48,7 +48,7 @@ void shot_logic()
 			
 			if (!shot_collision()&&(m<shot.dist)){
 				shot.x+=shot.speed;
-				if (shot.x>152) {
+				if (shot.x>151) {
 					m=shot.dist;
 					n=10;
 					return;

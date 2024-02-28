@@ -75,7 +75,9 @@ void init_screen()
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*y;
 					enemy[enemy_summ].type=STALACT;
-					enemy[enemy_summ].fly=FALSE;
+					enemy[enemy_summ].health=1;
+					enemy[enemy_summ].skip=0;
+					enemy[enemy_summ].direct=FALSE;
 					enemy[enemy_summ].frame=SPR_STALACT;
 				break;
 				
@@ -84,7 +86,7 @@ void init_screen()
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=B_SLIME;
-					enemy[enemy_summ].fly=FALSE;
+
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].direct=LEFT;
@@ -97,7 +99,7 @@ void init_screen()
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=S_SLIME;
-					enemy[enemy_summ].fly=FALSE;
+
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=7;
 					enemy[enemy_summ].direct=RIGHT;
@@ -110,7 +112,7 @@ void init_screen()
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=OWL;
-					enemy[enemy_summ].fly=TRUE;
+
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=5;
 					enemy[enemy_summ].skip_count=0;
