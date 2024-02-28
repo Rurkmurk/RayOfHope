@@ -77,7 +77,8 @@ u16 player_collision()
 	//box ammo
 	if (map[pyd][pxl]==AMMO){
 		map[pyd][pxl]=0;
-		player.ammo++;
+		if (player.ammo<AMMO_MAX)
+			player.ammo++;
 		open_box(pyd, pxl);
 	}
 	if (map[pyd][pxl]==AMMO_FULL){
@@ -90,7 +91,8 @@ u16 player_collision()
 	if (map[pyd][pxl]==HEALTH){
 		map[pyd][pxl]=0;
 		open_box(pyd, pxl);
-		player.health++;
+		if (player.health<HEALTH_MAX)
+			player.health++;
 	}
 	if (map[pyd][pxl]==HEALTH_FULL){
 		map[pyd][pxl]=0;

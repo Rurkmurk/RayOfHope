@@ -133,7 +133,7 @@ struct enemy
 	u8 skip;
 	u8 skip_count;
 	u8 type;
-	u8 status;
+
 	u8 health;
 	u16 frame;
 } enemy[10]; //max enemy summ

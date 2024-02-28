@@ -1,11 +1,11 @@
 #ifndef _ENEMY
 #define _ENEMY
 
-u8 enemy_collision(u8 n)
+u16 enemy_collision(u8 n)
 {
 	u8 exl, exr, eyu, eyd;
 	
-	u8 collision=0;
+	u16 collision=0;
 	
 	exl=(enemy[n].x+1)/4;
 	exr=(enemy[n].x+6)/4;
@@ -29,11 +29,35 @@ u8 enemy_collision(u8 n)
 		break;
 		
 		case STALACT:
-			if (player.x==enemy[n].x&&enemy[n].direct==FALSE)
-				collision^=COL_STALACT;
-			if (enemy[n].direct==DOWN)
-				if (map[eyd][exl]==WALL)
-					collision^=COL_DOWN;
+			switch (enemy[n].direct){
+				case FALSE:
+					if (player.x==enemy[n].x)
+						collision^=COL_STALACT;
+				break;
+				case DOWN:
+					if (map[eyd][exl]==WALL)
+						collision^=COL_DOWN;
+				break;
+				case ST_DEATH:
+					if (player.y+2>(enemy[n].y)&&player.y<(enemy[n].y+2)){
+						if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
+							player.health=0;
+							update_hud();
+						}
+					}
+				break;
+			}
+			
+			// if (player.x==enemy[n].x&&enemy[n].direct==FALSE)
+				// collision^=COL_STALACT;
+			// if (enemy[n].direct==DOWN&&map[eyd][exl]==WALL)
+				// collision^=COL_DOWN;
+			// if (player.y+2>(enemy[n].y)&&player.y<(enemy[n].y+2)){
+				// if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
+					// player.health=0;
+					// update_hud();
+				// }
+			// }
 		break;
 		
 		default: collision=0;
@@ -112,8 +136,9 @@ void enemy_animation(u8 n)
 void enemy_logic()
 {
 
-	u8 e_collision;
+	u16 e_collision;
 	u8 n;
+	u8 j;
 	
 	for (n=1;n<=enemy_summ;n++){
 		
@@ -155,12 +180,18 @@ void enemy_logic()
 			break;
 			
 			case DOWN:
-				
-				if ((e_collision&COL_DOWN)!=COL_DOWN)
-					enemy[n].y++;
-					
-				else enemy[n].direct=ST_DEATH;
+				if ((e_collision&COL_DOWN)!=COL_DOWN){
+					enemy[n].skip+=1;
+					for (j=0;j<enemy[n].skip;j++)
+						if ((enemy_collision(n)&COL_DOWN)!=COL_DOWN)
+							enemy[n].y++;
+				}
+				else enemy[n].health=0;
+			break;
+			
+			case ST_DEATH:
 				enemy_animation(n);
+			break;
 				
 			default: break;
 		}

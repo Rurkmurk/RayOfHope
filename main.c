@@ -70,7 +70,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(enemy[1].skip_count, name);
+		// itoa(enemy[1].direct, name);
 		// output_string(0, 24, name);
 		
 	}
