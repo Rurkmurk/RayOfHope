@@ -70,6 +70,15 @@ void init_screen()
 					}
 				break;
 				
+				case STALACT:
+					enemy_summ++;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*y;
+					enemy[enemy_summ].type=STALACT;
+					enemy[enemy_summ].fly=FALSE;
+					enemy[enemy_summ].frame=SPR_STALACT;
+				break;
+				
 				case B_SLIME:
 					enemy_summ++;
 					enemy[enemy_summ].x=4*x;
@@ -118,9 +127,9 @@ void init_screen()
 void start_level()
 {
 	i8 i=3;
-	screen=0;
+	screen=5;//0;
 	player.x=8;
-	player.y=120;
+	player.y=80;//120;
 	player.health=5;
 	player.ammo=0;
 	player.frame=1;

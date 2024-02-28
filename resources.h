@@ -15,4 +15,5 @@
 #define SPR_S_SLIME	63
 #define SPR_OWL	75
 #define SPR_WATER	87
+#define SPR_STALACT	127
 

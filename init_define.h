@@ -62,7 +62,7 @@
 #define WATER	 		3
 //#define WATERPLANT		4
 #define DANGER			5
-#define LAVA 			6
+#define STALACT 		6
 #define EXIT			7
 #define HEALTH_FULL		8
 #define HEALTH			9
