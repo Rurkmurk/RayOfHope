@@ -90,14 +90,14 @@ u16 player_collision()
 	//box health
 	if (map[pyd][pxl]==HEALTH){
 		map[pyd][pxl]=0;
-		open_box(pyd, pxl);
 		if (player.health<HEALTH_MAX)
 			player.health++;
+		open_box(pyd, pxl);
 	}
 	if (map[pyd][pxl]==HEALTH_FULL){
 		map[pyd][pxl]=0;
-		open_box(pyd, pxl);
 		player.health=HEALTH_MAX;
+		open_box(pyd, pxl);
 	}
 	
 	//screen right

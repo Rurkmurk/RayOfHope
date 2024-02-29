@@ -56,7 +56,6 @@ void main()
 
 		if (t_player+2==time()) {
 			terrain_animation();
-			//t_water=time();
 		}
 		
 		enemy_logic();

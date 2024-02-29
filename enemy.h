@@ -47,17 +47,6 @@ u16 enemy_collision(u8 n)
 					}
 				break;
 			}
-			
-			// if (player.x==enemy[n].x&&enemy[n].direct==FALSE)
-				// collision^=COL_STALACT;
-			// if (enemy[n].direct==DOWN&&map[eyd][exl]==WALL)
-				// collision^=COL_DOWN;
-			// if (player.y+2>(enemy[n].y)&&player.y<(enemy[n].y+2)){
-				// if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
-					// player.health=0;
-					// update_hud();
-				// }
-			// }
 		break;
 		
 		default: collision=0;
@@ -80,6 +69,7 @@ u16 enemy_collision(u8 n)
 void enemy_animation(u8 n)
 {
 	u8 n_spr=0;
+	u8 tmp_frame, j;
 	
 	switch (enemy[n].type) {
 		case B_SLIME:
@@ -105,9 +95,15 @@ void enemy_animation(u8 n)
 				enemy[n].y=184;
 				break;
 			}
-			if (enemy[n].frame<n_spr+7)
-				enemy[n].frame=n_spr+7;
-			enemy[n].frame++;
+			if (enemy[n].frame<n_spr+8){
+				enemy[n].frame=n_spr+8;
+				enemy[n].skip_count=0;
+			}
+			enemy[n].skip_count++;
+			if (enemy[n].skip_count>=DEATH_SPEED){
+				enemy[n].skip_count=0;
+				enemy[n].frame++;
+			}
 		break;
 		
 		case RIGHT:

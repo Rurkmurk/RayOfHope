@@ -7,6 +7,7 @@
 
 #define PAGE_GFX		60
 #define PAGE_MAP		61
+
 /* collizion ************************/
 #define COL_UP			#0x1
 #define COL_DOWN		#0x2
@@ -44,7 +45,7 @@
 #define ST_LAVA			#0x80
 #define ST_WATER		#0x100
 #define ST_DEATH		#0x200
-#define ST_WATERPLANT	#0x400
+//#define ST_WATERPLANT	#0x400
 /*******************************************/
 
 /* direct **********************************/
@@ -80,6 +81,7 @@
 #define GRAVITY			2
 #define AMMO_MAX		5
 #define HEALTH_MAX		5
+#define DEATH_SPEED		6
 
 u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0, t_water=0;
 
@@ -133,7 +135,6 @@ struct enemy
 	u8 skip;
 	u8 skip_count;
 	u8 type;
-
 	u8 health;
 	u16 frame;
 } enemy[10]; //max enemy summ
