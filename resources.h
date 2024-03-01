@@ -16,4 +16,5 @@
 #define SPR_OWL	75
 #define SPR_WATER	87
 #define SPR_STALACT	127
+#define SPR_ICE_SPIKE	139
 

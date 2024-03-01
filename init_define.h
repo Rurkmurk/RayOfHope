@@ -22,7 +22,8 @@
 #define COL_PRV_SCR		#0x400
 #define COL_ENEMY_LEFT	#0x800
 #define COL_ENEMY_RIGHT	#0x1000
-#define COL_STALACT		#0x2000
+#define COL_ENEMY_CENTR	#0x2000
+#define COL_STALACT		#0x4000
 /*******************************************/
 
 
@@ -75,6 +76,7 @@
 #define OWL				17
 #define B_SLIME			18
 #define S_SLIME			19
+#define ICE_SPIKE		20
 
 /*****************************/
 
@@ -87,6 +89,7 @@ u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0, t_water=0;
 
 u8 level=0;
 u16 level_size;
+u8 level_back;
 u8 screen=0;
 u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 

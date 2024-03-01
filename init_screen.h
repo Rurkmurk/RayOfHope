@@ -9,6 +9,7 @@ void draw_hud()
 	update_hud();
 }
 
+
 void draw_screen()
 {
 	u8 x, y, n=0;
@@ -16,9 +17,7 @@ void draw_screen()
 	u16 addr;
 	addr=32768+40*screen;
 	
-	
-	
-	draw_image(0,0,IMG_BACK_SNOW);
+	draw_image(0,0,level_back);
 	
 	select_image(IMG_TILE_SNOW);
 	color_key(15);
@@ -31,6 +30,7 @@ void draw_screen()
 	set_sprite(0,0,0,SPRITE_END);
 	swap_screen();
 }
+
 
 void init_screen()
 {
@@ -120,20 +120,35 @@ void init_screen()
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_OWL;
 				break;
+				
+				case ICE_SPIKE:
+					enemy_summ++;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=ICE_SPIKE;
+
+					enemy[enemy_summ].health=2;
+					enemy[enemy_summ].skip=6;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=FALSE;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_ICE_SPIKE;
+				break;
 			}
 		}
 		addr+=(level_size-1)*40;
 	}
 }
 
+
 void start_level()
 {
 	i8 i=3;
-	screen=0;//0;
+	screen=6;//0;
 	player.x=8;
-	player.y=120;//120;
+	player.y=80;//120;
 	player.health=5;
-	player.ammo=0;
+	player.ammo=4;
 	player.frame=1;
 	player.enemy_collision=0;
 	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
@@ -151,6 +166,7 @@ void start_level()
 	}
 }
 
+
 void nxt_screen()
 {
 	screen++;
@@ -161,6 +177,7 @@ void nxt_screen()
 	update_screen();
 }
 
+
 void prv_screen()
 {
 	screen--;
@@ -170,5 +187,6 @@ void prv_screen()
 	draw_screen();
 	update_screen();
 }
+
 
 #endif

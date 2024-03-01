@@ -46,7 +46,7 @@ u16 player_collision()
 	py_ground=(player.y+16)/8;
 
 	//up
-	if ((map[pyu][pxl]!=0)&&(map[pyu][pxr]!=0))
+	if ((map[pyu][pxl]==1)&&(map[pyu][pxr]==1))
 		collision^=COL_UP;
 	//down
 	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxc]==WALL)||(map[py_ground][pxr]==WALL))
@@ -301,7 +301,11 @@ void player_logic()
 		}
 		player.enemy_collision=0;
 	}
-	
+	if (player.enemy_collision==COL_ENEMY_CENTR){
+		player.health--;
+		update_hud();
+		player.enemy_collision=0;
+	}
 	
 	// fire
 	if ((player.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&COL_GROUND)==COL_GROUND) {

@@ -69,7 +69,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(enemy[1].direct, name);
+		// itoa(enemy[1].x, name);
 		// output_string(0, 24, name);
 		
 	}
