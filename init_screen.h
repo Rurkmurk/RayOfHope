@@ -134,6 +134,20 @@ void init_screen()
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ICE_SPIKE;
 				break;
+				
+				case BLOCK:
+					enemy_summ++;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=BLOCK;
+
+					enemy[enemy_summ].health=1;
+					enemy[enemy_summ].skip=6;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=FALSE;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_BLOCK;
+				break;
 			}
 		}
 		addr+=(level_size-1)*40;

@@ -18,7 +18,7 @@
 #define COL_WATER		#0x40
 #define COL_DANGER		#0x80
 #define COL_LAVA		#0x100
-#define COL_NEX_SCR		#0x200
+#define COL_NXT_SCR		#0x200
 #define COL_PRV_SCR		#0x400
 #define COL_ENEMY_LEFT	#0x800
 #define COL_ENEMY_RIGHT	#0x1000
@@ -73,10 +73,12 @@
 
 
 #define PLAYER 			16
+
 #define OWL				17
 #define B_SLIME			18
 #define S_SLIME			19
 #define ICE_SPIKE		20
+#define BLOCK			21
 
 /*****************************/
 

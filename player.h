@@ -102,7 +102,7 @@ u16 player_collision()
 	
 	//screen right
 	if (pxc==39)
-		collision^=COL_NEX_SCR;
+		collision^=COL_NXT_SCR;
 	
 	//screen left
 	if (pxc==0)
@@ -211,11 +211,18 @@ void player_logic()
 			player.status=ST_RIGHT;
 			player.h_step=1;
 		}
-		player.x+=player.h_step;
+		//player.x+=player.h_step;
+		for (j=0;j<player.h_step;j++){
+			player.x++;
+			if ((player_collision()&COL_NXT_SCR)==COL_NXT_SCR){
+				update_screen();
+				nxt_screen();
+			}
+		}
 	}
 	if ((player_collision()&COL_RIGHT)==COL_RIGHT)
 		player.x-=player.h_step;
-	if ((player_collision()&COL_NEX_SCR)==COL_NEX_SCR)
+	if ((player_collision()&COL_NXT_SCR)==COL_NXT_SCR)
 		nxt_screen();
 	
 	
@@ -236,7 +243,15 @@ void player_logic()
 			player.status=ST_LEFT;
 			player.h_step=1;
 		}
-		player.x-=player.h_step;
+		//player.x-=player.h_step;
+		for (j=0;j<player.h_step;j++){
+			player.x--;
+			if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR){
+				update_screen();
+				prv_screen();
+			}
+		}
+		
 	}
 	if ((player_collision()&COL_LEFT)==COL_LEFT)
 		player.x+=player.h_step;
@@ -295,7 +310,7 @@ void player_logic()
 		for (j=0;j<2;j++){
 			if ((player_collision()&COL_RIGHT)!=COL_RIGHT)
 				player.x++;
-			if ((player_collision()&COL_NEX_SCR)==COL_NEX_SCR){
+			if ((player_collision()&COL_NXT_SCR)==COL_NXT_SCR){
 				nxt_screen();
 			}
 		}

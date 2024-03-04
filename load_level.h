@@ -152,7 +152,7 @@ void load_level()
 			load_file("gfxlev_1", PAGE_GFX, 1);
 			load_file("maplev_1", PAGE_MAP, 1);
 			level_back=IMG_BACK_SNOW;
-			level_size=7;
+			level_size=9;
 		break;
 		case 1:
 			load_file("map1_img", 60, 1);

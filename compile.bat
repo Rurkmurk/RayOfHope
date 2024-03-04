@@ -33,6 +33,7 @@ set sprite.4=res\owl.bmp
 set sprite.5=res\water.bmp
 set sprite.6=res\stalact.bmp
 set sprite.7=res\ice_spike.bmp
+set sprite.8=res\block.bmp
 
 rem набор звуковых эффектов, если нужен
 rem он может быть только один
