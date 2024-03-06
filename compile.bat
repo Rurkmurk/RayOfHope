@@ -34,6 +34,7 @@ set sprite.5=res\water.bmp
 set sprite.6=res\stalact.bmp
 set sprite.7=res\ice_spike.bmp
 set sprite.8=res\block.bmp
+set sprite.9=res\snowmen.bmp
 
 rem набор звуковых эффектов, если нужен
 rem он может быть только один
@@ -50,6 +51,6 @@ set sample.0=
 
 call ..\evosdk\_compile.bat
 
-call ..\evosdk\trdtool.exe + %output% Level\gfxlev_1.dat Level\maplev_1.dat
+call ..\evosdk\trdtool.exe + %output% Level\lev1_gfx.dat Level\lev1_map.dat
 
 @if %error% ==0 ..\evosdk\tools\unreal_evo\emullvd %output%

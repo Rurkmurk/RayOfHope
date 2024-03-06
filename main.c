@@ -19,7 +19,8 @@ void main()
 	
 	
 /* player setup ***********************************************************/
-	player.deadly_height=-16;
+	player.danger_height=-12;
+	player.death_height=-16;
 	player.skip=3;
 	player.v_speed=0;
 	player.jump_impulse=7;
@@ -69,7 +70,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(enemy[1].x, name);
+		// itoa(player.v_speed+20, name);
 		// output_string(0, 24, name);
 		
 	}

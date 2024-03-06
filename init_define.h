@@ -79,6 +79,7 @@
 #define S_SLIME			19
 #define ICE_SPIKE		20
 #define BLOCK			21
+#define SNOWMEN			22
 
 /*****************************/
 
@@ -116,7 +117,8 @@ struct player
 	u16 status;
 	u16 enemy_collision;
 	u8 skip;
-	i8 deadly_height;
+	i8 danger_height;
+	i8 death_height;
 	u8 ammo;
 } player;
 
@@ -135,6 +137,8 @@ struct enemy
 {
 	u8 x;	
 	u8 y;
+	u8 x_start;
+	u8 y_start;
 	u16 direct;
 	u8 h_step;
 	u8 skip;

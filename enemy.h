@@ -4,9 +4,9 @@
 void player_enemy_collision_push(u8 n)
 {
 	if (player.y+15>(enemy[n].y)&&player.y<(enemy[n].y+15)){
-		if (player.x+6==enemy[n].x||player.x+4==enemy[n].x)
+		if (player.x+6==enemy[n].x||player.x+5==enemy[n].x)
 			player.enemy_collision=COL_ENEMY_RIGHT;
-		else if (player.x==enemy[n].x+6||player.x==enemy[n].x+4)
+		else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5)
 			player.enemy_collision=COL_ENEMY_LEFT;
 	}
 }
@@ -20,6 +20,16 @@ void player_enemy_collision_pull(u8 n)
 			player.enemy_collision=COL_ENEMY_RIGHT;
 		else if (player.x==enemy[n].x)
 			player.enemy_collision=COL_ENEMY_CENTR;
+	}
+}
+
+void player_enemy_collision_block(u8 n)
+{
+	if (player.y+16>(enemy[n].y)&&player.y<(enemy[n].y+16)){
+		if (player.x+6==enemy[n].x||player.x+5==enemy[n].x||player.x+4==enemy[n].x)
+			player.enemy_collision=COL_ENEMY_LEFT+COL_ENEMY_CENTR;
+		else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5||player.x==enemy[n].x+4)
+			player.enemy_collision=COL_ENEMY_RIGHT+COL_ENEMY_CENTR;
 	}
 }
 
@@ -46,21 +56,20 @@ u16 enemy_collision(u8 n)
 		break;
 		
 		case BLOCK:
-			player_enemy_collision_push(n);
+			player_enemy_collision_block(n);
 		break;
 		
 		case ICE_SPIKE:
-			
 			if (player.y==enemy[n].y){
 				if (enemy[n].x-player.x<=24&&player.x<enemy[n].x)
 					collision=COL_RIGHT;
 				else if (player.x-enemy[n].x<=24&&player.x>enemy[n].x)
 					collision=COL_LEFT;
+			}
 			if (map[eyd][exr]==WALL||map[eyd+1][exr]==EMPTY||exr==39)
 				collision=COL_RIGHT;
 			if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY||exl==0)
 				collision=COL_LEFT;
-			}
 			player_enemy_collision_push(n);
 		break;
 		
@@ -83,22 +92,43 @@ u16 enemy_collision(u8 n)
 		case STALACT:
 			switch (enemy[n].direct){
 				case FALSE:
-					if (player.x==enemy[n].x)
+					if (player.x+4>enemy[n].x&&player.x-4<enemy[n].x)
 						collision^=COL_STALACT;
 				break;
 				case DOWN:
 					if (map[eyd][exl]==WALL)
 						collision^=COL_DOWN;
-				break;
-				case ST_DEATH:
 					if (player.y+2>(enemy[n].y)&&player.y<(enemy[n].y+2)){
 						if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
 							player.health=0;
 							update_hud();
 						}
 					}
+					
 				break;
+				// case ST_DEATH:
+					// if (player.y+2>(enemy[n].y)&&player.y<(enemy[n].y+2)){
+						// if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
+							// player.health=0;
+							// update_hud();
+						// }
+					// }
+				// break;
 			}
+		break;
+		
+		case SNOWMEN:
+			if (player.y==enemy[n].y){
+				if (player.x<enemy[n].x)
+					collision=COL_RIGHT;
+				else if (player.x>enemy[n].x)
+					collision=COL_LEFT;
+			}
+			if (map[eyd][exr]==WALL||map[eyd+1][exr]==EMPTY||exr==39)
+				collision=COL_RIGHT;
+			if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY||exl==0)
+				collision=COL_LEFT;
+			player_enemy_collision_pull(n);
 		break;
 		
 		default: collision=0;
@@ -130,6 +160,9 @@ void enemy_animation(u8 n)
 		break;
 		case BLOCK:
 			n_spr=SPR_BLOCK;
+		break;
+		case SNOWMEN:
+			n_spr=SPR_SNOWMEN;
 		break;
 	}
 
@@ -178,7 +211,7 @@ void enemy_animation(u8 n)
 
 void enemy_logic()
 {
-
+	u16 addr;
 	u16 e_collision;
 	u8 n;
 	u8 j;
@@ -187,8 +220,11 @@ void enemy_logic()
 		
 		e_collision=enemy_collision(n);
 		
-		if (!enemy[n].health)
+		if (!enemy[n].health){
 			enemy[n].direct=ST_DEATH;
+			addr=32768+(40*screen)+(40*level_size*enemy[n].y_start+enemy[n].x_start);
+			put_mem(PAGE_MAP,addr,0);
+		}
 		
 		switch (enemy[n].direct) {
 			case RIGHT:
@@ -242,33 +278,6 @@ void enemy_logic()
 				
 			default: break;
 		}
-		
-		
-		
-		
-		
-		// if (enemy[n].direct==RIGHT) {
-			// if ((e_collision&COL_RIGHT)!=COL_RIGHT){
-				// enemy[n].skip_count++;
-				// if (enemy[n].skip_count>=enemy[n].skip){
-					// enemy[n].x++;
-					// enemy[n].skip_count=0;
-					// enemy_animation(n);
-				// }
-			// }
-			// else enemy[n].direct=LEFT;
-		// }
-		// if (enemy[n].direct==LEFT) {
-			// if ((e_collision&COL_LEFT)!=COL_LEFT){
-				// enemy[n].skip_count++;
-				// if (enemy[n].skip_count>=enemy[n].skip){
-					// enemy[n].x--;
-					// enemy[n].skip_count=0;
-					// enemy_animation(n);
-				// }
-			// }
-			// else enemy[n].direct=RIGHT;
-		// }
 	}
 }
 

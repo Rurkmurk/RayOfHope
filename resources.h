@@ -18,4 +18,5 @@
 #define SPR_STALACT	127
 #define SPR_ICE_SPIKE	139
 #define SPR_BLOCK	151
+#define SPR_SNOWMEN	163
 

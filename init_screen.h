@@ -72,6 +72,8 @@ void init_screen()
 				
 				case STALACT:
 					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*y;
 					enemy[enemy_summ].type=STALACT;
@@ -83,10 +85,11 @@ void init_screen()
 				
 				case B_SLIME:
 					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=B_SLIME;
-
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].direct=LEFT;
@@ -96,10 +99,11 @@ void init_screen()
 				
 				case S_SLIME:
 					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=S_SLIME;
-
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=7;
 					enemy[enemy_summ].direct=RIGHT;
@@ -109,10 +113,11 @@ void init_screen()
 				
 				case OWL:
 					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=OWL;
-
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=5;
 					enemy[enemy_summ].skip_count=0;
@@ -123,10 +128,11 @@ void init_screen()
 				
 				case ICE_SPIKE:
 					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=ICE_SPIKE;
-
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].skip_count=0;
@@ -137,10 +143,11 @@ void init_screen()
 				
 				case BLOCK:
 					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=BLOCK;
-
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].skip_count=0;
@@ -148,6 +155,22 @@ void init_screen()
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_BLOCK;
 				break;
+				
+				case SNOWMEN:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=SNOWMEN;
+					enemy[enemy_summ].health=3;
+					enemy[enemy_summ].skip=4;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=FALSE;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_SNOWMEN;
+				break;
+				
 			}
 		}
 		addr+=(level_size-1)*40;
@@ -158,14 +181,14 @@ void init_screen()
 void start_level()
 {
 	i8 i=3;
-	screen=6;//0;
+	screen=0;//0;
 	player.x=8;
-	player.y=80;//120;
-	player.health=5;
-	player.ammo=4;
+	player.y=120;//120;
+	player.health=4;
+	player.ammo=0;
 	player.frame=1;
 	player.enemy_collision=0;
-	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
+	for (i=BRIGHT_MID+1;i>=BRIGHT_MIN;i--){
 		pal_bright(i);
 		delay(3);
 	}
