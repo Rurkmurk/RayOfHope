@@ -16,7 +16,7 @@ u8 shot_collision()
 		collision=TRUE;
 	
 	for (n=1;n<=enemy_summ;n++)
-		if (shot.y==enemy[n].y)
+		if (shot.y==enemy[n].y&&enemy[n].direct!=FALSE)
 			if (shot.x>enemy[n].x-2&&shot.x<enemy[n].x+4) {
 				collision=TRUE;
 				if (shot.frame==SPR_SHOT+4)

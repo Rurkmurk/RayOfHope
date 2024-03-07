@@ -54,6 +54,7 @@
 #define DOWN			#0x2
 #define RIGHT 			#0x4
 #define LEFT 			#0x8
+#define WAIT			#0x10
 /*******************************************/
 
 /* tile numbers ****************************/
@@ -86,7 +87,7 @@
 #define GRAVITY			2
 #define AMMO_MAX		5
 #define HEALTH_MAX		5
-#define DEATH_SPEED		6
+#define DEATH_SPEED		8
 
 u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0, t_water=0;
 

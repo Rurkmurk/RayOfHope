@@ -78,8 +78,8 @@ void init_screen()
 					enemy[enemy_summ].y=8*y;
 					enemy[enemy_summ].type=STALACT;
 					enemy[enemy_summ].health=1;
-					enemy[enemy_summ].skip=0;
-					enemy[enemy_summ].direct=FALSE;
+					enemy[enemy_summ].skip=10;
+					enemy[enemy_summ].direct=WAIT;
 					enemy[enemy_summ].frame=SPR_STALACT;
 				break;
 				
@@ -136,7 +136,7 @@ void init_screen()
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].skip_count=0;
-					enemy[enemy_summ].direct=FALSE;
+					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ICE_SPIKE;
 				break;
@@ -149,9 +149,9 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=BLOCK;
 					enemy[enemy_summ].health=1;
-					enemy[enemy_summ].skip=6;
+					enemy[enemy_summ].skip=10;
 					enemy[enemy_summ].skip_count=0;
-					enemy[enemy_summ].direct=FALSE;
+					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_BLOCK;
 				break;
@@ -166,7 +166,7 @@ void init_screen()
 					enemy[enemy_summ].health=3;
 					enemy[enemy_summ].skip=4;
 					enemy[enemy_summ].skip_count=0;
-					enemy[enemy_summ].direct=FALSE;
+					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_SNOWMEN;
 				break;
