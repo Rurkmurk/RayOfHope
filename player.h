@@ -3,8 +3,11 @@
 
 void control_player()
 {
-	u8 key;
-	u8 dx=0, dy=0, fire=0;
+	static u8 key;
+	static u8 dx, dy, fire;
+	dx=0;
+	dy=0;
+	fire=0;
 	key=joystick();
 	if(key&JOY_UP) {
 		dy=JOY_UP;
@@ -29,11 +32,10 @@ void control_player()
 u16 player_collision()
 {
 	static u16 collision;
-	
-	u8 pxl, pxc, pxr, pyu, pyc, pyd, py_ground, py_stairs;
+	static u8 pxl, pxc, pxr, pyu, pyc, pyd, py_ground, py_stairs;
 	
 	collision=0;
-	
+
 	pxl=(player.x+2)/4;
 	pxc=(player.x+3)/4;
 	pxr=(player.x+5)/4;
@@ -115,11 +117,11 @@ u16 player_collision()
 
 void player_logic()
 {
-	i8 j;
+	static i8 j;
 	
 	static u8 trig_jump, trig_left;
 	
-	u16 p_collision;
+	static u16 p_collision;
 	
 	p_collision=player_collision();
 	
@@ -133,7 +135,6 @@ void player_logic()
 			
 		else if (player.status!=ST_WATER&&player.status!=ST_LAVA){
 			player.status=ST_DEATH;
-			pal_bright(BRIGHT_MID+1);
 		}
 		return;
 	}
@@ -411,75 +412,75 @@ void player_animation()
 	switch (player.status) {
 		
 		case ST_DEATH:
-			player.frame=30;
+			player.frame=27;
 			break;
 		
 		case ST_WATER:
-			player.frame=33;
+			player.frame=26;
 			break;
 			
 		case ST_LAVA:
-			player.frame=32;
+			player.frame=28;
 			break;
 		
 		case ST_RIGHT:
-			if (player.frame<3||player.frame>10) {
-				player.frame=3;
+			if (player.frame>7) {
+				player.frame=0;
 			}
 			else {
-				player.frame=player.frame<10?++player.frame:3;
+				player.frame=player.frame<7?++player.frame:0;
 			}
 			break;
 		
 		case ST_LEFT:
-			if (player.frame<14||player.frame>21) {
-				player.frame=14;
+			if (player.frame<8||player.frame>15) {
+				player.frame=8;
 			}
 			else {
-				player.frame=player.frame<21?++player.frame:14;
+				player.frame=player.frame<15?++player.frame:8;
 			}
 			break;
 			
 		case ST_JUMP:
-			player.frame=33;
+			player.frame=26;
 			break;
 			
 		case JUMP_LEFT:
-			player.frame=25;
+			player.frame=19;
 			break;
 			
 		case JUMP_RIGHT:
-			player.frame=24;
+			player.frame=18;
 			break;
 			
 		case ST_STAIRS:
-			if (player.frame<26||player.frame>29) {
-				player.frame=26;
+			if (player.frame<20||player.frame>23) {
+				player.frame=20;
 			}
 			else {
-				player.frame=player.frame<29?++player.frame:26;
+				player.frame=player.frame<23?++player.frame:20;
 			}
 			break;
 			
 		case STAIRS_STAND:
-			player.frame=26;
+			player.frame=20;
 			break;
 			
 		case DOWN_LEFT:
-			player.frame=23;
+			player.frame=17;
 			break;
 		
 		case DOWN_RIGHT:
-			player.frame=22;
+			player.frame=16;
 			break;
 
 		default:
 			if (player.status==ST_IDLE&&(player_collision()&COL_STAIRS)!=COL_STAIRS&&
 			player.health) {
 				if (t_idle+30>time())
-					player.frame=0;
+					player.frame=24;
 				else if (t_idle+50>time())
-					player.frame=1;
+					player.frame=25;
 				else t_idle=time();
 			}
 	}

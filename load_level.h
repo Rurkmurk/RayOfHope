@@ -123,7 +123,7 @@ void load_file(u8 *filename,u8 page,u8 saveload)
 		vsync();
 		buf[8]='^';
 		c=0;
-		
+
 		while(strcmp(buf,filename)!=0 && c<1792)
 		{
 			for(a=0;a<16;a++)
@@ -152,16 +152,17 @@ void load_level()
 			load_file("lev1_gfx", PAGE_GFX, 1);
 			load_file("lev1_map", PAGE_MAP, 1);
 			level_back=IMG_BACK_SNOW;
-			level_size=10;
+			level_tile=IMG_TILE_SNOW;
+			level_size=11;
 		break;
-		case 1:
-			load_file("map1_img", 60, 1);
-			load_file("map1_cod", 62, 1);
-		break;
-		case 2:
-			load_file("map2_img", 60, 1);
-			load_file("map2_cod", 62, 1);
-		break;
+		// case 1:
+			// load_file("map1_img", 60, 1);
+			// load_file("map1_cod", 62, 1);
+		// break;
+		// case 2:
+			// load_file("map2_img", 60, 1);
+			// load_file("map2_cod", 62, 1);
+		// break;
 	}
 }
 

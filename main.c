@@ -13,13 +13,12 @@
 
 void main()
 {
-	u8 name[6];
+	//u8 name[6];
 
-	u8 water_skip;
 	
 	
 /* player setup ***********************************************************/
-	player.danger_height=-12;
+	player.danger_height=-14;
 	player.death_height=-16;
 	player.skip=3;
 	player.v_speed=0;
@@ -35,7 +34,7 @@ void main()
 
 
 /* terrain setup **********************************************************/
-	water_skip=8;
+
 	
 /**************************************************************************/
 	
@@ -70,7 +69,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(player.v_speed+20, name);
+		// itoa(time(), name);
 		// output_string(0, 24, name);
 		
 	}

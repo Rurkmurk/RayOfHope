@@ -3,7 +3,8 @@
 
 void update_screen()
 {
-	u8 n;
+	static u8 n;
+	
 	//player
 	set_sprite(0,player.x,player.y,player.frame);
 
@@ -28,18 +29,19 @@ void update_screen()
 
 void update_hud()
 {
-	u8 n;
+	static u8 n;
+	
 	select_image(IMG_TILE_HUD);
 	for (n=0;n<5;n++)
-		draw_tile(4+n,23,120+(40*player.health)+n);
+		draw_tile(4+n,23,(10*player.health)+n);
 	for (n=0;n<5;n++)
-		draw_tile(33+n,23,125+(40*player.ammo)+n);
+		draw_tile(33+n,23,(10*player.ammo)+n+5);
 }
 
 
 void open_box (u8 y, u8 x)
 {
-	u16 addr;
+	static u16 addr;
 	
 	select_image(IMG_TILE_SNOW);
 	color_key(15);

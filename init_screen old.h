@@ -10,10 +10,32 @@ void draw_hud()
 }
 
 
+void draw_screen()
+{
+	static u8 x, y;
+	static u16 addr;
+	
+	addr=32768+(40*screen);
+	
+	draw_image(0,0,level_back);
+	
+	select_image(IMG_TILE_SNOW);
+	color_key(15);
+	for (y=0; y<HIGH_LEVEL; y++){
+		for (x=0; x<WIDTH_LEVEL; x++){
+			draw_tile_key(x,y,get_mem(PAGE_GFX,addr++));
+		}
+		addr+=(level_size-1)*40;
+	}
+	set_sprite(0,0,0,SPRITE_END);
+	swap_screen();
+}
+
+
 void init_screen()
 {
 	static u8  x, y;
-	static u16 addr;
+	u16 addr;
 	
 	addr=32768+(40*screen);
 	
@@ -21,33 +43,28 @@ void init_screen()
 	water_summ=0;
 	waterplant_summ=0;
 	
-	draw_image(0,0,level_back);
-	select_image(level_tile);
-	color_key(15);
-	
 	for (y=0; y<HIGH_LEVEL; y++){
 		for (x=0; x<WIDTH_LEVEL; x++) {
 			
-			draw_tile_key(x,y,get_mem(PAGE_GFX,addr));
 			map[y][x]=get_mem(PAGE_MAP,addr++);
 			switch (map[y][x]) {
 				
-				case WATER:
-					water_summ++;
-					waterplant_summ++;
-					water[water_summ].x=4*x;
-					water[water_summ].y=8*y;
-					waterplant[water_summ].x=water[water_summ].x;
-					waterplant[water_summ].y=water[water_summ].y+16;
-					if (water_summ%2!=0){
-						water[water_summ].frame=SPR_WATER;
-						waterplant[water_summ].frame=SPR_WATER+2;
-					}
-					else {
-						water[water_summ].frame=SPR_WATER+1;
-						waterplant[water_summ].frame=SPR_WATER+3;
-					}
-				break;
+				// case WATER:
+					// water_summ++;
+					// waterplant_summ++;
+					// water[water_summ].x=4*x;
+					// water[water_summ].y=8*y;
+					// waterplant[water_summ].x=water[water_summ].x;
+					// waterplant[water_summ].y=water[water_summ].y+16;
+					// if (water_summ%2!=0){
+						// water[water_summ].frame=SPR_WATER;
+						// waterplant[water_summ].frame=SPR_WATER+2;
+					// }
+					// else {
+						// water[water_summ].frame=SPR_WATER+1;
+						// waterplant[water_summ].frame=SPR_WATER+3;
+					// }
+				// break;
 				
 				case STALACT:
 					enemy_summ++;
@@ -154,8 +171,6 @@ void init_screen()
 		}
 		addr+=(level_size-1)*40;
 	}
-	set_sprite(0,0,0,SPRITE_END);
-	swap_screen();
 }
 
 
@@ -180,7 +195,7 @@ void start_level()
 	clear_screen(0);
 	
 	draw_hud();
-
+	draw_screen();
 	init_screen();
 	// for (i=BRIGHT_MIN;i<=BRIGHT_MID+1;i++){
 		// pal_bright(i);
@@ -196,6 +211,7 @@ void nxt_screen()
 	player.x=1;
 	player.enemy_collision=0;
 	init_screen();
+	draw_screen();
 	update_screen();
 }
 
@@ -206,6 +222,7 @@ void prv_screen()
 	player.x=152;
 	player.enemy_collision=0;
 	init_screen();
+	draw_screen();
 	update_screen();
 }
 

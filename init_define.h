@@ -5,8 +5,8 @@
 #define	HIGH_LEVEL		22
 #define	WIDTH_LEVEL		40
 
-#define PAGE_GFX		60
-#define PAGE_MAP		61
+#define PAGE_GFX		50
+#define PAGE_MAP		51
 
 /* collizion ************************/
 #define COL_UP			#0x1
@@ -89,19 +89,20 @@
 #define HEALTH_MAX		5
 #define DEATH_SPEED		8
 
-u32 t_terrain=0, t_player=0, t_idle=0, t_enemy=0, t_water=0;
+static u32 t_player, t_idle;
 
-u8 level=0;
-u16 level_size;
-u8 level_back;
-u8 screen=0;
-u8 map[HIGH_LEVEL][WIDTH_LEVEL];
+static u8 level;
+static u8 level_size;
+static u8 level_back;
+static u8 level_tile;
+static u8 screen;
+static u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
 
-u8 lava_summ=0;
-u8 water_summ=0;
-u8 waterplant_summ=0;
-u8 enemy_summ=0;
+static u8 lava_summ;
+static u8 water_summ;
+static u8 waterplant_summ;
+static u8 enemy_summ;
 
 
 struct player

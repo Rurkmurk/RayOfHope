@@ -3,10 +3,12 @@
 
 u8 shot_collision()
 {
-	u8 n;
-	u8 collision=FALSE;
+	static u8 n;
+	static u8 collision;
 	static u8 shot_enemy;
-	u8 sxl, sxr, sy;
+	static u8 sxl, sxr, sy;
+	
+	collision=FALSE;
 	
 	sxl=(shot.x+1)/4;
 	sxr=(shot.x+6)/4;

@@ -35,9 +35,11 @@ void player_enemy_collision_block(u8 n)
 
 u16 enemy_collision(u8 n)
 {
-	u8 exl, exr, eyu, eyd;
+	static u8 exl, exr, eyu, eyd;
 	
-	u16 collision=0;
+	static u16 collision;
+	
+	collision=0;
 	
 	exl=(enemy[n].x+1)/4;
 	exr=(enemy[n].x+6)/4;
@@ -106,14 +108,6 @@ u16 enemy_collision(u8 n)
 					}
 					
 				break;
-				// case ST_DEATH:
-					// if (player.y+2>(enemy[n].y)&&player.y<(enemy[n].y+2)){
-						// if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
-							// player.health=0;
-							// update_hud();
-						// }
-					// }
-				// break;
 			}
 		break;
 		
@@ -139,8 +133,7 @@ u16 enemy_collision(u8 n)
 
 void enemy_animation(u8 n)
 {
-	u8 n_spr=0;
-	u8 tmp_frame, j;
+	static u8 n_spr;
 	
 	switch (enemy[n].type) {
 		case B_SLIME:
@@ -171,11 +164,9 @@ void enemy_animation(u8 n)
 		case ST_DEATH:
 			if (enemy[n].frame==n_spr+11){
 				enemy[n].direct=FALSE;
-				//enemy[n].x=0;
-				//enemy[n].y=184;
 				break;
 			}
-			if (enemy[n].frame<n_spr+8){
+			if (enemy[n].frame<n_spr+8||enemy[n].frame>n_spr+11){
 				enemy[n].frame=n_spr+8;
 				enemy[n].skip_count=0;
 			}
@@ -203,9 +194,9 @@ void enemy_animation(u8 n)
 		break;
 		
 		case WAIT:
-			if (enemy[n].frame>(n_spr+7))
-				enemy[n].frame=n_spr;
-			enemy[n].frame=enemy[n].frame<(n_spr+7)?++enemy[n].frame:(n_spr+0);
+			if (enemy[n].frame<(n_spr+12))
+				enemy[n].frame=n_spr+12;
+			enemy[n].frame=enemy[n].frame<(n_spr+19)?++enemy[n].frame:(n_spr+12);
 		break;
 		
 		default:
@@ -213,13 +204,13 @@ void enemy_animation(u8 n)
 	}
 }
 
-
+ 
 void enemy_logic()
 {
-	u16 addr;
-	u16 e_collision;
-	u8 n;
-	u8 j;
+	static u16 addr;
+	static u16 e_collision;
+	static u8 n;
+	static u8 j;
 	
 	for (n=1;n<=enemy_summ;n++){
 		
@@ -258,10 +249,6 @@ void enemy_logic()
 				}
 				else enemy[n].direct=RIGHT;
 			break;
-			
-			// case FALSE:
-				
-			// break;
 			
 			case WAIT:
 				if ((e_collision&COL_RIGHT)==COL_RIGHT)
