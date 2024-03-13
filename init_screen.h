@@ -162,7 +162,7 @@ void init_screen()
 void start_level()
 {
 	//i8 i;
-	screen=8;//0;
+	screen=0;//0;8
 	player.x=8;
 	player.y=120;//120;
 	player.health=4;
