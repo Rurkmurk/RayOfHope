@@ -153,7 +153,7 @@ void load_level()
 			load_file("lev1_map", PAGE_MAP, 1);
 			level_back=IMG_BACK_SNOW;
 			level_tile=IMG_TILE_SNOW;
-			level_size=15;
+			level_size=17;
 		break;
 		// case 1:
 			// load_file("map1_img", 60, 1);

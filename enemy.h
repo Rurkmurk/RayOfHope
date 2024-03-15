@@ -68,9 +68,9 @@ u16 enemy_collision(u8 n)
 				else if (player.x-enemy[n].x<=24&&player.x>enemy[n].x)
 					collision=COL_LEFT;
 			}
-			if (map[eyd][exr]==WALL||map[eyd+1][exr]==EMPTY||exr==39)
+			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
 				collision=COL_RIGHT;
-			if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY||exl==0)
+			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
 				collision=COL_LEFT;
 			player_enemy_collision_push(n);
 		break;
@@ -118,9 +118,9 @@ u16 enemy_collision(u8 n)
 				else if (player.x>enemy[n].x)
 					collision=COL_LEFT;
 			}
-			if (map[eyd][exr]==WALL||map[eyd+1][exr]==EMPTY||exr==39)
+			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
 				collision=COL_RIGHT;
-			if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY||exl==0)
+			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
 				collision=COL_LEFT;
 			player_enemy_collision_pull(n);
 		break;
