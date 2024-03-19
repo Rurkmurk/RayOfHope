@@ -87,7 +87,7 @@
 #define GRAVITY			2
 #define AMMO_MAX		5
 #define HEALTH_MAX		5
-#define DEATH_SPEED		8
+#define DEATH_SPEED		7
 
 static u32 t_player, t_idle;
 
@@ -105,7 +105,7 @@ static u8 waterplant_summ;
 static u8 enemy_summ;
 
 
-struct player
+static struct player
 {
 	u8 x;	
 	u8 y;

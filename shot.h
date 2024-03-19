@@ -44,6 +44,7 @@ void shot_logic()
 				shot.x=player.x+4;
 				shot.y=player.y;
 				shot.frame=SPR_SHOT+0;
+				sfx_play(SFX_SHOT,8);
 				m=0;
 				n=0;
 				return;
@@ -70,6 +71,7 @@ void shot_logic()
 				shot.x=player.x-4;
 				shot.y=player.y;
 				shot.frame=SPR_SHOT+2;
+				sfx_play(SFX_SHOT,8);
 				m=0;
 				n=0;
 				return;
@@ -91,6 +93,7 @@ void shot_logic()
 	
 	if (n==0){
 		shot.frame=SPR_SHOT+4;
+		sfx_play(SFX_DAMAGE,8);
 		n++;
 		}
 	else if (n>0&&n<6){

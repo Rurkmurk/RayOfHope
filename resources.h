@@ -21,3 +21,11 @@
 #define SPR_SNOWMEN	135
 #define SPR_WATER	155
 
+#define SFX_SHOT	0
+#define SFX_BOOM	1
+#define SFX_HEALTH	2
+#define SFX_HEALTH_FULL	3
+#define SFX_LOAD	4
+#define SFX_LOAD_FULL	5
+#define SFX_DAMAGE	6
+#define SFX_DEATH	7

@@ -161,7 +161,7 @@ void init_screen()
 
 void start_level()
 {
-	//i8 i;
+	i8 i;
 	screen=16;//0;8
 	player.x=8;
 	player.y=60;//120;
@@ -170,10 +170,10 @@ void start_level()
 	player.frame=25;
 	player.enemy_collision=0;
 
-	// for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
-		// pal_bright(i);
-		// delay(3);
-	// }
+	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
+		pal_bright(i);
+		delay(3);
+	}
 	
 	load_level();
 	
@@ -182,10 +182,10 @@ void start_level()
 	draw_hud();
 
 	init_screen();
-	// for (i=BRIGHT_MIN;i<=BRIGHT_MID+1;i++){
-		// pal_bright(i);
-		// delay(3);
-	// }
+	for (i=BRIGHT_MIN;i<=BRIGHT_MID;i++){
+		pal_bright(i);
+		delay(3);
+	}
 
 }
 

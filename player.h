@@ -78,28 +78,38 @@ u16 player_collision()
 	
 	//box ammo
 	if (map[pyd][pxl]==AMMO){
-		map[pyd][pxl]=0;
-		if (player.ammo<AMMO_MAX)
+		if (player.ammo<AMMO_MAX){
+			map[pyd][pxl]=0;
 			player.ammo++;
-		open_box(pyd, pxl);
+			sfx_play(SFX_LOAD,8);
+			open_box(pyd, pxl);
+		}
 	}
 	if (map[pyd][pxl]==AMMO_FULL){
+		if (player.ammo<AMMO_MAX){
 		map[pyd][pxl]=0;
 		player.ammo=AMMO_MAX;
+		sfx_play(SFX_LOAD_FULL,8);
 		open_box(pyd, pxl);
+		}
 	}
 	
 	//box health
 	if (map[pyd][pxl]==HEALTH){
-		map[pyd][pxl]=0;
-		if (player.health<HEALTH_MAX)
+		if (player.health<HEALTH_MAX){
+			map[pyd][pxl]=0;
 			player.health++;
-		open_box(pyd, pxl);
+			sfx_play(SFX_HEALTH,8);
+			open_box(pyd, pxl);
+		}
 	}
 	if (map[pyd][pxl]==HEALTH_FULL){
-		map[pyd][pxl]=0;
-		player.health=HEALTH_MAX;
-		open_box(pyd, pxl);
+		if (player.health<HEALTH_MAX){
+			map[pyd][pxl]=0;
+			player.health=HEALTH_MAX;
+			sfx_play(SFX_HEALTH_FULL,8);
+			open_box(pyd, pxl);
+		}
 	}
 	
 	//screen right
@@ -135,6 +145,7 @@ void player_logic()
 			
 		else if (player.status!=ST_WATER&&player.status!=ST_LAVA){
 			player.status=ST_DEATH;
+			sfx_play(SFX_DEATH,8);
 		}
 		return;
 	}
@@ -165,6 +176,7 @@ void player_logic()
 	//danger
 	if ((p_collision&COL_DANGER)==COL_DANGER){
 		player.health--;
+		sfx_play(SFX_DAMAGE,8);
 		update_hud();
 	}
 	
@@ -295,18 +307,20 @@ void player_logic()
 	// drop down
 	if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS&&player.v_speed<=0){
 		player.v_speed-=GRAVITY;
+		player.status=ST_DOWN;
 		for (j=0;j>player.v_speed;j--){
 			p_collision=player_collision();
 			if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER
 			&&(p_collision&COL_STAIRS)!=COL_STAIRS){
-				player.status=ST_DOWN;
 				player.y++;
 			}
 			else {
 				if (player.v_speed<=player.death_height)
 					player.health=0;
-				else if (player.v_speed<=player.danger_height)
+				else if (player.v_speed<=player.danger_height){
 					player.health--;
+					sfx_play(SFX_DAMAGE,8);
+				}
 				player.v_speed=0;
 				update_hud();
 				break;
@@ -316,8 +330,10 @@ void player_logic()
 	else if ((p_collision&COL_DOWN)==COL_DOWN&&player.v_speed<0){
 		if (player.v_speed<=player.death_height)
 			player.health=0;
-		else if (player.v_speed<=player.danger_height)
+		else if (player.v_speed<=player.danger_height){
 			player.health--;
+			sfx_play(SFX_DAMAGE,8);
+		}
 		player.v_speed=0;
 		update_hud();
 	}
@@ -327,6 +343,7 @@ void player_logic()
 		switch (player.enemy_collision){
 			case COL_ENEMY_RIGHT:
 				player.health--;
+				sfx_play(SFX_DAMAGE,8);
 				update_hud();
 				for (j=0;j<2;j++){
 					if ((player_collision()&COL_LEFT)!=COL_LEFT)
@@ -338,6 +355,7 @@ void player_logic()
 			break;
 			case COL_ENEMY_LEFT:
 				player.health--;
+				sfx_play(SFX_DAMAGE,8);
 				update_hud();
 				for (j=0;j<2;j++){
 					if ((player_collision()&COL_RIGHT)!=COL_RIGHT)
@@ -349,6 +367,7 @@ void player_logic()
 			break;
 			case COL_ENEMY_CENTR:
 				player.health--;
+				sfx_play(SFX_DAMAGE,8);
 				update_hud();
 				player.enemy_collision=0;
 			break;

@@ -40,7 +40,7 @@ set sprite.9=res\water.bmp
 rem набор звуковых эффектов, если нужен
 rem он может быть только один
 
-set soundfx=
+set soundfx=res\sound.afb
 
 rem музыка, нужное число треков
 

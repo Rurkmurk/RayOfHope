@@ -8,15 +8,17 @@ void player_enemy_collision_push(u8 n)
 			player.enemy_collision=COL_ENEMY_RIGHT;
 		else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5)
 			player.enemy_collision=COL_ENEMY_LEFT;
+		else if (player.x==enemy[n].x)
+			player.enemy_collision=COL_ENEMY_CENTR;
 	}
 }
 
 void player_enemy_collision_pull(u8 n)
 {
-	if (player.y==enemy[n].y){
-		if (player.x+6==enemy[n].x||player.x+5==enemy[n].x)
+	if (player.y+13>enemy[n].y&&player.y<enemy[n].y+15){
+		if (player.x+6>=enemy[n].x&&player.x+4<=enemy[n].x)
 			player.enemy_collision=COL_ENEMY_LEFT;
-		else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5)
+		else if (player.x<=enemy[n].x+6&&player.x>=enemy[n].x+4)
 			player.enemy_collision=COL_ENEMY_RIGHT;
 		else if (player.x==enemy[n].x)
 			player.enemy_collision=COL_ENEMY_CENTR;
@@ -100,7 +102,7 @@ u16 enemy_collision(u8 n)
 				case DOWN:
 					if (map[eyd][exl]==WALL)
 						collision^=COL_DOWN;
-					if (player.y+2>(enemy[n].y)&&player.y<(enemy[n].y+2)){
+					if (player.y<=enemy[n].y){
 						if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
 							player.health=0;
 							update_hud();
