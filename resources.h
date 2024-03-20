@@ -5,8 +5,10 @@
 #define IMG_TILE_HUD	2
 #define IMG_IMG_HUD	3
 #define IMG_FONT	4
+#define IMG_RC	5
 
 #define PAL_TILE_SNOW	0
+#define PAL_RC	1
 
 
 
@@ -29,3 +31,8 @@
 #define SFX_LOAD_FULL	5
 #define SFX_DAMAGE	6
 #define SFX_DEATH	7
+#define SFX_JUMP_UP	8
+#define SFX_JUMP_DOWN	9
+#define SFX_STEP	10
+#define SFX_STALACTIT	11
+#define SFX_ENEMY_DEATH	12

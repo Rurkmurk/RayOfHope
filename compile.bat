@@ -15,6 +15,7 @@ rem идентификаторам в файле resources.h
 rem нумерация после точки должна быть возрастающей
 
 set palette.0=res\tile_snow.bmp
+set palette.1=res\rc.bmp
 
 rem список изображений, откуда брать графику
 
@@ -23,6 +24,7 @@ set image.1=res\back_snow.bmp
 set image.2=res\tile_hud.bmp
 set image.3=res\img_hud.bmp
 set image.4=res\font.bmp
+set image.5=res\rc.bmp
 
 rem спрайты
 

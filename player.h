@@ -29,6 +29,19 @@ void control_player()
 }
 
 
+void press_start()
+{
+	while (TRUE)
+	{
+		vsync();
+		if(joystick())
+		{
+			return;
+		}
+	}
+}
+
+
 u16 player_collision()
 {
 	static u16 collision;
@@ -120,6 +133,17 @@ u16 player_collision()
 	if (pxc==0)
 		collision^=COL_PRV_SCR;
 	
+	//next level
+	if (map[pyd][pxl]==EXIT){
+		pal_select(1);
+		clear_screen(0);
+		draw_image(0,0,IMG_RC);
+		set_sprite(0,0,0,SPRITE_END);
+		swap_screen();
+		press_start();
+		start_level();
+	}
+	
 	return (collision);
 }
 
@@ -198,6 +222,7 @@ void player_logic()
 		if ((p_collision&COL_GROUND)==COL_GROUND&&player.status!=ST_STAIRS&&trig_jump) {
 			player.v_speed=player.jump_impulse-GRAVITY;
 			player.status=ST_JUMP;
+			sfx_play(SFX_JUMP_UP,8);
 			trig_jump=FALSE;
 		}
 	}
@@ -233,6 +258,7 @@ void player_logic()
 	if (player.direct==JOY_RIGHT+JOY_UP&&(p_collision&COL_RIGHT)!=COL_RIGHT) {
 		if (player.v_speed>0){
 			player.status=JUMP_RIGHT;
+			//sfx_play(SFX_JUMP_UP,8);
 			player.h_step=player.v_speed;
 			trig_left=FALSE;
 		}
@@ -272,6 +298,7 @@ void player_logic()
 	if (player.direct==JOY_LEFT+JOY_UP&&(p_collision&COL_LEFT)!=COL_LEFT) {
 		if (player.v_speed>0){
 			player.status=JUMP_LEFT;
+			//sfx_play(SFX_JUMP_UP,8);
 			player.h_step=player.v_speed;
 			trig_left=TRUE;
 		}
@@ -315,6 +342,7 @@ void player_logic()
 				player.y++;
 			}
 			else {
+				sfx_play(SFX_JUMP_DOWN,8);
 				if (player.v_speed<=player.death_height)
 					player.health=0;
 				else if (player.v_speed<=player.danger_height){
@@ -448,6 +476,8 @@ void player_animation()
 			}
 			else {
 				player.frame=player.frame<7?++player.frame:0;
+				if (player.frame==2||player.frame==6)
+					sfx_play(SFX_STEP,8);
 			}
 			break;
 		
@@ -457,6 +487,8 @@ void player_animation()
 			}
 			else {
 				player.frame=player.frame<15?++player.frame:8;
+				if (player.frame==10||player.frame==14)
+					sfx_play(SFX_STEP,8); 
 			}
 			break;
 			

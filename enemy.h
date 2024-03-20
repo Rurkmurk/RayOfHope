@@ -171,6 +171,8 @@ void enemy_animation(u8 n)
 			if (enemy[n].frame<n_spr+8||enemy[n].frame>n_spr+11){
 				enemy[n].frame=n_spr+8;
 				enemy[n].skip_count=0;
+				if (enemy[n].type!=STALACT&&enemy[n].type!=BLOCK)
+					sfx_play(SFX_ENEMY_DEATH,8);
 			}
 			enemy[n].skip_count++;
 			if (enemy[n].skip_count>=DEATH_SPEED){
@@ -275,7 +277,10 @@ void enemy_logic()
 					enemy[n].y++;
 					enemy_animation(n);
 				}
-				else enemy[n].health=0;
+				else{
+					enemy[n].health=0;
+					sfx_play(SFX_STALACTIT,8);
+				}
 			break;
 			
 			case ST_DEATH:
