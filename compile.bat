@@ -2,12 +2,12 @@
 
 rem имя SCL файла
 
-set output=atom.scl
+set output=ray.scl
 
 rem сообщение, которое отображается при загрузке
 rem 32 символа, стандартный шрифт
 
-set title="          ATOM FOR PEACE"
+set title="          Ray of Hope"
 
 rem список изображений, откуда брать палитры
 rem в программе они вызываются по автоматически генерируемым

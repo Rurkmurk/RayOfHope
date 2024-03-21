@@ -96,8 +96,9 @@ u16 enemy_collision(u8 n)
 		case STALACT:
 			switch (enemy[n].direct){
 				case WAIT:
-					if (player.x+4>enemy[n].x&&player.x-4<enemy[n].x)
-						collision^=COL_STALACT;
+					if (player.y>enemy[n].y)
+						if (player.x+4>enemy[n].x&&player.x-4<enemy[n].x)
+							collision^=COL_STALACT;
 				break;
 				case DOWN:
 					if (map[eyd][exl]==WALL)

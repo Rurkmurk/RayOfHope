@@ -32,10 +32,10 @@ void update_hud()
 	static u8 n;
 	
 	select_image(IMG_TILE_HUD);
-	for (n=0;n<5;n++)
-		draw_tile(4+n,23,(10*player.health)+n);
-	for (n=0;n<5;n++)
-		draw_tile(33+n,23,(10*player.ammo)+n+5);
+	for (n=0;n<10;n++)
+		draw_tile(5+n,23,(20*player.health)+n);
+	for (n=0;n<10;n++)
+		draw_tile(27+n,23,(20*player.ammo)+n+10);
 }
 
 

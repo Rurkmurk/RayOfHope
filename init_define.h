@@ -85,11 +85,11 @@
 /*****************************/
 
 #define GRAVITY			2
-#define AMMO_MAX		5
-#define HEALTH_MAX		5
+#define AMMO_MAX		10
+#define HEALTH_MAX		10
 #define DEATH_SPEED		7
 
-static u32 t_player, t_idle;
+static u32 t_player, t_idle, t_death;
 
 static u8 level;
 static u8 level_size;

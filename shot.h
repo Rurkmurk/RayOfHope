@@ -18,12 +18,13 @@ u8 shot_collision()
 		collision=TRUE;
 	
 	for (n=1;n<=enemy_summ;n++)
-		if (shot.y==enemy[n].y&&enemy[n].direct!=FALSE)
-			if (shot.x>enemy[n].x-2&&shot.x<enemy[n].x+4) {
-				collision=TRUE;
-				if (shot.frame==SPR_SHOT+4)
-					enemy[n].health--;
-			}
+		if (enemy[n].direct!=FALSE)
+			if (shot.y+8>=enemy[n].y&&shot.y<=enemy[n].y+8)
+				if (shot.x>enemy[n].x-4&&shot.x<enemy[n].x+4) {
+					collision=TRUE;
+					if (shot.frame==SPR_SHOT+4)
+						enemy[n].health--;
+				}
 	
 	return (collision);
 }
@@ -93,7 +94,7 @@ void shot_logic()
 	
 	if (n==0){
 		shot.frame=SPR_SHOT+4;
-		sfx_play(SFX_DAMAGE,8);
+		sfx_play(SFX_BOOM,8);
 		n++;
 		}
 	else if (n>0&&n<6){
