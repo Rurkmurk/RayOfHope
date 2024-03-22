@@ -162,13 +162,14 @@ void init_screen()
 void start_level()
 {
 	i8 i;
-	screen=13;//0;8
+	screen=0;//0;8
 	player.x=8;
-	player.y=112;//120;
+	player.y=120;//120;
 	player.health=5;
 	player.ammo=5;
 	player.frame=25;
 	player.enemy_collision=0;
+	player.v_speed=0;
 
 	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
 		pal_bright(i);

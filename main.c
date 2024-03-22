@@ -19,7 +19,7 @@ void main()
 	
 /* player setup ***********************************************************/
 	player.danger_height=-14;
-	player.death_height=-16;
+	player.death_height=-18;
 	player.skip=3;
 	player.v_speed=0;
 	player.jump_impulse=7;
