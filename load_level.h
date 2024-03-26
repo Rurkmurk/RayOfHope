@@ -55,7 +55,7 @@ out (c),a
 	pop ix
 	ret
 __endasm;
-} 
+}
 
 u16 strlen (u8 * str)
 {
@@ -145,12 +145,15 @@ void load_file(u8 *filename,u8 page,u8 saveload)
 		vsync();
 	}
 
+
 void load_level()
 {
 	switch (level) {
 		case 0:
 			load_file("lev1_gfx", PAGE_GFX, 1);
 			load_file("lev1_map", PAGE_MAP, 1);
+			load_file("lev1_gfx", PAGE_GFX_TMP, 1);
+			load_file("lev1_map", PAGE_MAP_TMP, 1);
 			level_back=IMG_BACK_SNOW;
 			level_tile=IMG_TILE_SNOW;
 			level_size=18;
@@ -166,5 +169,36 @@ void load_level()
 	}
 }
 
+void reload_level()
+{
+	u16 i, j;
+	u16 addr;
+	u8 data;
+	
+	switch (tmp_save.screen){
+		case 6:
+		addr=32768+(40*6);
+		break;
+		case 12:
+		addr=32768+(40*12);
+		break;
+		default:
+		addr=32768;
+		break;
+	}
+
+	for (j=0;j<22;j++){
+		for (i=0;i<240;i++){
+			data=get_mem(PAGE_MAP_TMP,addr);
+			put_mem(PAGE_MAP,addr,data);
+			data=get_mem(PAGE_GFX_TMP,addr);
+			put_mem(PAGE_GFX,addr,data);
+			addr++;
+		}
+		addr+=480;
+	}
+	
+		
+}
 
 #endif

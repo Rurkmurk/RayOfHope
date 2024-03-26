@@ -101,9 +101,9 @@ u16 player_collision()
 	if (map[pyd][pxl]==AMMO_FULL){
 		if (player.ammo<AMMO_MAX){
 		map[pyd][pxl]=0;
-		if (player.ammo>5)
+		if (player.ammo>7)
 			player.ammo=AMMO_MAX;
-		else player.ammo+=5;
+		else player.ammo+=3;
 		sfx_play(SFX_LOAD_FULL,8);
 		open_box(pyd, pxl);
 		}
@@ -121,7 +121,9 @@ u16 player_collision()
 	if (map[pyd][pxl]==HEALTH_FULL){
 		if (player.health<HEALTH_MAX){
 			map[pyd][pxl]=0;
-			player.health=HEALTH_MAX;
+			if (player.health>7)
+				player.health=HEALTH_MAX;
+			else player.health+=3;
 			sfx_play(SFX_HEALTH_FULL,8);
 			open_box(pyd, pxl);
 		}
@@ -166,7 +168,7 @@ void player_logic()
 	if (!player.health) {
 		if (player.status==ST_DEATH&&t_death+100<time()){
 			player.status=ST_IDLE;
-			start_level();
+			restart_level();
 		}
 			
 		//else if (player.status!=ST_WATER&&player.status!=ST_LAVA){
@@ -387,21 +389,6 @@ void player_logic()
 			}
 		}
 	}
-	// else if ((p_collision&COL_DOWN)==COL_DOWN&&player.v_speed<0){
-		// if (player.v_speed<=player.death_height)
-			// if (player.health<=5)
-				// player.health=0;
-			// else {
-				// player.health-=5;
-				// sfx_play(SFX_DAMAGE,8);
-			// }
-		// else if (player.v_speed<=player.danger_height){
-			// player.health--;
-			// sfx_play(SFX_DAMAGE,8);
-		// }
-		// player.v_speed=0;
-		// update_hud();
-	// }
 	
 	//enemy collision
 	if (player.enemy_collision){

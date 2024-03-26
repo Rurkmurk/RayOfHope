@@ -170,6 +170,12 @@ void start_level()
 	player.frame=25;
 	player.enemy_collision=0;
 	player.v_speed=0;
+	
+	tmp_save.screen=screen;
+	tmp_save.health=player.health;
+	tmp_save.ammo=player.ammo;
+	tmp_save.x=player.x;
+	tmp_save.y=player.y;
 
 	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
 		pal_bright(i);
@@ -190,11 +196,48 @@ void start_level()
 
 }
 
+void restart_level()
+{
+	i8 i;
+	screen=tmp_save.screen;
+	player.x=tmp_save.x;
+	player.y=tmp_save.y;
+	player.health=tmp_save.health;
+	player.ammo=tmp_save.ammo;
+	player.frame=25;
+	player.enemy_collision=0;
+	player.v_speed=0;
+	
+	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
+		pal_bright(i);
+		delay(3);
+	}
+	
+	reload_level();
+	
+	clear_screen(0);
+	
+	draw_hud();
+
+	init_screen();
+	for (i=BRIGHT_MIN;i<=BRIGHT_MID;i++){
+		pal_bright(i);
+		delay(3);
+	}
+}
 
 void nxt_screen()
 {
 	screen++;
 	player.x=1;
+	if (screen!=tmp_save.screen)
+		if (screen==6||screen==12){
+			tmp_save.screen=screen;
+			tmp_save.health=player.health;
+			tmp_save.ammo=player.ammo;
+			tmp_save.x=player.x;
+			tmp_save.y=player.y;
+			}
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();

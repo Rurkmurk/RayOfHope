@@ -5,8 +5,10 @@
 #define	HIGH_LEVEL		22
 #define	WIDTH_LEVEL		40
 
-#define PAGE_GFX		50
-#define PAGE_MAP		51
+#define PAGE_GFX		60
+#define PAGE_MAP		61
+#define PAGE_GFX_TMP	62
+#define PAGE_MAP_TMP	63
 
 /* collizion ************************/
 #define COL_UP			#0x1
@@ -164,5 +166,14 @@ struct waterplant
 	u8 y;
 	u16 frame;
 }waterplant[10];
+
+struct tmp_save
+{
+	u8 screen;
+	u8 health;
+	u8 ammo;
+	u8 x;
+	u8 y;
+}tmp_save;	
 
 #endif
