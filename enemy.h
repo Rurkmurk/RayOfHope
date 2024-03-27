@@ -37,6 +37,8 @@ void player_enemy_collision_block(u8 n)
 
 u16 enemy_collision(u8 n)
 {
+	u8 i;
+	
 	static u8 exl, exr, eyu, eyd;
 	
 	static u16 collision;
@@ -109,6 +111,14 @@ u16 enemy_collision(u8 n)
 							update_hud();
 						}
 					}
+					
+					for (i=1;i<=enemy_summ;i++){
+						if (n==i)
+							continue;
+						if (enemy[i].y<=enemy[n].y)
+							if (enemy[i].x+3>=enemy[n].x&&enemy[i].x<=enemy[n].x+3)
+							enemy[i].health=0;
+						}
 					
 				break;
 			}

@@ -349,7 +349,7 @@ void player_logic()
 	if ((player.direct&JOY_DOWN)==JOY_DOWN) {
 		for (j=0;j<2;j++) {
 			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(player_collision()&COL_GROUND)!=COL_GROUND) {
-				player.y+=1;
+				player.y++;
 				player.status=ST_STAIRS;
 			}
 			else break;
@@ -359,12 +359,13 @@ void player_logic()
 	// drop down
 	if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS&&player.v_speed<=0){
 		player.v_speed-=GRAVITY;
-		player.status=ST_DOWN;
+		//player.status=ST_DOWN;
 		for (j=0;j>player.v_speed;j--){
-			p_collision=player_collision();
+			
 			if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER&&(p_collision&COL_STAIRS)!=COL_STAIRS)
 				player.y++;
 			else if ((p_collision&COL_WATER)!=COL_WATER){
+				
 				sfx_play(SFX_JUMP_DOWN,8);
 				
 				if (player.v_speed<=player.death_height){
@@ -380,15 +381,18 @@ void player_logic()
 					player.health--;
 					sfx_play(SFX_DAMAGE,8);
 				}
-				
-				
-				
 				player.v_speed=0;
 				update_hud();
 				break;
 			}
+			p_collision=player_collision();
+		}
+		if ((p_collision&COL_DOWN)==COL_DOWN){
+			player.v_speed=0;
+			sfx_play(SFX_JUMP_DOWN,8);
 		}
 	}
+
 	
 	//enemy collision
 	if (player.enemy_collision){

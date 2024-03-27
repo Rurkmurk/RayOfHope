@@ -167,7 +167,7 @@ struct waterplant
 	u16 frame;
 }waterplant[10];
 
-struct tmp_save
+static struct tmp_save
 {
 	u8 screen;
 	u8 health;

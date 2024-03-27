@@ -13,7 +13,7 @@
 
 void main()
 {
-	//u8 name[6];
+	// u8 name[6];
 
 	
 	
@@ -69,7 +69,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(time(), name);
+		// itoa(20+player.v_speed, name);
 		// output_string(0, 24, name);
 		
 	}
