@@ -36,6 +36,8 @@ void update_hud()
 		draw_tile(5+n,23,(20*player.health)+n);
 	for (n=0;n<10;n++)
 		draw_tile(27+n,23,(20*player.ammo)+n+10);
+	for (n=0;n<6;n++)
+		draw_tile(17+n,23,214+n+(player.life*6));
 }
 
 

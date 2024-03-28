@@ -34,7 +34,7 @@
 
 #define ST_IDLE			#0x0
 #define ST_JUMP			#0x1
-#define ST_DOWN			#0x2
+#define ST_DOWN_PUSH	#0x2
 #define ST_RIGHT 		#0x4
 #define ST_LEFT 		#0x8
 #define ST_STAIRS	 	#0x20
@@ -112,6 +112,7 @@ static struct player
 	u8 x;	
 	u8 y;
 	u8 health;
+	u8 life;
 	u16 frame;
 	i8 gravity;
 	i8 v_speed;

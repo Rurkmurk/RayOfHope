@@ -162,10 +162,11 @@ void init_screen()
 void start_level()
 {
 	i8 i;
-	screen=0;//0;8
+	screen=12;
 	player.x=8;
-	player.y=120;//120;
+	player.y=120;
 	player.health=5;
+	player.life=3;
 	player.ammo=5;
 	player.frame=25;
 	player.enemy_collision=0;

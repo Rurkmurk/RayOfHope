@@ -98,20 +98,25 @@ u16 enemy_collision(u8 n)
 		case STALACT:
 			switch (enemy[n].direct){
 				case WAIT:
-					if (player.y>enemy[n].y)
+					if (player.y>enemy[n].y){
 						if (player.x+4>enemy[n].x&&player.x-4<enemy[n].x)
 							collision^=COL_STALACT;
+					}
+					else if (player.status==ST_DOWN_PUSH){
+						if (player.x+2>enemy[n].x&&player.x-2<enemy[n].x)
+							collision^=COL_STALACT;
+					}
 				break;
+				
 				case DOWN:
 					if (map[eyd][exl]==WALL)
 						collision^=COL_DOWN;
-					if (player.y<=enemy[n].y){
+					if (player.y==enemy[n].y){
 						if (player.x+2>=enemy[n].x&&player.x<=enemy[n].x+2){
 							player.health=0;
 							update_hud();
 						}
 					}
-					
 					for (i=1;i<=enemy_summ;i++){
 						if (n==i)
 							continue;
@@ -119,7 +124,6 @@ u16 enemy_collision(u8 n)
 							if (enemy[i].x+3>=enemy[n].x&&enemy[i].x<=enemy[n].x+3)
 							enemy[i].health=0;
 						}
-					
 				break;
 			}
 		break;
