@@ -2,6 +2,7 @@
 #include "resources.h"
 #include "init_define.h"
 #include "output_string.h"
+#include "start_menu.h"
 #include "load_level.h"
 #include "update_screen.h"
 #include "init_screen.h"
@@ -34,7 +35,7 @@ void main()
 
 
 /* terrain setup **********************************************************/
-
+	level=0;
 	
 /**************************************************************************/
 	
@@ -42,6 +43,7 @@ void main()
 	clear_screen(0);
 	
 	sprites_start();
+	chapter();
 	start_level();
 
 	for (;;) {

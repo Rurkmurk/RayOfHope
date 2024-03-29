@@ -29,19 +29,6 @@ void control_player()
 }
 
 
-void press_start()
-{
-	while (TRUE)
-	{
-		vsync();
-		if(joystick())
-		{
-			return;
-		}
-	}
-}
-
-
 u16 player_collision()
 {
 	static u16 collision;
@@ -144,7 +131,7 @@ u16 player_collision()
 		draw_image(0,0,IMG_RC);
 		set_sprite(0,0,0,SPRITE_END);
 		swap_screen();
-		press_start();
+		press_key();
 		start_level();
 	}
 	

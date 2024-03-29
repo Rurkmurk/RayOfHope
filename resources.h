@@ -5,7 +5,8 @@
 #define IMG_TILE_HUD	2
 #define IMG_IMG_HUD	3
 #define IMG_FONT	4
-#define IMG_RC	5
+#define IMG_CHAPTER_1	5
+#define IMG_RC	6
 
 #define PAL_TILE_SNOW	0
 #define PAL_RC	1

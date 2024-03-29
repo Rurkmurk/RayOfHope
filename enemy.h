@@ -103,7 +103,7 @@ u16 enemy_collision(u8 n)
 							collision^=COL_STALACT;
 					}
 					else if (player.status==ST_DOWN_PUSH){
-						if (player.x+2>enemy[n].x&&player.x-2<enemy[n].x)
+						if (player.x+3>enemy[n].x&&player.x-3<enemy[n].x)
 							collision^=COL_STALACT;
 					}
 				break;

@@ -24,7 +24,8 @@ set image.1=res\back_snow.bmp
 set image.2=res\tile_hud.bmp
 set image.3=res\img_hud.bmp
 set image.4=res\font.bmp
-set image.5=res\rc.bmp
+set image.5=res\chapter_1.bmp
+set image.6=res\rc.bmp
 
 rem спрайты
 
