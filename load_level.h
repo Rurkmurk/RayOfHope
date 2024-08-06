@@ -157,11 +157,40 @@ void load_level()
 			level_back=IMG_BACK_SNOW;
 			level_tile=IMG_TILE_SNOW;
 			level_size=18;
+			
+			screen=0;
+			player.x=8;
+			player.y=120;
+			player.health=5;
+			player.life=3;
+			player.ammo=5;
+			player.frame=25;
+			player.enemy_collision=0;
+			player.v_speed=0;
+			
+			pal_select(0);
 		break;
-		// case 1:
-			// load_file("map1_img", 60, 1);
-			// load_file("map1_cod", 62, 1);
-		// break;
+		case 1:
+			load_file("lev2_gfx", PAGE_GFX, 1);
+			load_file("lev2_map", PAGE_MAP, 1);
+			load_file("lev2_gfx", PAGE_GFX_TMP, 1);
+			load_file("lev2_map", PAGE_MAP_TMP, 1);
+			level_back=IMG_BACK_MINE;
+			level_tile=IMG_TILE_MINE;
+			level_size=18;
+			
+			screen=0;
+			player.x=8;
+			player.y=120;
+			player.health=5;
+			player.life=3;
+			player.ammo=5;
+			player.frame=25;
+			player.enemy_collision=0;
+			player.v_speed=0;
+			
+			pal_select(1);
+		break;
 		// case 2:
 			// load_file("map2_img", 60, 1);
 			// load_file("map2_cod", 62, 1);

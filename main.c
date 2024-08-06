@@ -22,7 +22,7 @@ void main()
 	player.danger_height=-14;
 	player.death_height=-18;
 	player.skip=3;
-	player.v_speed=0;
+	//player.v_speed=0;
 	player.jump_impulse=7;
 	player.h_step=1;
 
@@ -35,14 +35,14 @@ void main()
 
 
 /* terrain setup **********************************************************/
-	level=0;
+	level=1;
 	
 /**************************************************************************/
-	
-	pal_select(0);
-	clear_screen(0);
+
 	
 	sprites_start();
+	start();
+	load_level();
 	chapter();
 	start_level();
 

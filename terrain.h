@@ -14,6 +14,16 @@ void terrain_animation()
 			waterplant[n].frame-=36;
 		}
 	}
+	
+	for (n=1;n<=light_summ;n++){
+		if (light[n].frame<light[n].n_spr+11){
+			light[n].frame++;
+		}
+		else {
+			light[n].frame=light[n].n_spr;
+		}
+	}
+		
 }
 
 #endif

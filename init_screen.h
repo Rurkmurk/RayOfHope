@@ -3,7 +3,7 @@
 
 void draw_hud()
 {
-	pal_select(level);
+	//pal_select(level);
 	clear_screen(0);
 	draw_image(0,22,IMG_IMG_HUD);
 	update_hud();
@@ -20,6 +20,7 @@ void init_screen()
 	enemy_summ=0;
 	water_summ=0;
 	waterplant_summ=0;
+	light_summ=0;
 	
 	draw_image(0,0,level_back);
 	select_image(level_tile);
@@ -48,6 +49,23 @@ void init_screen()
 						waterplant[water_summ].frame=SPR_WATER+3;
 					}
 				break;
+				
+				case LIGHT_1:
+					light_summ++;
+					light[light_summ].x=4*x;
+					light[light_summ].y=8*y;
+					light[light_summ].n_spr=SPR_LIGHT_1;
+					light[light_summ].frame=SPR_LIGHT_1;
+				break;
+				
+				case LIGHT_2:
+					light_summ++;
+					light[light_summ].x=4*x;
+					light[light_summ].y=8*y;
+					light[light_summ].n_spr=SPR_LIGHT_2;
+					light[light_summ].frame=SPR_LIGHT_2;
+				break;
+				
 				
 				case BLOCK:
 					enemy_summ++;
@@ -135,19 +153,34 @@ void init_screen()
 					enemy[enemy_summ].frame=SPR_ICE_SPIKE;
 				break;
 				
-				case SNOWMEN:
+				case SNOW_JUMP:
 					enemy_summ++;
 					enemy[enemy_summ].x_start=x;
 					enemy[enemy_summ].y_start=y;
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
-					enemy[enemy_summ].type=SNOWMEN;
+					enemy[enemy_summ].type=SNOW_JUMP;
 					enemy[enemy_summ].health=3;
 					enemy[enemy_summ].skip=4;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
-					enemy[enemy_summ].frame=SPR_SNOWMEN;
+					enemy[enemy_summ].frame=SPR_SNOW_JUMP;
+				break;
+				
+				case MINE_JUMP:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=MINE_JUMP;
+					enemy[enemy_summ].health=4;
+					enemy[enemy_summ].skip=4;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=WAIT;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_MINE_JUMP;
 				break;
 				
 			}
@@ -162,16 +195,7 @@ void init_screen()
 void start_level()
 {
 	i8 i;
-	screen=0;
-	player.x=8;
-	player.y=120;
-	player.health=5;
-	player.life=3;
-	player.ammo=5;
-	player.frame=25;
-	player.enemy_collision=0;
-	player.v_speed=0;
-	
+		
 	tmp_save.screen=screen;
 	tmp_save.health=player.health;
 	tmp_save.ammo=player.ammo;
@@ -183,13 +207,14 @@ void start_level()
 		delay(3);
 	}
 	
-	load_level();
+	// load_level();
 	
 	clear_screen(0);
 	
 	draw_hud();
 
 	init_screen();
+	
 	for (i=BRIGHT_MIN;i<=BRIGHT_MID;i++){
 		pal_bright(i);
 		delay(3);
@@ -249,6 +274,33 @@ void prv_screen()
 {
 	screen--;
 	player.x=152;
+	player.enemy_collision=0;
+	init_screen();
+	update_screen();
+}
+
+
+void down_screen()
+{
+	screen+=3;
+	player.y=1;
+	if (screen!=tmp_save.screen)
+		if (screen==6||screen==12){
+			tmp_save.screen=screen;
+			tmp_save.health=player.health;
+			tmp_save.ammo=player.ammo;
+			tmp_save.x=player.x;
+			tmp_save.y=player.y;
+			}
+	player.enemy_collision=0;
+	init_screen();
+	update_screen();
+}
+
+void up_screen()
+{
+	screen-=3;
+	player.y=160;
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();

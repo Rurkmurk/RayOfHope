@@ -3,7 +3,9 @@
  <editorsettings>
   <export target="../Level/lev1.csv" format="csv"/>
  </editorsettings>
- <tileset firstgid="1" source="tile_snow.tsx"/>
+ <tileset firstgid="1" name="tile_snow" tilewidth="8" tileheight="8" tilecount="256" columns="16">
+  <image source="../res/tile_snow.bmp" width="128" height="128"/>
+ </tileset>
  <tileset firstgid="257" name="code" tilewidth="8" tileheight="8" tilecount="256" columns="16">
   <image source="../res/code.bmp" width="128" height="128"/>
  </tileset>

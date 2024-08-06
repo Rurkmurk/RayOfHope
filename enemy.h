@@ -80,17 +80,17 @@ u16 enemy_collision(u8 n)
 		break;
 		
 		case S_SLIME:
-			if (map[eyd][exr]==WALL||map[eyd+1][exr]==EMPTY||exr==39)
+			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
 				collision^=COL_RIGHT;
-			if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY||exl==0)
+			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
 				collision^=COL_LEFT;
 			player_enemy_collision_pull(n);
 		break;
 		
 		case B_SLIME:
-			if (map[eyd][exr]==WALL||map[eyd+1][exr]==EMPTY||exr==39)
+			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
 				collision^=COL_RIGHT;
-			if (map[eyd][exl]==WALL||map[eyd+1][exl]==EMPTY||exl==0)
+			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
 				collision^=COL_LEFT;
 			player_enemy_collision_pull(n);
 		break;
@@ -128,7 +128,21 @@ u16 enemy_collision(u8 n)
 			}
 		break;
 		
-		case SNOWMEN:
+		case SNOW_JUMP:
+			if (player.y==enemy[n].y){
+				if (player.x<enemy[n].x)
+					collision=COL_RIGHT;
+				else if (player.x>enemy[n].x)
+					collision=COL_LEFT;
+			}
+			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
+				collision=COL_RIGHT;
+			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
+				collision=COL_LEFT;
+			player_enemy_collision_pull(n);
+		break;
+		
+		case MINE_JUMP:
 			if (player.y==enemy[n].y){
 				if (player.x<enemy[n].x)
 					collision=COL_RIGHT;
@@ -171,8 +185,11 @@ void enemy_animation(u8 n)
 		case BLOCK:
 			n_spr=SPR_BLOCK;
 		break;
-		case SNOWMEN:
-			n_spr=SPR_SNOWMEN;
+		case SNOW_JUMP:
+			n_spr=SPR_SNOW_JUMP;
+		break;
+		case MINE_JUMP:
+			n_spr=SPR_MINE_JUMP;
 		break;
 	}
 

@@ -19,13 +19,15 @@
 #define COL_STAIRS	 	#0x20
 #define COL_WATER		#0x40
 #define COL_DANGER		#0x80
-#define COL_LAVA		#0x100
-#define COL_NXT_SCR		#0x200
-#define COL_PRV_SCR		#0x400
-#define COL_ENEMY_LEFT	#0x800
-#define COL_ENEMY_RIGHT	#0x1000
-#define COL_ENEMY_CENTR	#0x2000
-#define COL_STALACT		#0x4000
+#define COL_NXT_SCR		#0x100
+#define COL_PRV_SCR		#0x200
+#define COL_DOWN_SCR	#0x400
+#define COL_UP_SCR		#0x800
+#define COL_ENEMY_LEFT	#0x1000
+#define COL_ENEMY_RIGHT	#0x2000
+#define COL_ENEMY_CENTR	#0x4000
+#define COL_STALACT		#0x8000
+
 /*******************************************/
 
 
@@ -65,7 +67,7 @@
 #define WALL			1
 #define STAIRS			2
 #define WATER	 		3
-//#define WATERPLANT		4
+#define ACID			4
 #define DANGER			5
 #define STALACT 		6
 #define EXIT			7
@@ -73,6 +75,8 @@
 #define HEALTH			9
 #define AMMO_FULL		10
 #define AMMO			11
+#define LIGHT_1			12
+#define LIGHT_2			13
 
 
 #define PLAYER 			16
@@ -82,7 +86,8 @@
 #define S_SLIME			19
 #define ICE_SPIKE		20
 #define BLOCK			21
-#define SNOWMEN			22
+#define SNOW_JUMP		22
+#define MINE_JUMP		23
 
 /*****************************/
 
@@ -101,10 +106,11 @@ static u8 screen;
 static u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
 
-static u8 lava_summ;
+static u8 acid_summ;
 static u8 water_summ;
 static u8 waterplant_summ;
 static u8 enemy_summ;
+static u8 light_summ;
 
 
 static struct player
@@ -153,7 +159,6 @@ struct enemy
 	u16 frame;
 } enemy[10]; //max enemy summ
 
-
 struct water
 {
 	u8 x;	
@@ -167,6 +172,14 @@ struct waterplant
 	u8 y;
 	u16 frame;
 }waterplant[10];
+
+struct light
+{
+	u8 x;
+	u8 y;
+	u8 n_spr;
+	u16 frame;
+}light[5];
 
 static struct tmp_save
 {

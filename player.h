@@ -124,16 +124,24 @@ u16 player_collision()
 	if (pxc==0)
 		collision^=COL_PRV_SCR;
 	
+	//screen down
+	if (pyc==21)
+		collision^=COL_DOWN_SCR;
+	
+	// screen up
+	if (pyc==0)
+		collision^=COL_UP_SCR;
+	
 	//next level
-	if (map[pyd][pxl]==EXIT){
-		pal_select(1);
-		clear_screen(0);
-		draw_image(0,0,IMG_RC);
-		set_sprite(0,0,0,SPRITE_END);
-		swap_screen();
-		press_key();
-		start_level();
-	}
+	// if (map[pyd][pxc]==EXIT){
+		// pal_select(2);
+		// clear_screen(0);
+		// draw_image(0,0,IMG_RC);
+		// set_sprite(0,0,0,SPRITE_END);
+		// swap_screen();
+		// press_key();
+		// start_level();
+	// }
 	
 	return (collision);
 }
@@ -223,18 +231,20 @@ void player_logic()
 	}
 	
 	//lava
-	if ((p_collision&COL_LAVA)==COL_LAVA) {
-		player.y+=7;
-		player.status=ST_LAVA;
-		player.health=0;
-		update_hud();
-		return;
-	}
+	// if ((p_collision&COL_LAVA)==COL_LAVA) {
+		// player.y+=7;
+		// player.status=ST_LAVA;
+		// player.health=0;
+		// update_hud();
+		// return;
+	// }
 	
 	//up
 	if ((player.direct&JOY_UP)==JOY_UP) {
 		if ((p_collision&COL_STAIRS)==COL_STAIRS) {
 			player.y-=2;
+			if ((player_collision()&COL_UP_SCR)==COL_UP_SCR)
+				up_screen();
 			player.status=ST_STAIRS;
 		}
 		if ((p_collision&COL_GROUND)==COL_GROUND&&player.status!=ST_STAIRS&&trig_jump) {
@@ -343,7 +353,10 @@ void player_logic()
 		for (j=0;j<2;j++) {
 			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(player_collision()&COL_GROUND)!=COL_GROUND) {
 				player.y++;
+				if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR)
+					down_screen();
 				player.status=ST_STAIRS;
+				
 			}
 			else break;
 		}
@@ -355,8 +368,11 @@ void player_logic()
 		//player.status=ST_DOWN_PUSH;
 		for (j=0;j>player.v_speed;j--){
 			
-			if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER&&(p_collision&COL_STAIRS)!=COL_STAIRS)
+			if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER&&(p_collision&COL_STAIRS)!=COL_STAIRS){
 				player.y++;
+				if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR)
+					down_screen();
+			}
 			else if ((p_collision&COL_WATER)!=COL_WATER){
 				
 				sfx_play(SFX_JUMP_DOWN,8);

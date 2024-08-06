@@ -18,11 +18,15 @@ void update_screen()
 		set_sprite(n+enemy_summ+water_summ,waterplant[n].x,waterplant[n].y,waterplant[n].frame);
 	}
 	
+	//light
+	for (n=1;n<=light_summ;n++)
+		set_sprite(n+enemy_summ+waterplant_summ+water_summ,light[n].x,light[n].y,light[n].frame);
+	
 	//shot
-	set_sprite(enemy_summ+waterplant_summ+water_summ+1,shot.x,shot.y,shot.frame);
+	set_sprite(enemy_summ+waterplant_summ+water_summ+light_summ+1,shot.x,shot.y,shot.frame);
 	
 	//end
-	set_sprite(enemy_summ+waterplant_summ+water_summ+2,0,0,SPRITE_END);
+	set_sprite(enemy_summ+waterplant_summ+water_summ+light_summ+2,0,0,SPRITE_END);
 		
 	swap_screen();
 }

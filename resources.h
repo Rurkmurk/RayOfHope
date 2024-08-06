@@ -2,27 +2,36 @@
 
 #define IMG_TILE_SNOW	0
 #define IMG_BACK_SNOW	1
-#define IMG_TILE_HUD	2
-#define IMG_IMG_HUD	3
-#define IMG_FONT	4
-#define IMG_CHAPTER_1	5
-#define IMG_RC	6
+#define IMG_RC	2
+#define IMG_TILE_MINE	3
+#define IMG_BACK_MINE	4
+#define IMG_TILE_HUD	5
+#define IMG_IMG_HUD	6
+#define IMG_FONT	7
+#define IMG_CHAPTER_1	8
+#define IMG_CHAPTER_2	9
+#define IMG_SUN	10
 
 #define PAL_TILE_SNOW	0
-#define PAL_RC	1
+#define PAL_TILE_MINE	1
+#define PAL_RC	2
+#define PAL_SUN	3
 
 
 
 #define SPR_PLAYER	0
 #define SPR_SHOT	32
-#define SPR_B_SLIME	39
-#define SPR_S_SLIME	51
-#define SPR_OWL	63
-#define SPR_STALACT	75
-#define SPR_ICE_SPIKE	95
-#define SPR_BLOCK	115
-#define SPR_SNOWMEN	135
-#define SPR_WATER	155
+#define SPR_LIGHT_1	39
+#define SPR_LIGHT_2	51
+#define SPR_MINE_JUMP	63
+#define SPR_B_SLIME	83
+#define SPR_S_SLIME	95
+#define SPR_OWL	107
+#define SPR_STALACT	119
+#define SPR_ICE_SPIKE	139
+#define SPR_BLOCK	159
+#define SPR_SNOW_JUMP	179
+#define SPR_WATER	199
 
 #define SFX_SHOT	0
 #define SFX_BOOM	1
