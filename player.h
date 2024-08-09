@@ -180,8 +180,11 @@ void player_logic()
 				//player.status=ST_DOWN;
 				for (j=0;j>player.v_speed;j--){
 					p_collision=player_collision();
-					if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER)
+					if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER){
 						player.y++;
+						if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR)
+							down_screen();
+					}
 					else {
 						player.status=ST_DEATH;
 						sfx_play(SFX_DEATH,8);
@@ -191,10 +194,9 @@ void player_logic()
 			else {
 				player.status=ST_DEATH;
 				sfx_play(SFX_DEATH,8);
+				player.life--;
+				t_death=time();
 			}
-			player.life--;
-			t_death=time();
-			
 		}
 		return;
 	}
@@ -387,7 +389,8 @@ void player_logic()
 				}
 				
 				else if (player.v_speed<=player.danger_height){
-					player.health--;
+					if (player.health)
+						player.health--;
 					sfx_play(SFX_DAMAGE,8);
 				}
 				player.v_speed=0;

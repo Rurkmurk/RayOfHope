@@ -79,7 +79,7 @@ void init_screen()
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
-					enemy[enemy_summ].frame=SPR_BLOCK;
+					enemy[enemy_summ].frame=SPR_BLOCK+12;
 				break;
 				
 				case STALACT:
@@ -92,7 +92,7 @@ void init_screen()
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=10;
 					enemy[enemy_summ].direct=WAIT;
-					enemy[enemy_summ].frame=SPR_STALACT;
+					enemy[enemy_summ].frame=SPR_STALACT+12;
 				break;
 				
 				case B_SLIME:
@@ -183,6 +183,36 @@ void init_screen()
 					enemy[enemy_summ].frame=SPR_MINE_JUMP;
 				break;
 				
+				case ANGRY_PLANT_R:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*(x-1);
+					enemy[enemy_summ].y=8*y;
+					enemy[enemy_summ].type=ANGRY_PLANT_R;
+					enemy[enemy_summ].health=1;
+					enemy[enemy_summ].skip=7;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=WAIT;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_ANGRY_PLANT_R+12;
+				break;
+				
+				case ANGRY_PLANT_L:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*y;
+					enemy[enemy_summ].type=ANGRY_PLANT_L;
+					enemy[enemy_summ].health=1;
+					enemy[enemy_summ].skip=7;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=WAIT;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_ANGRY_PLANT_L+12;
+				break;
+				
 			}
 		}
 		addr+=(level_size-1)*40;
@@ -207,7 +237,7 @@ void start_level()
 		delay(3);
 	}
 	
-	// load_level();
+	load_level();
 	
 	clear_screen(0);
 	
@@ -283,7 +313,7 @@ void prv_screen()
 void down_screen()
 {
 	screen+=3;
-	player.y=1;
+	player.y=2;
 	if (screen!=tmp_save.screen)
 		if (screen==6||screen==12){
 			tmp_save.screen=screen;

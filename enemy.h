@@ -15,10 +15,10 @@ void player_enemy_collision_push(u8 n)
 
 void player_enemy_collision_pull(u8 n)
 {
-	if (player.y+13>enemy[n].y&&player.y<enemy[n].y+15){
-		if (player.x+6>=enemy[n].x&&player.x+4<=enemy[n].x)
+	if (player.y+8>enemy[n].y&&player.y-8<enemy[n].y){
+		if (player.x+5>=enemy[n].x&&player.x<enemy[n].x)
 			player.enemy_collision=COL_ENEMY_LEFT;
-		else if (player.x<=enemy[n].x+6&&player.x>=enemy[n].x+4)
+		else if (player.x<=enemy[n].x+5&&player.x>enemy[n].x)
 			player.enemy_collision=COL_ENEMY_RIGHT;
 		else if (player.x==enemy[n].x)
 			player.enemy_collision=COL_ENEMY_CENTR;
@@ -156,6 +156,22 @@ u16 enemy_collision(u8 n)
 			player_enemy_collision_pull(n);
 		break;
 		
+		case ANGRY_PLANT_R:
+			if (player.y+8>enemy[n].y&&player.y-8<enemy[n].y){
+				if (player.x+9>enemy[n].x&&player.x-1<enemy[n].x)
+					collision=COL_DANGER;
+			}
+			player_enemy_collision_pull(n);
+		break;
+		
+		case ANGRY_PLANT_L:
+			if (player.y+8>enemy[n].y&&player.y-8<enemy[n].y){
+				if (player.x-9<enemy[n].x&&player.x+1>enemy[n].x)
+					collision=COL_DANGER;
+			}
+			player_enemy_collision_pull(n);
+		break;
+		
 		default: collision=0;
 	}
 	return collision;
@@ -190,6 +206,12 @@ void enemy_animation(u8 n)
 		break;
 		case MINE_JUMP:
 			n_spr=SPR_MINE_JUMP;
+		break;
+		case ANGRY_PLANT_R:
+			n_spr=SPR_ANGRY_PLANT_R;
+		break;
+		case ANGRY_PLANT_L:
+			n_spr=SPR_ANGRY_PLANT_L;
 		break;
 	}
 
@@ -233,6 +255,12 @@ void enemy_animation(u8 n)
 			if (enemy[n].frame<(n_spr+12))
 				enemy[n].frame=n_spr+12;
 			enemy[n].frame=enemy[n].frame<(n_spr+19)?++enemy[n].frame:(n_spr+12);
+		break;
+		
+		case ANGRY:
+			if (enemy[n].frame>(n_spr+7))
+				enemy[n].frame=n_spr;
+			enemy[n].frame=enemy[n].frame<(n_spr+7)?++enemy[n].frame:(n_spr+0);
 		break;
 		
 		default:
@@ -291,9 +319,10 @@ void enemy_logic()
 					enemy[n].direct=LEFT;
 				if ((e_collision&COL_LEFT)==COL_LEFT)
 					enemy[n].direct=RIGHT;
-				if ((e_collision&COL_STALACT)==COL_STALACT){
+				if ((e_collision&COL_STALACT)==COL_STALACT)
 					enemy[n].direct=DOWN;
-				}
+				if ((e_collision&COL_DANGER)==COL_DANGER)
+					enemy[n].direct=ANGRY;
 				enemy[n].skip_count++;
 				if (enemy[n].skip_count>=enemy[n].skip){
 					enemy[n].skip_count=0;
@@ -312,6 +341,16 @@ void enemy_logic()
 				else{
 					enemy[n].health=0;
 					sfx_play(SFX_STALACTIT,8);
+				}
+			break;
+			
+			case ANGRY:
+				if ((e_collision&COL_DANGER)!=COL_DANGER)
+						enemy[n].direct=WAIT;
+				enemy[n].skip_count++;
+				if (enemy[n].skip_count>=enemy[n].skip){
+					enemy[n].skip_count=0;
+					enemy_animation(n);
 				}
 			break;
 			

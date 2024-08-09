@@ -48,6 +48,8 @@ set sprite.9=res\water.bmp
 set sprite.10=res\light_1.bmp
 set sprite.11=res\light_2.bmp
 set sprite.12=res\mine_jump.bmp
+set sprite.13=res\angry_plant_r.bmp
+set sprite.14=res\angry_plant_l.bmp
 
 
 rem набор звуковых эффектов, если нужен

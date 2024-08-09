@@ -59,6 +59,7 @@
 #define RIGHT 			#0x4
 #define LEFT 			#0x8
 #define WAIT			#0x10
+#define ANGRY			#0x20
 /*******************************************/
 
 /* tile numbers ****************************/
@@ -88,6 +89,8 @@
 #define BLOCK			21
 #define SNOW_JUMP		22
 #define MINE_JUMP		23
+#define ANGRY_PLANT_R	24
+#define ANGRY_PLANT_L	25
 
 /*****************************/
 
