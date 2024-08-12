@@ -176,7 +176,7 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=MINE_JUMP;
 					enemy[enemy_summ].health=4;
-					enemy[enemy_summ].skip=4;
+					enemy[enemy_summ].skip=5;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
@@ -313,7 +313,7 @@ void prv_screen()
 void down_screen()
 {
 	screen+=3;
-	player.y=2;
+	player.y=1;
 	if (screen!=tmp_save.screen)
 		if (screen==6||screen==12){
 			tmp_save.screen=screen;
