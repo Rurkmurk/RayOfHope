@@ -40,7 +40,7 @@ u16 player_collision()
 	pxc=(player.x+3)/4;
 	pxr=(player.x+5)/4;
 	
-	pyu=(player.y)/8;
+	pyu=player.y/8;
 	pyc=(player.y+7)/8;
 	pyd=(player.y+15)/8;
 	
@@ -169,18 +169,15 @@ void player_logic()
 			}
 			else
 				restart_level();
-				
 		}
 			
-		//else if (player.status!=ST_WATER&&player.status!=ST_LAVA){
 		else if (player.status!=ST_DEATH){
 		
 			if ((p_collision&COL_DOWN)!=COL_DOWN){
 				player.v_speed-=GRAVITY;
-				//player.status=ST_DOWN;
 				for (j=0;j>player.v_speed;j--){
 					p_collision=player_collision();
-					if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER){
+					if ((p_collision&COL_DOWN)!=COL_DOWN&&(player.status&ST_WATER)!=ST_WATER){
 						player.y++;
 						if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR)
 							down_screen();
@@ -188,6 +185,9 @@ void player_logic()
 					else {
 						player.status=ST_DEATH;
 						sfx_play(SFX_DEATH,8);
+						player.life--;
+						t_death=time();
+						return;
 					}
 				}
 			}
@@ -212,19 +212,21 @@ void player_logic()
 		player.status=STAIRS_STAND;
 	
 	//water 
-	if ((p_collision&COL_WATER)==COL_WATER) {
-		player.y++;
-		if (player.y>142){
-			player.health=0;
-			update_hud();
-			player.status=ST_DEATH;
-			sfx_play(SFX_DEATH,8);
-			return;
-		}
-		player.status=ST_WATER;
+	if ((p_collision&COL_WATER)==COL_WATER){
+			player.status=ST_WATER;
+			sfx_play(SFX_STEP,5);
+	}
+	if (map[(player.y)/8][((player.x+5)/4)-1]==WATER||map[(player.y)/8][(player.x+5)/4]==WATER){
+		player.health=0;
+		update_hud();
 		return;
 	}
+	if (player.status==ST_WATER){
+			player.y++;
+			return;
+	}
 	
+		
 	//danger
 	if ((p_collision&COL_DANGER)==COL_DANGER){
 		player.health--;

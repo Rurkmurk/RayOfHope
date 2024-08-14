@@ -50,6 +50,7 @@ set sprite.11=res\light_2.bmp
 set sprite.12=res\mine_jump.bmp
 set sprite.13=res\angry_plant_r.bmp
 set sprite.14=res\angry_plant_l.bmp
+set sprite.15=res\angry_plant.bmp
 
 
 rem набор звуковых эффектов, если нужен

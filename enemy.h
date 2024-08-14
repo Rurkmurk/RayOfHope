@@ -130,6 +130,7 @@ u16 enemy_collision(u8 n)
 		
 		case SNOW_JUMP:
 			if (player.y==enemy[n].y){
+				enemy[n].skip=4;
 				if (player.x<enemy[n].x)
 					collision=COL_RIGHT;
 				else if (player.x>enemy[n].x)
@@ -144,6 +145,7 @@ u16 enemy_collision(u8 n)
 		
 		case MINE_JUMP:
 			if (player.y==enemy[n].y){
+				enemy[n].skip=4;
 				if (player.x<enemy[n].x)
 					collision=COL_RIGHT;
 				else if (player.x>enemy[n].x)
@@ -169,6 +171,15 @@ u16 enemy_collision(u8 n)
 				if (player.x-9<enemy[n].x&&player.x+1>enemy[n].x)
 					collision=COL_DANGER;
 			}
+			player_enemy_collision_pull(n);
+		break;
+		
+		case ANGRY_PLANT:
+			if (player.y+1>enemy[n].y&&player.y-8<enemy[n].y)
+				if (player.x-9<enemy[n].x&&player.x+9>enemy[n].x){
+					collision=COL_DANGER;
+					enemy[n].skip=4;
+				}
 			player_enemy_collision_pull(n);
 		break;
 		
@@ -212,6 +223,9 @@ void enemy_animation(u8 n)
 		break;
 		case ANGRY_PLANT_L:
 			n_spr=SPR_ANGRY_PLANT_L;
+		break;
+		case ANGRY_PLANT:
+			n_spr=SPR_ANGRY_PLANT;
 		break;
 	}
 
@@ -345,8 +359,10 @@ void enemy_logic()
 			break;
 			
 			case ANGRY:
-				if ((e_collision&COL_DANGER)!=COL_DANGER)
+				if ((e_collision&COL_DANGER)!=COL_DANGER){
 						enemy[n].direct=WAIT;
+						enemy[n].skip=10;
+				}
 				enemy[n].skip_count++;
 				if (enemy[n].skip_count>=enemy[n].skip){
 					enemy[n].skip_count=0;

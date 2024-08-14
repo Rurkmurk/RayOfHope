@@ -91,6 +91,7 @@
 #define MINE_JUMP		23
 #define ANGRY_PLANT_R	24
 #define ANGRY_PLANT_L	25
+#define ANGRY_PLANT		26
 
 /*****************************/
 

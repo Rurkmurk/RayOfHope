@@ -161,7 +161,7 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=SNOW_JUMP;
 					enemy[enemy_summ].health=3;
-					enemy[enemy_summ].skip=4;
+					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
@@ -176,7 +176,7 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=MINE_JUMP;
 					enemy[enemy_summ].health=4;
-					enemy[enemy_summ].skip=5;
+					enemy[enemy_summ].skip=8;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
@@ -211,6 +211,21 @@ void init_screen()
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ANGRY_PLANT_L+12;
+				break;
+				
+				case ANGRY_PLANT:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=ANGRY_PLANT;
+					enemy[enemy_summ].health=1;
+					enemy[enemy_summ].skip=14;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=WAIT;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_ANGRY_PLANT+12;
 				break;
 				
 			}
