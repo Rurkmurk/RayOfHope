@@ -9,21 +9,16 @@ void control_player()
 	dy=0;
 	fire=0;
 	key=joystick();
-	if(key&JOY_UP) {
+	if(key&JOY_UP)
 		dy=JOY_UP;
-		}
-	if(key&JOY_RIGHT) {
+	if(key&JOY_RIGHT)
 		dx=JOY_RIGHT;
-	}
-	if(key&JOY_LEFT) {
+	if(key&JOY_LEFT)
 		dx=JOY_LEFT;
-	}
-	if(key&JOY_DOWN) {
+	if(key&JOY_DOWN)
 		dy=JOY_DOWN;
-	}
-	if(key&JOY_FIRE) {
+	if(key&JOY_FIRE)
 		fire=JOY_FIRE;
-	}
 	if(key!=FALSE) t_idle=time();
 	player.direct=dx+dy+fire;
 }
@@ -125,11 +120,11 @@ u16 player_collision()
 		collision^=COL_PRV_SCR;
 	
 	//screen down
-	if (pyc==21)
+	if (player.y==160)
 		collision^=COL_DOWN_SCR;
 	
 	// screen up
-	if (pyc==0)
+	if (player.y==0)
 		collision^=COL_UP_SCR;
 	
 	//next level
@@ -164,7 +159,6 @@ void player_logic()
 		if (player.status==ST_DEATH&&t_death+100<time()){
 			player.status=ST_IDLE;
 			if (!player.life){
-				player.life=3;
 				start_level();
 			}
 			else
@@ -272,20 +266,21 @@ void player_logic()
 	
 	// right 
 	
-	if (player.direct==JOY_RIGHT&&(p_collision&COL_RIGHT)!=COL_RIGHT){
-		if (player.status==STAIRS_STAND){
-			player.x+=player.h_step;
-			player.status=ST_STAIRS;
+	if (player.direct==JOY_RIGHT+JOY_FIRE||player.direct==JOY_RIGHT)
+		if ((p_collision&COL_RIGHT)!=COL_RIGHT){
+			if (player.status==STAIRS_STAND){
+				player.x+=player.h_step;
+				player.status=ST_STAIRS;
+			}
+			else {
+				player.status=ST_RIGHT;
+				trig_left=FALSE;
+				player.x+=player.h_step;
+				if ((player_collision()&COL_NXT_SCR)==COL_NXT_SCR)
+					nxt_screen();
+			}
+			
 		}
-		else {
-			player.status=ST_RIGHT;
-			trig_left=FALSE;
-			player.x+=player.h_step;
-			if ((player_collision()&COL_NXT_SCR)==COL_NXT_SCR)
-				nxt_screen();
-		}
-		
-	}
 	
 	if (player.direct==JOY_RIGHT+JOY_UP&&(p_collision&COL_RIGHT)!=COL_RIGHT) {
 		if (player.v_speed>0){
@@ -313,19 +308,20 @@ void player_logic()
 	
 	
 	//left
-	if (player.direct==JOY_LEFT&&(p_collision&COL_LEFT)!=COL_LEFT) {
-		if (player.status==STAIRS_STAND){
-			player.x-=player.h_step;
-			player.status=ST_STAIRS;
+	if (player.direct==JOY_LEFT+JOY_FIRE||player.direct==JOY_LEFT)
+		if ((p_collision&COL_LEFT)!=COL_LEFT) {
+			if (player.status==STAIRS_STAND){
+				player.x-=player.h_step;
+				player.status=ST_STAIRS;
+			}
+			else {
+				player.status=ST_LEFT;
+				trig_left=TRUE;
+				player.x-=player.h_step;
+				if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR)
+					prv_screen();
+			}
 		}
-		else {
-			player.status=ST_LEFT;
-			trig_left=TRUE;
-			player.x-=player.h_step;
-			if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR)
-				prv_screen();
-		}
-	}
 	
 	if (player.direct==JOY_LEFT+JOY_UP&&(p_collision&COL_LEFT)!=COL_LEFT) {
 		if (player.v_speed>0){
@@ -357,8 +353,10 @@ void player_logic()
 		for (j=0;j<2;j++) {
 			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(player_collision()&COL_GROUND)!=COL_GROUND) {
 				player.y++;
-				if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR)
+				if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR){
 					down_screen();
+					break;
+				}
 				player.status=ST_STAIRS;
 				
 			}

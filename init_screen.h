@@ -103,7 +103,7 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=B_SLIME;
 					enemy[enemy_summ].health=2;
-					enemy[enemy_summ].skip=6;
+					enemy[enemy_summ].skip=10;
 					enemy[enemy_summ].direct=LEFT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_B_SLIME;
@@ -117,7 +117,7 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=S_SLIME;
 					enemy[enemy_summ].health=1;
-					enemy[enemy_summ].skip=7;
+					enemy[enemy_summ].skip=8;
 					enemy[enemy_summ].direct=RIGHT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_S_SLIME;
@@ -146,7 +146,7 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=ICE_SPIKE;
 					enemy[enemy_summ].health=2;
-					enemy[enemy_summ].skip=6;
+					enemy[enemy_summ].skip=20;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
@@ -240,20 +240,21 @@ void init_screen()
 void start_level()
 {
 	i8 i;
-		
+	set_sprite(0,0,0,SPRITE_END);
+	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
+		pal_bright(i);
+		delay(3);
+	}
+	load_level();
+	
+	chapter();
+	
 	tmp_save.screen=screen;
 	tmp_save.health=player.health;
 	tmp_save.ammo=player.ammo;
 	tmp_save.x=player.x;
 	tmp_save.y=player.y;
 
-	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
-		pal_bright(i);
-		delay(3);
-	}
-	
-	load_level();
-	
 	clear_screen(0);
 	
 	draw_hud();
@@ -328,7 +329,7 @@ void prv_screen()
 void down_screen()
 {
 	screen+=3;
-	player.y=1;
+	player.y=2;
 	if (screen!=tmp_save.screen)
 		if (screen==6||screen==12){
 			tmp_save.screen=screen;
@@ -345,7 +346,7 @@ void down_screen()
 void up_screen()
 {
 	screen-=3;
-	player.y=160;
+	player.y=159;
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();

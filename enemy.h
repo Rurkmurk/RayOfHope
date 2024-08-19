@@ -15,7 +15,7 @@ void player_enemy_collision_push(u8 n)
 
 void player_enemy_collision_pull(u8 n)
 {
-	if (player.y+8>enemy[n].y&&player.y-8<enemy[n].y){
+	if (player.y+9>enemy[n].y&&player.y-8<enemy[n].y){
 		if (player.x+5>=enemy[n].x&&player.x<enemy[n].x)
 			player.enemy_collision=COL_ENEMY_LEFT;
 		else if (player.x<=enemy[n].x+5&&player.x>enemy[n].x)
@@ -67,10 +67,14 @@ u16 enemy_collision(u8 n)
 		
 		case ICE_SPIKE:
 			if (player.y==enemy[n].y){
-				if (enemy[n].x-player.x<=24&&player.x<enemy[n].x)
+				if (enemy[n].x-player.x<=24&&player.x<enemy[n].x){
 					collision=COL_RIGHT;
-				else if (player.x-enemy[n].x<=24&&player.x>enemy[n].x)
+					enemy[n].skip=6;
+				}
+				else if (player.x-enemy[n].x<=24&&player.x>enemy[n].x){
 					collision=COL_LEFT;
+					enemy[n].skip=6;
+				}
 			}
 			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
 				collision=COL_RIGHT;
@@ -145,7 +149,7 @@ u16 enemy_collision(u8 n)
 		
 		case MINE_JUMP:
 			if (player.y==enemy[n].y){
-				enemy[n].skip=4;
+				enemy[n].skip=3;
 				if (player.x<enemy[n].x)
 					collision=COL_RIGHT;
 				else if (player.x>enemy[n].x)
@@ -175,8 +179,8 @@ u16 enemy_collision(u8 n)
 		break;
 		
 		case ANGRY_PLANT:
-			if (player.y+1>enemy[n].y&&player.y-8<enemy[n].y)
-				if (player.x-9<enemy[n].x&&player.x+9>enemy[n].x){
+			if (player.y<=enemy[n].y&&player.y>=enemy[n].y-16)
+				if (player.x>enemy[n].x-7&&player.x<enemy[n].x+7){
 					collision=COL_DANGER;
 					enemy[n].skip=4;
 				}

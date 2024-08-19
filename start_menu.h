@@ -42,6 +42,10 @@ void chapter()
 		delay(3);
 	}
 	press_key();
+	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
+		pal_bright(i);
+		delay(3);
+	}
 }
 
 void start()
@@ -58,10 +62,10 @@ void start()
 		delay(3);
 	}
 	press_key();
-	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
-		pal_bright(i);
-		delay(3);
-	}
+	// for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
+		// pal_bright(i);
+		// delay(3);
+	// }
 }
 
 #endif

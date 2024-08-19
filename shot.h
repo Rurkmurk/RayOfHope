@@ -22,8 +22,13 @@ u8 shot_collision()
 			if (shot.y+8>=enemy[n].y&&shot.y<=enemy[n].y)
 				if (shot.x>enemy[n].x-4&&shot.x<enemy[n].x+4) {
 					collision=TRUE;
-					if (shot.frame==SPR_SHOT+4)
-						enemy[n].health--;
+					if (shot.frame==SPR_SHOT+4){
+						if (enemy[n].type!=ANGRY_PLANT)//
+							enemy[n].health--;
+						else 							//
+							if (enemy[n].direct==ANGRY)	//
+								enemy[n].health--;		//
+					}
 				}
 	
 	return (collision);

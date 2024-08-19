@@ -42,8 +42,8 @@ void main()
 	
 	sprites_start();
 	start();
-	load_level();
-	chapter();
+	// load_level();
+	// chapter();
 	start_level();
 
 	for (;;) {
@@ -71,7 +71,7 @@ void main()
 		
 
 		// output_string(0, 24, "     ");
-		// itoa(20+player.v_speed, name);
+		// itoa(player.y, name);
 		// output_string(0, 24, name);
 		
 	}
