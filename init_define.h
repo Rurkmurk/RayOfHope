@@ -60,6 +60,7 @@
 #define LEFT 			#0x8
 #define WAIT			#0x10
 #define ANGRY			#0x20
+#define STALACT_DOWN	#0x40
 /*******************************************/
 
 /* tile numbers ****************************/
@@ -72,7 +73,7 @@
 #define DANGER			5
 #define STALACT 		6
 #define EXIT			7
-#define HEALTH_FULL		8
+#define LIFE			8
 #define HEALTH			9
 #define AMMO_FULL		10
 #define AMMO			11
@@ -92,12 +93,15 @@
 #define ANGRY_PLANT_R	24
 #define ANGRY_PLANT_L	25
 #define ANGRY_PLANT		26
+#define BAT				27
+#define SPIDER			28
 
 /*****************************/
 
 #define GRAVITY			2
 #define AMMO_MAX		10
 #define HEALTH_MAX		10
+#define LIFE_MAX		3
 #define DEATH_SPEED		7
 
 static u32 t_player, t_idle, t_death;

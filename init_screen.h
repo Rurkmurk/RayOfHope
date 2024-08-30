@@ -78,8 +78,15 @@ void init_screen()
 					enemy[enemy_summ].skip=10;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
-					map[y][x]=0;
-					enemy[enemy_summ].frame=SPR_BLOCK+12;
+					//map[y][x]=0;
+					switch (level){
+						case 0:
+							enemy[enemy_summ].frame=SPR_BLOCK+12;
+						break;
+						case 1:
+							enemy[enemy_summ].frame=SPR_COAL+12;
+						break;
+					}
 				break;
 				
 				case STALACT:
@@ -138,6 +145,21 @@ void init_screen()
 					enemy[enemy_summ].frame=SPR_OWL;
 				break;
 				
+				case BAT:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=BAT;
+					enemy[enemy_summ].health=2;
+					enemy[enemy_summ].skip=4;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=UP;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_BAT;
+				break;
+				
 				case ICE_SPIKE:
 					enemy_summ++;
 					enemy[enemy_summ].x_start=x;
@@ -146,11 +168,26 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=ICE_SPIKE;
 					enemy[enemy_summ].health=2;
-					enemy[enemy_summ].skip=20;
+					enemy[enemy_summ].skip=14;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
-					enemy[enemy_summ].frame=SPR_ICE_SPIKE;
+					enemy[enemy_summ].frame=SPR_ICE_SPIKE+12;
+				break;
+				
+				case SPIDER:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=SPIDER;
+					enemy[enemy_summ].health=2;
+					enemy[enemy_summ].skip=12;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=WAIT;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_SPIDER+12;
 				break;
 				
 				case SNOW_JUMP:

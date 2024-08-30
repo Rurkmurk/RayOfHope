@@ -49,7 +49,7 @@ void open_box (u8 y, u8 x)
 {
 	static u16 addr;
 	
-	select_image(IMG_TILE_SNOW);
+	select_image(level_tile);
 	color_key(15);
 	draw_tile_key(x,y-1,216);
 	draw_tile_key(x+1,y-1,217);

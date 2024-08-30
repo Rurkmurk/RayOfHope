@@ -51,6 +51,9 @@ set sprite.12=res\mine_jump.bmp
 set sprite.13=res\angry_plant_r.bmp
 set sprite.14=res\angry_plant_l.bmp
 set sprite.15=res\angry_plant.bmp
+set sprite.16=res\coal.bmp
+set sprite.17=res\bat.bmp
+set sprite.18=res\spider.bmp
 
 
 rem набор звуковых эффектов, если нужен

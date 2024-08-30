@@ -83,9 +83,9 @@ u16 player_collision()
 	if (map[pyd][pxl]==AMMO_FULL){
 		if (player.ammo<AMMO_MAX){
 		map[pyd][pxl]=0;
-		if (player.ammo>7)
+		if (player.ammo>5)
 			player.ammo=AMMO_MAX;
-		else player.ammo+=3;
+		else player.ammo+=5;
 		sfx_play(SFX_LOAD_FULL,8);
 		open_box(pyd, pxl);
 		}
@@ -95,17 +95,21 @@ u16 player_collision()
 	if (map[pyd][pxl]==HEALTH){
 		if (player.health<HEALTH_MAX){
 			map[pyd][pxl]=0;
-			player.health++;
+			
+			if (player.health>7)
+				player.health=HEALTH_MAX;
+			else player.health+=3;
+			
 			sfx_play(SFX_HEALTH,8);
 			open_box(pyd, pxl);
 		}
 	}
-	if (map[pyd][pxl]==HEALTH_FULL){
-		if (player.health<HEALTH_MAX){
+	
+	//box life
+	if (map[pyd][pxl]==LIFE){
+		if (player.life<LIFE_MAX){
 			map[pyd][pxl]=0;
-			if (player.health>7)
-				player.health=HEALTH_MAX;
-			else player.health+=3;
+			player.life++;
 			sfx_play(SFX_HEALTH_FULL,8);
 			open_box(pyd, pxl);
 		}

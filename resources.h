@@ -27,14 +27,17 @@
 #define SPR_ANGRY_PLANT_R	83
 #define SPR_ANGRY_PLANT_L	103
 #define SPR_ANGRY_PLANT	123
-#define SPR_B_SLIME	143
-#define SPR_S_SLIME	155
-#define SPR_OWL	167
-#define SPR_STALACT	179
-#define SPR_ICE_SPIKE	199
-#define SPR_BLOCK	219
-#define SPR_SNOW_JUMP	239
-#define SPR_WATER	259
+#define SPR_COAL	143
+#define SPR_BAT	163
+#define SPR_SPIDER	175
+#define SPR_B_SLIME	195
+#define SPR_S_SLIME	207
+#define SPR_OWL	219
+#define SPR_STALACT	231
+#define SPR_ICE_SPIKE	251
+#define SPR_BLOCK	271
+#define SPR_SNOW_JUMP	291
+#define SPR_WATER	311
 
 #define SFX_SHOT	0
 #define SFX_BOOM	1
