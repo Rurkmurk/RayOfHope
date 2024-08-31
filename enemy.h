@@ -120,11 +120,11 @@ u16 enemy_collision(u8 n)
 			if (player.y==enemy[n].y){
 				if (enemy[n].x-player.x<=24&&player.x<enemy[n].x){
 					collision=COL_RIGHT;
-					enemy[n].skip=5;
+					enemy[n].skip=4;
 				}
 				else if (player.x-enemy[n].x<=24&&player.x>enemy[n].x){
 					collision=COL_LEFT;
-					enemy[n].skip=5;
+					enemy[n].skip=4;
 				}
 			}
 			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
