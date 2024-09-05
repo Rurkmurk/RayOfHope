@@ -159,8 +159,8 @@ void load_level()
 			level_size=18;
 			
 			screen=0;
-			player.x=8;
-			player.y=120;
+			player.x=8;//8
+			player.y=120;//120
 			player.health=5;
 			player.life=3;
 			player.ammo=5;
@@ -179,9 +179,9 @@ void load_level()
 			level_tile=IMG_TILE_MINE;
 			level_size=18;
 			
-			screen=0;
-			player.x=8;
-			player.y=112;
+			screen=17;
+			player.x=8;//8
+			player.y=23;//112
 			player.health=5;
 			player.life=3;
 			player.ammo=5;

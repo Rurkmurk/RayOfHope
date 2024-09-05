@@ -132,15 +132,10 @@ u16 player_collision()
 		collision^=COL_UP_SCR;
 	
 	//next level
-	// if (map[pyd][pxc]==EXIT){
-		// pal_select(2);
-		// clear_screen(0);
-		// draw_image(0,0,IMG_RC);
-		// set_sprite(0,0,0,SPRITE_END);
-		// swap_screen();
-		// press_key();
-		// start_level();
-	// }
+	if (map[pyd][pxc]==EXIT){
+		level++;
+		start_level();
+	}
 	
 	return (collision);
 }

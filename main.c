@@ -1,15 +1,15 @@
 #include <evo.h>
 #include "resources.h"
-#include "init_define.h"
-#include "output_string.h"
-#include "start_menu.h"
-#include "load_level.h"
-#include "update_screen.h"
-#include "init_screen.h"
-#include "player.h"
-#include "shot.h"
-#include "enemy.h"
-#include "terrain.h"
+#include "init_define.c"
+#include "output_string.c"
+#include "start_menu.c"
+#include "load_level.c"
+#include "update_screen.c"
+#include "init_screen.c"
+#include "player.c"
+#include "shot.c"
+#include "enemy.c"
+#include "terrain.c"
 
 
 void main()

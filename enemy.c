@@ -72,25 +72,25 @@ u16 enemy_collision(u8 n)
 					enemy[n].skip=2;
 				}
 			}
-			
 			switch (enemy[n].direct){
 				case UP:
 					if (map[eyu][exl]==WALL||eyu==0)
-						collision^=COL_UP;
+						collision=COL_UP;
 				break;
 				case DOWN:
 					if (map[eyd][exl]==WALL||eyd==21)
-						collision^=COL_DOWN;
+						collision=COL_DOWN;
 				break;
 				case LEFT:
 					if (map[eyd][exl]==WALL||exl==0)
-					collision^=COL_LEFT;
+					collision=COL_LEFT;
 				break;
 				case RIGHT:
 					if (map[eyd][exr]==WALL||exr==39)
-					collision^=COL_RIGHT;
+					collision=COL_RIGHT;
 				break;
 			}
+			
 			player_enemy_collision_push(n);
 		break;
 		
@@ -118,11 +118,11 @@ u16 enemy_collision(u8 n)
 		
 			case SPIDER:
 			if (player.y==enemy[n].y){
-				if (enemy[n].x-player.x<=24&&player.x<enemy[n].x){
+				if (enemy[n].x-player.x<=60&&player.x<enemy[n].x){
 					collision=COL_RIGHT;
 					enemy[n].skip=4;
 				}
-				else if (player.x-enemy[n].x<=24&&player.x>enemy[n].x){
+				else if (player.x-enemy[n].x<=60&&player.x>enemy[n].x){
 					collision=COL_LEFT;
 					enemy[n].skip=4;
 				}
