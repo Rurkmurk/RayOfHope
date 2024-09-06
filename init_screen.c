@@ -190,6 +190,21 @@ void init_screen()
 					enemy[enemy_summ].frame=SPR_SPIDER+12;
 				break;
 				
+				case ZOMBI:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=ZOMBI;
+					enemy[enemy_summ].health=5;
+					enemy[enemy_summ].skip=12;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=WAIT;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_ZOMBI+12;
+				break;
+				
 				case SNOW_JUMP:
 					enemy_summ++;
 					enemy[enemy_summ].x_start=x;

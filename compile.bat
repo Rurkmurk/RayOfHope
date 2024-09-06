@@ -16,7 +16,7 @@ rem нумерация после точки должна быть возрастающей
 
 set palette.0=res\tile_snow.bmp
 set palette.1=res\tile_mine.bmp
-set palette.2=res\rc.bmp
+set palette.2=res\tile_lab.bmp
 set palette.3=res\sun.bmp
 
 rem список изображений, откуда брать графику
@@ -31,7 +31,7 @@ set image.6=res\font.bmp
 set image.7=res\chapter_1.bmp
 set image.8=res\chapter_2.bmp
 set image.9=res\sun.bmp
-set image.10=res\rc.bmp
+set image.10=res\tile_lab.bmp
 
 rem спрайты
 
@@ -54,6 +54,7 @@ set sprite.15=res\angry_plant.bmp
 set sprite.16=res\coal.bmp
 set sprite.17=res\bat.bmp
 set sprite.18=res\spider.bmp
+set sprite.19=res\zombi.bmp
 
 
 rem набор звуковых эффектов, если нужен

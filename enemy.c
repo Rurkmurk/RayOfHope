@@ -82,16 +82,20 @@ u16 enemy_collision(u8 n)
 						collision=COL_DOWN;
 				break;
 				case LEFT:
-					if (map[eyd][exl]==WALL||exl==0)
-					collision=COL_LEFT;
+					if (map[eyd][exl]==WALL||exl==0){
+						enemy[n].direct=DOWN;
+						collision=COL_DOWN;
+					}
 				break;
 				case RIGHT:
-					if (map[eyd][exr]==WALL||exr==39)
-					collision=COL_RIGHT;
+					if (map[eyd][exr]==WALL||exr==39){
+						enemy[n].direct=DOWN;
+						collision=COL_DOWN;
+					}
 				break;
 			}
 			
-			player_enemy_collision_push(n);
+			player_enemy_collision_pull(n);
 		break;
 		
 		case BLOCK:
@@ -116,7 +120,7 @@ u16 enemy_collision(u8 n)
 			player_enemy_collision_push(n);
 		break;
 		
-			case SPIDER:
+		case SPIDER:
 			if (player.y==enemy[n].y){
 				if (enemy[n].x-player.x<=60&&player.x<enemy[n].x){
 					collision=COL_RIGHT;
@@ -127,6 +131,24 @@ u16 enemy_collision(u8 n)
 					enemy[n].skip=4;
 				}
 			}
+			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
+				collision=COL_RIGHT;
+			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
+				collision=COL_LEFT;
+			player_enemy_collision_pull(n);
+		break;
+		
+		case ZOMBI:
+			// if (player.y==enemy[n].y){
+				// if (enemy[n].x-player.x<=60&&player.x<enemy[n].x){
+					// collision=COL_RIGHT;
+					// enemy[n].skip=4;
+				// }
+				// else if (player.x-enemy[n].x<=60&&player.x>enemy[n].x){
+					// collision=COL_LEFT;
+					// enemy[n].skip=4;
+				// }
+			// }
 			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
 				collision=COL_RIGHT;
 			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
@@ -281,6 +303,9 @@ void enemy_animation(u8 n)
 		break;
 		case SPIDER:
 			n_spr=SPR_SPIDER;
+		break;
+		case ZOMBI:
+			n_spr=SPR_ZOMBI;
 		break;
 		case BLOCK:
 			switch (level) {

@@ -2,7 +2,7 @@
 
 #define IMG_TILE_SNOW	0
 #define IMG_BACK_SNOW	1
-#define IMG_RC	2
+#define IMG_TILE_LAB	2
 #define IMG_TILE_MINE	3
 #define IMG_BACK_MINE	4
 #define IMG_TILE_HUD	5
@@ -14,7 +14,7 @@
 
 #define PAL_TILE_SNOW	0
 #define PAL_TILE_MINE	1
-#define PAL_RC	2
+#define PAL_TILE_LAB	2
 #define PAL_SUN	3
 
 
@@ -30,14 +30,15 @@
 #define SPR_COAL	143
 #define SPR_BAT	163
 #define SPR_SPIDER	175
-#define SPR_B_SLIME	195
-#define SPR_S_SLIME	207
-#define SPR_OWL	219
-#define SPR_STALACT	231
-#define SPR_ICE_SPIKE	251
-#define SPR_BLOCK	271
-#define SPR_SNOW_JUMP	291
-#define SPR_WATER	311
+#define SPR_ZOMBI	195
+#define SPR_B_SLIME	215
+#define SPR_S_SLIME	227
+#define SPR_OWL	239
+#define SPR_STALACT	251
+#define SPR_ICE_SPIKE	271
+#define SPR_BLOCK	291
+#define SPR_SNOW_JUMP	311
+#define SPR_WATER	331
 
 #define SFX_SHOT	0
 #define SFX_BOOM	1

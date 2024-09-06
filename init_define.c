@@ -95,6 +95,7 @@
 #define ANGRY_PLANT		26
 #define BAT				27
 #define SPIDER			28
+#define ZOMBI			29
 
 /*****************************/
 

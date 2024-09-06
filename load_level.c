@@ -191,10 +191,27 @@ void load_level()
 			
 			pal_select(1);
 		break;
-		// case 2:
-			// load_file("map2_img", 60, 1);
-			// load_file("map2_cod", 62, 1);
-		// break;
+		case 2:
+			load_file("lev3_gfx", PAGE_GFX, 1);
+			load_file("lev3_map", PAGE_MAP, 1);
+			load_file("lev3_gfx", PAGE_GFX_TMP, 1);
+			load_file("lev3_map", PAGE_MAP_TMP, 1);
+			level_back=IMG_BACK_MINE;
+			level_tile=IMG_TILE_LAB;
+			level_size=18;
+			
+			screen=0;
+			player.x=80;
+			player.y=23;
+			player.health=5;
+			player.life=3;
+			player.ammo=5;
+			player.frame=25;
+			player.enemy_collision=0;
+			player.v_speed=0;
+			
+			pal_select(2);
+		break;
 	}
 }
 
