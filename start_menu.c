@@ -219,8 +219,10 @@ void info()
 	bright_up();
 	while (TRUE)
 	{
-		if (press_key()==KEY_SPACE)
+		if (press_key()==KEY_SPACE){
+			sfx_play(SFX_MENU,8);
 			menu_main();
+		}
 	}
 }
 
@@ -307,6 +309,7 @@ void start_image()
 	swap_screen();
 	bright_up();
 	press_key();
+	sfx_play(SFX_MENU,8);
 }
 
 #endif
