@@ -2,7 +2,7 @@
 #define _OUTPUT_STRING
 
 //////////////////////////////////////////////////////////////
-void itoa(i16 val, u8* buf)
+/* void itoa(i16 val, u8* buf)
 {
     static u8 *p;                 
     static  u8 *firstdig;          
@@ -35,7 +35,7 @@ void itoa(i16 val, u8* buf)
         --p;
         ++firstdig;         
     } while (firstdig < p); 
-}
+} */
 
 ////////////////////////////////////////////////////////////////////////////////////////
 void output_string(u8 output_x, u8 output_y, u8* str)
@@ -48,13 +48,14 @@ void output_string(u8 output_x, u8 output_y, u8* str)
 	{
 		n=*str++;
 		if(!n) break;
-		draw_tile_key(output_x,output_y,n-32);
-		output_x++;
-		if (output_x>=40)
+		if (n-32==62)
 		{
 			output_x=save_output_x;
 			output_y++;
+			n=*str++;
 		}
+		draw_tile_key(output_x,output_y,n-32);
+		output_x++;
 	}
 }
 

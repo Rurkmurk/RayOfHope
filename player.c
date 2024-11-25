@@ -3,24 +3,44 @@
 
 void control_player()
 {
+	static u8 keys[40];
 	static u8 key;
 	static u8 dx, dy, fire;
 	dx=0;
 	dy=0;
 	fire=0;
-	key=joystick();
-	if(key&JOY_UP)
-		dy=JOY_UP;
-	if(key&JOY_RIGHT)
-		dx=JOY_RIGHT;
-	if(key&JOY_LEFT)
-		dx=JOY_LEFT;
-	if(key&JOY_DOWN)
-		dy=JOY_DOWN;
-	if(key&JOY_FIRE)
-		fire=JOY_FIRE;
-	if(key!=FALSE) t_idle=time();
+	
+	switch (control_type)
+	{
+		case 0:
+			key=joystick();
+			if(key&JOY_UP)
+				dy=JOY_UP;
+			if(key&JOY_RIGHT)
+				dx=JOY_RIGHT;
+			if(key&JOY_LEFT)
+				dx=JOY_LEFT;
+			if(key&JOY_DOWN)
+				dy=JOY_DOWN;
+			if(key&JOY_FIRE)
+				fire=JOY_FIRE;
+		break;
+		case 1:
+			keyboard(keys);
+			if (keys[key_up]==KEY_DOWN)
+				dy=JOY_UP;
+			if (keys[key_down]==KEY_DOWN)
+				dy=JOY_DOWN;
+			if (keys[key_right]==KEY_DOWN)
+				dx=JOY_RIGHT;
+			if (keys[key_left]==KEY_DOWN)
+				dx=JOY_LEFT;
+			if (keys[key_fire]==KEY_DOWN)
+				fire=JOY_FIRE;
+		break;
+	}
 	player.direct=dx+dy+fire;
+	if(player.direct!=FALSE) t_idle=time();
 }
 
 
@@ -60,9 +80,7 @@ u16 player_collision()
 	//stairs
 	if (map[py_stairs][pxl]==STAIRS&&map[py_stairs][pxr]==STAIRS)
 		collision^=COL_STAIRS;
-	//lava
-	// if (map[py_ground][pxc]==6)
-		// collision^=COL_LAVA;
+
 	//water
 	if (map[pyc][pxr-1]==WATER||map[pyc][pxr]==WATER)
 		collision^=COL_WATER;
@@ -137,6 +155,12 @@ u16 player_collision()
 		start_level();
 	}
 	
+	//win
+	if (map[pyu][pxc]==VAC){
+		win_screen();
+		menu_main();
+	}
+	
 	return (collision);
 }
 
@@ -158,7 +182,8 @@ void player_logic()
 		if (player.status==ST_DEATH&&t_death+100<time()){
 			player.status=ST_IDLE;
 			if (!player.life){
-				start_level();
+				death_screen();
+				menu_main();
 			}
 			else
 				restart_level();
@@ -219,22 +244,12 @@ void player_logic()
 			return;
 	}
 	
-		
 	//danger
 	if ((p_collision&COL_DANGER)==COL_DANGER){
 		player.health--;
 		sfx_play(SFX_DAMAGE,8);
 		update_hud();
 	}
-	
-	//lava
-	// if ((p_collision&COL_LAVA)==COL_LAVA) {
-		// player.y+=7;
-		// player.status=ST_LAVA;
-		// player.health=0;
-		// update_hud();
-		// return;
-	// }
 	
 	//up
 	if ((player.direct&JOY_UP)==JOY_UP) {
@@ -284,7 +299,6 @@ void player_logic()
 	if (player.direct==JOY_RIGHT+JOY_UP&&(p_collision&COL_RIGHT)!=COL_RIGHT) {
 		if (player.v_speed>0){
 			player.status=JUMP_RIGHT;
-			//sfx_play(SFX_JUMP_UP,8);
 			player.h_step=player.v_speed;
 			trig_left=FALSE;
 		}
@@ -292,7 +306,6 @@ void player_logic()
 			player.status=ST_RIGHT;
 			player.h_step=1;
 		}
-		//player.x+=player.h_step;
 		for (j=0;j<player.h_step;j++){
 			player.x++;
 			if ((player_collision()&COL_NXT_SCR)==COL_NXT_SCR){
@@ -325,7 +338,6 @@ void player_logic()
 	if (player.direct==JOY_LEFT+JOY_UP&&(p_collision&COL_LEFT)!=COL_LEFT) {
 		if (player.v_speed>0){
 			player.status=JUMP_LEFT;
-			//sfx_play(SFX_JUMP_UP,8);
 			player.h_step=player.v_speed;
 			trig_left=TRUE;
 		}
@@ -333,7 +345,6 @@ void player_logic()
 			player.status=ST_LEFT;
 			player.h_step=1;
 		}
-		//player.x-=player.h_step;
 		for (j=0;j<player.h_step;j++){
 			player.x--;
 			if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR){
@@ -363,12 +374,11 @@ void player_logic()
 		}
 	}
 	
-	// drop down
+	/* // drop down
 	if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS&&player.v_speed<=0){
 		player.v_speed-=GRAVITY;
-		//player.status=ST_DOWN_PUSH;
-		for (j=0;j>player.v_speed;j--){
-			
+		for (j=0;j>player.v_speed;j--)
+		{
 			if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_WATER)!=COL_WATER&&(p_collision&COL_STAIRS)!=COL_STAIRS){
 				player.y++;
 				if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR)
@@ -388,10 +398,11 @@ void player_logic()
 				}
 				
 				else if (player.v_speed<=player.danger_height){
-					if (player.health)
-						player.health--;
+					//if (player.health)
+					player.health--;
 					sfx_play(SFX_DAMAGE,8);
 				}
+				
 				player.v_speed=0;
 				player.status=ST_DOWN_PUSH;
 				update_hud();
@@ -404,8 +415,51 @@ void player_logic()
 			player.status=ST_DOWN_PUSH;
 			sfx_play(SFX_JUMP_DOWN,8);
 		}
+	} */
+// drop down
+	if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS&&player.v_speed<=0){
+		player.v_speed-=GRAVITY;
+		for (j=0;j>player.v_speed;j--)
+		{
+			if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS){
+				player.y++;
+				p_collision=player_collision();
+				if ((p_collision&COL_WATER)==COL_WATER)
+					return;
+				if ((p_collision&COL_DOWN_SCR)==COL_DOWN_SCR)
+					down_screen();
+			}
+			if ((p_collision&COL_DOWN)==COL_DOWN||(p_collision&COL_STAIRS)==COL_STAIRS){
+				
+				sfx_play(SFX_JUMP_DOWN,8);
+				
+				if (player.v_speed<=player.danger_height){
+					if (player.health<=3)
+						player.health=0;
+					else {
+						player.health-=3;
+						sfx_play(SFX_DAMAGE,8);
+					}
+				}
+				/* else if (player.v_speed<=player.danger_height){
+					//if (player.health)
+					player.health--;
+					sfx_play(SFX_DAMAGE,8);
+				} */
+				
+				player.v_speed=0;
+				player.status=ST_DOWN_PUSH;
+				update_hud();
+				break;
+			}
+			
+		}
+		/* if ((p_collision&COL_DOWN)==COL_DOWN){
+			player.v_speed=0;
+			player.status=ST_DOWN_PUSH;
+			sfx_play(SFX_JUMP_DOWN,8);
+		} */
 	}
-
 	
 	//enemy collision
 	if (player.enemy_collision){
@@ -504,16 +558,19 @@ void player_animation()
 		
 		case ST_DEATH:
 			player.frame=27;
-			break;
+		break;
 		
 		case ST_WATER:
-			player.frame=26;
-			break;
-			
-		case ST_LAVA:
-			player.frame=28;
-			break;
-		
+			if (level==2){
+				if (player.frame<28||player.frame>31)
+					player.frame=28;
+				else
+					player.frame=player.frame<31?++player.frame:31;
+			}
+			else 
+				player.frame=26;
+		break;
+
 		case ST_RIGHT:
 			if (player.frame>7) {
 				player.frame=0;
@@ -521,9 +578,9 @@ void player_animation()
 			else {
 				player.frame=player.frame<7?++player.frame:0;
 				if (player.frame==2||player.frame==6)
-					sfx_play(SFX_STEP,8);
+					sfx_play(SFX_STEP,6);
 			}
-			break;
+		break;
 		
 		case ST_LEFT:
 			if (player.frame<8||player.frame>15) {
@@ -532,21 +589,21 @@ void player_animation()
 			else {
 				player.frame=player.frame<15?++player.frame:8;
 				if (player.frame==10||player.frame==14)
-					sfx_play(SFX_STEP,8); 
+					sfx_play(SFX_STEP,6); 
 			}
-			break;
+		break;
 			
 		case ST_JUMP:
 			player.frame=26;
-			break;
+		break;
 			
 		case JUMP_LEFT:
 			player.frame=19;
-			break;
+		break;
 			
 		case JUMP_RIGHT:
 			player.frame=18;
-			break;
+		break;
 			
 		case ST_STAIRS:
 			if (player.frame<20||player.frame>23) {
@@ -554,20 +611,22 @@ void player_animation()
 			}
 			else {
 				player.frame=player.frame<23?++player.frame:20;
+				if (player.frame==21||player.frame==23)
+					sfx_play(SFX_STEP_STAIRS,4); 
 			}
-			break;
+		break;
 			
 		case STAIRS_STAND:
 			player.frame=20;
-			break;
+		break;
 			
 		case DOWN_LEFT:
 			player.frame=17;
-			break;
+		break;
 		
 		case DOWN_RIGHT:
 			player.frame=16;
-			break;
+		break;
 
 		default:
 			if (player.status==ST_IDLE&&(player_collision()&COL_STAIRS)!=COL_STAIRS&&

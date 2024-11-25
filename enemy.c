@@ -82,13 +82,13 @@ u16 enemy_collision(u8 n)
 						collision=COL_DOWN;
 				break;
 				case LEFT:
-					if (map[eyd][exl]==WALL||exl==0){
+					if (map[eyd][exl-1]==WALL||map[eyu][exl-1]==WALL||exl==0){
 						enemy[n].direct=DOWN;
 						collision=COL_DOWN;
 					}
 				break;
 				case RIGHT:
-					if (map[eyd][exr]==WALL||exr==39){
+					if (map[eyd][exr]==WALL||map[eyu][exr]==WALL||exr==39){
 						enemy[n].direct=DOWN;
 						collision=COL_DOWN;
 					}
@@ -139,20 +139,91 @@ u16 enemy_collision(u8 n)
 		break;
 		
 		case ZOMBI:
-			// if (player.y==enemy[n].y){
-				// if (enemy[n].x-player.x<=60&&player.x<enemy[n].x){
-					// collision=COL_RIGHT;
-					// enemy[n].skip=4;
-				// }
-				// else if (player.x-enemy[n].x<=60&&player.x>enemy[n].x){
-					// collision=COL_LEFT;
-					// enemy[n].skip=4;
-				// }
-			// }
-			if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
-				collision=COL_RIGHT;
-			if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
-				collision=COL_LEFT;
+			switch (enemy[n].direct){
+				case WAIT:
+					if (player.y==enemy[n].y){
+						if (player.x<enemy[n].x&&enemy[n].x-player.x<=100&&map[eyd][exl-1]!=BLOCK){
+							collision=COL_RIGHT;
+							enemy[n].skip=8;
+						}
+						if (player.x>enemy[n].x&&player.x-enemy[n].x<=100&&map[eyd][exr]!=BLOCK){
+							collision=COL_LEFT;
+							enemy[n].skip=8;
+						}
+					}
+				break;
+				case RIGHT:
+					if (map[eyd][exr]==WALL||map[eyd+1][exr]!=WALL||exr==39)
+						collision=COL_RIGHT;
+					if (map[eyd][exr]==BLOCK){
+						enemy[n].direct=WAIT;
+						enemy[n].skip=15;
+					}
+				break;
+				case LEFT:
+					if (map[eyd][exl]==WALL||map[eyd+1][exl]!=WALL||exl==0)
+						collision=COL_LEFT;
+					if (map[eyd][exl-1]==BLOCK){
+						enemy[n].direct=WAIT;
+						enemy[n].skip=15;
+					}
+				break;
+			}
+			player_enemy_collision_pull(n);
+		break;
+			
+		case ZOMBI_HAT:
+			switch (enemy[n].direct){
+				case WAIT:
+					if (player.y==enemy[n].y){
+						if (player.x<enemy[n].x&&map[eyd][exl-1]!=WALL&&map[eyd][exl-1]!=BLOCK){
+							collision=COL_RIGHT;
+							enemy[n].skip=6;
+						}
+						if (player.x>enemy[n].x&&map[eyd][exr+1]!=WALL&&map[eyd][exr+1]!=BLOCK){
+							collision=COL_LEFT;
+							enemy[n].skip=6;
+						}
+					}
+				break;
+				case RIGHT:
+					if (player.y<enemy[n].y-16||player.y>enemy[n].y+16||map[eyd][exr+1]==BLOCK){
+						enemy[n].direct=WAIT;
+						enemy[n].skip=20;
+					}
+					if (map[eyd][exr]==WALL||exr==39)
+						collision=COL_RIGHT;
+					if (map[eyd+1][exl]==EMPTY){
+						collision=COL_STALACT;
+						enemy[n].direct=STALACT_DOWN;
+						enemy[n].skip=10;
+					}
+				break;
+				case LEFT:
+					if (player.y<enemy[n].y-16||player.y>enemy[n].y+16||map[eyd][exl-1]==BLOCK){
+						enemy[n].direct=WAIT;
+						enemy[n].skip=20;
+					}
+					if (map[eyd][exl]==WALL||exl==0)
+						collision=COL_LEFT;
+					if (map[eyd+1][exr]==EMPTY){
+						collision=COL_STALACT;
+						enemy[n].direct=STALACT_DOWN;
+						enemy[n].skip=10;
+					}
+				break;
+				case STALACT_DOWN:
+					if (map[eyd][exl]==WALL)
+						collision=COL_DOWN;
+					for (i=1;i<=enemy_summ;i++){
+						if (n==i)
+							continue;
+						if (enemy[i].y<=enemy[n].y)
+							if (enemy[i].x+3>=enemy[n].x&&enemy[i].x<=enemy[n].x+3)
+							enemy[i].health=0;
+						}
+				break;
+			}
 			player_enemy_collision_pull(n);
 		break;
 		
@@ -287,7 +358,17 @@ void enemy_animation(u8 n)
 			n_spr=SPR_B_SLIME;
 		break;
 		case S_SLIME:
-			n_spr=SPR_S_SLIME;
+			switch (level) {
+				case 0:
+				n_spr=SPR_S_SLIME;
+				break;
+				case 1:
+				n_spr=SPR_S_SLIME;
+				break;
+				case 2:
+				n_spr=SPR_S_SLIME_LAB;
+				break;
+			}
 		break;
 		case OWL:
 			n_spr=SPR_OWL;
@@ -307,6 +388,9 @@ void enemy_animation(u8 n)
 		case ZOMBI:
 			n_spr=SPR_ZOMBI;
 		break;
+		case ZOMBI_HAT:
+			n_spr=SPR_ZOMBI_HAT;
+		break;
 		case BLOCK:
 			switch (level) {
 				case 0:
@@ -314,6 +398,9 @@ void enemy_animation(u8 n)
 				break;
 				case 1:
 				n_spr=SPR_COAL;
+				break;
+				case 2:
+				n_spr=SPR_COLBA;
 				break;
 			}
 		break;
@@ -423,6 +510,28 @@ void enemy_logic()
 			put_mem(PAGE_MAP,addr,0);
 		}
 		
+		if (enemy[n].direct==WAIT) {	
+				enemy[n].skip_count++;
+				if (enemy[n].skip_count>=enemy[n].skip){
+					enemy[n].skip_count=0;
+					enemy_animation(n);
+				}
+				
+				if ((e_collision&COL_RIGHT)==COL_RIGHT){
+					enemy[n].direct=LEFT;
+					enemy[n].skip_count=enemy[n].skip;
+				}
+				if ((e_collision&COL_LEFT)==COL_LEFT){
+					enemy[n].direct=RIGHT;
+					enemy[n].skip_count=enemy[n].skip;
+				}
+				if ((e_collision&COL_STALACT)==COL_STALACT)
+					enemy[n].direct=STALACT_DOWN;
+				if ((e_collision&COL_DANGER)==COL_DANGER)
+					enemy[n].direct=ANGRY;
+		}
+
+		
 		switch (enemy[n].direct) {
 			case UP:
 				if ((e_collision&COL_RIGHT)==COL_RIGHT)
@@ -455,6 +564,7 @@ void enemy_logic()
 				}
 				else enemy[n].direct=UP;
 			break;
+
 			
 			case RIGHT:
 				if ((e_collision&COL_RIGHT)!=COL_RIGHT){
@@ -480,25 +590,11 @@ void enemy_logic()
 				else enemy[n].direct=RIGHT;
 			break;
 			
-			case WAIT:
-				if ((e_collision&COL_RIGHT)==COL_RIGHT)
-					enemy[n].direct=LEFT;
-				if ((e_collision&COL_LEFT)==COL_LEFT)
-					enemy[n].direct=RIGHT;
-				if ((e_collision&COL_STALACT)==COL_STALACT)
-					enemy[n].direct=STALACT_DOWN;
-				if ((e_collision&COL_DANGER)==COL_DANGER)
-					enemy[n].direct=ANGRY;
-				enemy[n].skip_count++;
-				if (enemy[n].skip_count>=enemy[n].skip){
-					enemy[n].skip_count=0;
-					enemy_animation(n);
-				}
-			break;
+			
 			
 			case STALACT_DOWN:
 				if ((e_collision&COL_DOWN)!=COL_DOWN){
-					enemy[n].skip+=1;
+					enemy[n].skip++;
 					for (j=10;j<enemy[n].skip;j++)
 						if ((enemy_collision(n)&COL_DOWN)!=COL_DOWN)
 					enemy[n].y++;

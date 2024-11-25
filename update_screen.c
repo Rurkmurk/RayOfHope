@@ -22,11 +22,15 @@ void update_screen()
 	for (n=1;n<=light_summ;n++)
 		set_sprite(n+enemy_summ+waterplant_summ+water_summ,light[n].x,light[n].y,light[n].frame);
 	
+	//fan
+	for (n=1;n<=fan_summ;n++)
+		set_sprite(n+enemy_summ+waterplant_summ+water_summ+light_summ,fan[n].x,fan[n].y,fan[n].frame);
+	
 	//shot
-	set_sprite(enemy_summ+waterplant_summ+water_summ+light_summ+1,shot.x,shot.y,shot.frame);
+	set_sprite(enemy_summ+waterplant_summ+water_summ+light_summ+fan_summ+1,shot.x,shot.y,shot.frame);
 	
 	//end
-	set_sprite(enemy_summ+waterplant_summ+water_summ+light_summ+2,0,0,SPRITE_END);
+	set_sprite(enemy_summ+waterplant_summ+water_summ+light_summ+fan_summ+2,0,0,SPRITE_END);
 		
 	swap_screen();
 }

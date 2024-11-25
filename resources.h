@@ -2,27 +2,36 @@
 
 #define IMG_TILE_SNOW	0
 #define IMG_BACK_SNOW	1
-#define IMG_TILE_LAB	2
-#define IMG_TILE_MINE	3
-#define IMG_BACK_MINE	4
-#define IMG_TILE_HUD	5
-#define IMG_IMG_HUD	6
-#define IMG_FONT	7
-#define IMG_CHAPTER_1	8
-#define IMG_CHAPTER_2	9
-#define IMG_SUN	10
+#define IMG_SUN	2
+#define IMG_TILE_LAB	3
+#define IMG_BACK_LAB	4
+#define IMG_WIN	5
+#define IMG_DEATH	6
+#define IMG_VIRUS	7
+#define IMG_MINE	8
+#define IMG_SNOWMOB	9
+#define IMG_BACK_MENU	10
+#define IMG_TILE_MINE	11
+#define IMG_BACK_MINE	12
+#define IMG_TILE_HUD	13
+#define IMG_IMG_HUD	14
+#define IMG_FONT	15
+#define IMG_CHAPTER_1	16
+#define IMG_CHAPTER_2	17
+#define IMG_CHAPTER_3	18
 
 #define PAL_TILE_SNOW	0
 #define PAL_TILE_MINE	1
 #define PAL_TILE_LAB	2
 #define PAL_SUN	3
+#define PAL_PALETTE_DARK	4
 
 
 
 #define SPR_PLAYER	0
 #define SPR_SHOT	32
-#define SPR_LIGHT_1	39
-#define SPR_LIGHT_2	51
+#define SPR_LIGHT_1_MINE	39
+#define SPR_LIGHT_2_MINE	51
 #define SPR_MINE_JUMP	63
 #define SPR_ANGRY_PLANT_R	83
 #define SPR_ANGRY_PLANT_L	103
@@ -32,13 +41,22 @@
 #define SPR_SPIDER	175
 #define SPR_ZOMBI	195
 #define SPR_B_SLIME	215
-#define SPR_S_SLIME	227
-#define SPR_OWL	239
-#define SPR_STALACT	251
-#define SPR_ICE_SPIKE	271
-#define SPR_BLOCK	291
-#define SPR_SNOW_JUMP	311
-#define SPR_WATER	331
+#define SPR_COLBA	227
+#define SPR_S_SLIME_LAB	247
+#define SPR_LIGHT_1_LAB	259
+#define SPR_LIGHT_2_LAB	271
+#define SPR_FAN	283
+#define SPR_ACID	291
+#define SPR_ZOMBI_HAT	331
+#define SPR_LIGHT_1_SNOW	351
+#define SPR_LIGHT_2_SNOW	363
+#define SPR_S_SLIME	375
+#define SPR_OWL	387
+#define SPR_STALACT	399
+#define SPR_ICE_SPIKE	419
+#define SPR_BLOCK	439
+#define SPR_SNOW_JUMP	459
+#define SPR_WATER	479
 
 #define SFX_SHOT	0
 #define SFX_BOOM	1
@@ -53,3 +71,5 @@
 #define SFX_STEP	10
 #define SFX_STALACTIT	11
 #define SFX_ENEMY_DEATH	12
+#define SFX_STEP_STAIRS	13
+#define SFX_MENU	14

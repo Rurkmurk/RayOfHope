@@ -3,7 +3,6 @@
 
 void draw_hud()
 {
-	//pal_select(level);
 	clear_screen(0);
 	draw_image(0,22,IMG_IMG_HUD);
 	update_hud();
@@ -21,6 +20,9 @@ void init_screen()
 	water_summ=0;
 	waterplant_summ=0;
 	light_summ=0;
+	fan_summ=0;
+	
+	//pal_select(level_palett_default);
 	
 	draw_image(0,0,level_back);
 	select_image(level_tile);
@@ -31,6 +33,7 @@ void init_screen()
 			
 			draw_tile_key(x,y,get_mem(PAGE_GFX,addr));
 			map[y][x]=get_mem(PAGE_MAP,addr++);
+			
 			switch (map[y][x]) {
 				
 				case WATER:
@@ -41,12 +44,32 @@ void init_screen()
 					waterplant[water_summ].x=water[water_summ].x;
 					waterplant[water_summ].y=water[water_summ].y+16;
 					if (water_summ%2!=0){
-						water[water_summ].frame=SPR_WATER;
-						waterplant[water_summ].frame=SPR_WATER+2;
+						switch (level){
+							case 2:
+							water[water_summ].n_spr=SPR_ACID;
+							water[water_summ].frame=SPR_ACID;
+							waterplant[water_summ].frame=SPR_ACID+2;
+							break;
+							default:
+							water[water_summ].n_spr=SPR_WATER;
+							water[water_summ].frame=SPR_WATER;
+							waterplant[water_summ].frame=SPR_WATER+2;
+							break;
+						}
 					}
 					else {
-						water[water_summ].frame=SPR_WATER+1;
-						waterplant[water_summ].frame=SPR_WATER+3;
+						switch (level){
+							case 2:
+							water[water_summ].n_spr=SPR_ACID;
+							water[water_summ].frame=SPR_ACID+1;
+							waterplant[water_summ].frame=SPR_ACID+3;
+							break;
+							default:
+							water[water_summ].n_spr=SPR_WATER;
+							water[water_summ].frame=SPR_WATER+1;
+							waterplant[water_summ].frame=SPR_WATER+3;
+							break;
+						}
 					}
 				break;
 				
@@ -54,16 +77,49 @@ void init_screen()
 					light_summ++;
 					light[light_summ].x=4*x;
 					light[light_summ].y=8*y;
-					light[light_summ].n_spr=SPR_LIGHT_1;
-					light[light_summ].frame=SPR_LIGHT_1;
+					switch (level){
+						case 0:
+							light[light_summ].frame=SPR_LIGHT_1_SNOW;
+							light[light_summ].n_spr=SPR_LIGHT_1_SNOW;
+						break;
+						case 1:
+							light[light_summ].frame=SPR_LIGHT_1_MINE;
+							light[light_summ].n_spr=SPR_LIGHT_1_MINE;
+						break;
+						case 2:
+							light[light_summ].frame=SPR_LIGHT_1_LAB;
+							light[light_summ].n_spr=SPR_LIGHT_1_LAB;
+						break;
+					}
 				break;
 				
 				case LIGHT_2:
 					light_summ++;
 					light[light_summ].x=4*x;
 					light[light_summ].y=8*y;
-					light[light_summ].n_spr=SPR_LIGHT_2;
-					light[light_summ].frame=SPR_LIGHT_2;
+					switch (level){
+						case 0:
+							light[light_summ].frame=SPR_LIGHT_2_SNOW;
+							light[light_summ].n_spr=SPR_LIGHT_2_SNOW;
+						break;
+						case 1:
+							light[light_summ].frame=SPR_LIGHT_2_MINE;
+							light[light_summ].n_spr=SPR_LIGHT_2_MINE;
+						break;
+						case 2:
+							light[light_summ].frame=SPR_LIGHT_2_LAB;
+							light[light_summ].n_spr=SPR_LIGHT_2_LAB;
+						break;
+					}
+				break;
+				
+				
+				case FAN:
+					fan_summ++;
+					fan[fan_summ].x=4*x;
+					fan[fan_summ].y=8*y;
+					fan[fan_summ].frame=SPR_FAN;
+					fan[fan_summ].n_spr=SPR_FAN;
 				break;
 				
 				
@@ -85,6 +141,9 @@ void init_screen()
 						break;
 						case 1:
 							enemy[enemy_summ].frame=SPR_COAL+12;
+						break;
+						case 2:
+							enemy[enemy_summ].frame=SPR_COLBA+12;
 						break;
 					}
 				break;
@@ -128,6 +187,17 @@ void init_screen()
 					enemy[enemy_summ].direct=RIGHT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_S_SLIME;
+					switch (level){
+						case 0:
+							enemy[enemy_summ].frame=SPR_S_SLIME;
+						break;
+						case 1:
+							enemy[enemy_summ].frame=SPR_S_SLIME;
+						break;
+						case 2:
+							enemy[enemy_summ].frame=SPR_S_SLIME_LAB;
+						break;
+					}
 				break;
 				
 				case OWL:
@@ -197,12 +267,27 @@ void init_screen()
 					enemy[enemy_summ].x=4*x;
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=ZOMBI;
-					enemy[enemy_summ].health=5;
-					enemy[enemy_summ].skip=12;
+					enemy[enemy_summ].health=3;
+					enemy[enemy_summ].skip=15;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ZOMBI+12;
+				break;
+				
+				case ZOMBI_HAT:
+					enemy_summ++;
+					enemy[enemy_summ].x_start=x;
+					enemy[enemy_summ].y_start=y;
+					enemy[enemy_summ].x=4*x;
+					enemy[enemy_summ].y=8*(y-1);
+					enemy[enemy_summ].type=ZOMBI_HAT;
+					enemy[enemy_summ].health=3;
+					enemy[enemy_summ].skip=20;
+					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].direct=WAIT;
+					map[y][x]=0;
+					enemy[enemy_summ].frame=SPR_ZOMBI_HAT+12;
 				break;
 				
 				case SNOW_JUMP:
@@ -291,12 +376,8 @@ void init_screen()
 
 void start_level()
 {
-	i8 i;
 	set_sprite(0,0,0,SPRITE_END);
-	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
-		pal_bright(i);
-		delay(3);
-	}
+	bright_down();
 	load_level();
 	
 	chapter();
@@ -313,12 +394,10 @@ void start_level()
 
 	init_screen();
 	
-	for (i=BRIGHT_MIN;i<=BRIGHT_MID;i++){
-		pal_bright(i);
-		delay(3);
-	}
-
+	bright_up();
 }
+
+
 
 void restart_level()
 {
@@ -332,22 +411,19 @@ void restart_level()
 	player.enemy_collision=0;
 	player.v_speed=0;
 	
-	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
-		pal_bright(i);
-		delay(3);
-	}
+	bright_down();
 	
 	reload_level();
 	
 	clear_screen(0);
 	
+	//pal_select(level_palett_default);
+	
 	draw_hud();
 
 	init_screen();
-	for (i=BRIGHT_MIN;i<=BRIGHT_MID;i++){
-		pal_bright(i);
-		delay(3);
-	}
+	
+	bright_up();
 }
 
 void nxt_screen()
@@ -365,6 +441,7 @@ void nxt_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
+	//pal_select(level_palett_default);
 }
 
 
@@ -375,6 +452,7 @@ void prv_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
+	//pal_select(level_palett_default);
 }
 
 
@@ -393,6 +471,7 @@ void down_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
+	//pal_select(level_palett_default);
 }
 
 void up_screen()
@@ -402,6 +481,7 @@ void up_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
+	//pal_select(level_palett_default);
 }
 
 

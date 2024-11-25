@@ -63,8 +63,8 @@
 #define STALACT_DOWN	#0x40
 /*******************************************/
 
-/* tile numbers ****************************/
 
+/* tile numbers ****************************/
 #define EMPTY			0
 #define WALL			1
 #define STAIRS			2
@@ -79,7 +79,8 @@
 #define AMMO			11
 #define LIGHT_1			12
 #define LIGHT_2			13
-
+#define FAN				14
+#define VAC				15
 
 #define PLAYER 			16
 
@@ -96,6 +97,7 @@
 #define BAT				27
 #define SPIDER			28
 #define ZOMBI			29
+#define ZOMBI_HAT		30
 
 /*****************************/
 
@@ -107,10 +109,18 @@
 
 static u32 t_player, t_idle, t_death;
 
+static u8 control_type;
+static u8 key_up;
+static u8 key_down;
+static u8 key_right;
+static u8 key_left;
+static u8 key_fire;
+
 static u8 level;
 static u8 level_size;
 static u8 level_back;
 static u8 level_tile;
+static u8 level_palett_default;
 static u8 screen;
 static u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
@@ -120,6 +130,8 @@ static u8 water_summ;
 static u8 waterplant_summ;
 static u8 enemy_summ;
 static u8 light_summ;
+static u8 fan_summ;
+
 
 
 static struct player
@@ -172,6 +184,7 @@ struct water
 {
 	u8 x;	
 	u8 y;
+	u16 n_spr;
 	u16 frame;
 }water[10];
 
@@ -179,6 +192,7 @@ struct waterplant
 {
 	u8 x;	
 	u8 y;
+	u16 n_spr;
 	u16 frame;
 }waterplant[10];
 
@@ -186,9 +200,17 @@ struct light
 {
 	u8 x;
 	u8 y;
-	u8 n_spr;
+	u16 n_spr;
 	u16 frame;
-}light[5];
+}light[4];
+
+struct fan
+{
+	u8 x;
+	u8 y;
+	u16 n_spr;
+	u16 frame;
+}fan[3];
 
 static struct tmp_save
 {

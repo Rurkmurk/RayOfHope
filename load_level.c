@@ -163,12 +163,12 @@ void load_level()
 			player.y=120;//120
 			player.health=5;
 			player.life=3;
-			player.ammo=5;
+			player.ammo=0;
 			player.frame=25;
 			player.enemy_collision=0;
 			player.v_speed=0;
 			
-			pal_select(0);
+			level_palett_default=0;
 		break;
 		case 1:
 			load_file("lev2_gfx", PAGE_GFX, 1);
@@ -189,20 +189,23 @@ void load_level()
 			player.enemy_collision=0;
 			player.v_speed=0;
 			
-			pal_select(1);
+			level_palett_default=1;
 		break;
 		case 2:
 			load_file("lev3_gfx", PAGE_GFX, 1);
 			load_file("lev3_map", PAGE_MAP, 1);
 			load_file("lev3_gfx", PAGE_GFX_TMP, 1);
 			load_file("lev3_map", PAGE_MAP_TMP, 1);
-			level_back=IMG_BACK_MINE;
+			level_back=IMG_BACK_LAB;
 			level_tile=IMG_TILE_LAB;
 			level_size=18;
 			
-			screen=0;
-			player.x=80;
-			player.y=23;
+			// screen=12;
+			// player.x=17;
+			// player.y=8;
+			screen=2;
+			player.x=130;
+			player.y=64;
 			player.health=5;
 			player.life=3;
 			player.ammo=5;
@@ -210,7 +213,7 @@ void load_level()
 			player.enemy_collision=0;
 			player.v_speed=0;
 			
-			pal_select(2);
+			level_palett_default=2;
 		break;
 	}
 }
