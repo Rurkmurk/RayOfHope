@@ -50,13 +50,14 @@
 #define SPR_ZOMBI_HAT	331
 #define SPR_LIGHT_1_SNOW	351
 #define SPR_LIGHT_2_SNOW	363
-#define SPR_S_SLIME	375
-#define SPR_OWL	387
-#define SPR_STALACT	399
-#define SPR_ICE_SPIKE	419
-#define SPR_BLOCK	439
-#define SPR_SNOW_JUMP	459
-#define SPR_WATER	479
+#define SPR_WATER_MINE	375
+#define SPR_S_SLIME	415
+#define SPR_OWL	427
+#define SPR_STALACT	439
+#define SPR_ICE_SPIKE	459
+#define SPR_BLOCK	479
+#define SPR_SNOW_JUMP	499
+#define SPR_WATER_SNOW	519
 
 #define SFX_SHOT	0
 #define SFX_BOOM	1

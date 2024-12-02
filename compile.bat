@@ -53,7 +53,7 @@ set sprite.5=res\stalact.bmp
 set sprite.6=res\ice_spike.bmp
 set sprite.7=res\block.bmp
 set sprite.8=res\snow_jump.bmp
-set sprite.9=res\water.bmp
+set sprite.9=res\water_snow.bmp
 set sprite.10=res\light_1_mine.bmp
 set sprite.11=res\light_2_mine.bmp
 set sprite.12=res\mine_jump.bmp
@@ -73,6 +73,7 @@ set sprite.25=res\acid.bmp
 set sprite.26=res\zombi_hat.bmp
 set sprite.27=res\light_1_snow.bmp
 set sprite.28=res\light_2_snow.bmp
+set sprite.29=res\water_mine.bmp
 
 
 rem набор звуковых эффектов, если нужен

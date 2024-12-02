@@ -45,29 +45,39 @@ void init_screen()
 					waterplant[water_summ].y=water[water_summ].y+16;
 					if (water_summ%2!=0){
 						switch (level){
+							case 1:
+							water[water_summ].n_spr=SPR_WATER_MINE;
+							water[water_summ].frame=SPR_WATER_MINE;
+							waterplant[water_summ].frame=SPR_WATER_MINE+2;
+							break;
 							case 2:
 							water[water_summ].n_spr=SPR_ACID;
 							water[water_summ].frame=SPR_ACID;
 							waterplant[water_summ].frame=SPR_ACID+2;
 							break;
 							default:
-							water[water_summ].n_spr=SPR_WATER;
-							water[water_summ].frame=SPR_WATER;
-							waterplant[water_summ].frame=SPR_WATER+2;
+							water[water_summ].n_spr=SPR_WATER_SNOW;
+							water[water_summ].frame=SPR_WATER_SNOW;
+							waterplant[water_summ].frame=SPR_WATER_SNOW+2;
 							break;
 						}
 					}
 					else {
 						switch (level){
+							case 1:
+							water[water_summ].n_spr=SPR_WATER_MINE;
+							water[water_summ].frame=SPR_WATER_MINE+1;
+							waterplant[water_summ].frame=SPR_WATER_MINE+3;
+							break;
 							case 2:
 							water[water_summ].n_spr=SPR_ACID;
 							water[water_summ].frame=SPR_ACID+1;
 							waterplant[water_summ].frame=SPR_ACID+3;
 							break;
 							default:
-							water[water_summ].n_spr=SPR_WATER;
-							water[water_summ].frame=SPR_WATER+1;
-							waterplant[water_summ].frame=SPR_WATER+3;
+							water[water_summ].n_spr=SPR_WATER_SNOW;
+							water[water_summ].frame=SPR_WATER_SNOW+1;
+							waterplant[water_summ].frame=SPR_WATER_SNOW+3;
 							break;
 						}
 					}

@@ -43,6 +43,45 @@ void control_player()
 	if(player.direct!=FALSE) t_idle=time();
 }
 
+u16 down_collision()
+{
+	static u16 collision;
+	static u8 pxl, pxc, pxr, pyu, pyc, pyd, py_ground, py_stairs;
+	
+	collision=0;
+
+	pxl=(player.x+2)/4;
+	pxc=(player.x+3)/4;
+	pxr=(player.x+5)/4;
+	
+	//pyu=player.y/8;
+	pyc=(player.y+7)/8;
+	//pyd=(player.y+15)/8;
+	
+	py_stairs=(player.y+10)/8;
+	py_ground=(player.y+16)/8;
+
+	
+	//down
+	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxc]==WALL)||(map[py_ground][pxr]==WALL))
+		collision^=COL_DOWN;
+	//ground
+	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxr]==WALL))
+		collision^=COL_GROUND;
+	//stairs
+	if (map[py_stairs][pxl]==STAIRS&&map[py_stairs][pxr]==STAIRS)
+		collision^=COL_STAIRS;
+	//water
+	if (map[pyc][pxr-1]==WATER||map[pyc][pxr]==WATER)
+		collision^=COL_WATER;
+	//screen down
+	if (player.y==160)
+		collision^=COL_DOWN_SCR;
+
+	return (collision);
+}
+
+
 
 u16 player_collision()
 {
@@ -172,7 +211,7 @@ void player_logic()
 	
 	static u8 trig_jump, trig_left;
 	
-	static u16 p_collision;
+	static u16 p_collision, d_collision;
 	
 	p_collision=player_collision();
 	
@@ -282,7 +321,7 @@ void player_logic()
 	
 	if (player.direct==JOY_RIGHT+JOY_FIRE||player.direct==JOY_RIGHT)
 		if ((p_collision&COL_RIGHT)!=COL_RIGHT){
-			if (player.status==STAIRS_STAND){
+			if (player.status==STAIRS_STAND&&(p_collision&COL_GROUND)!=COL_GROUND){
 				player.x+=player.h_step;
 				player.status=ST_STAIRS;
 			}
@@ -321,8 +360,8 @@ void player_logic()
 	
 	//left
 	if (player.direct==JOY_LEFT+JOY_FIRE||player.direct==JOY_LEFT)
-		if ((p_collision&COL_LEFT)!=COL_LEFT) {
-			if (player.status==STAIRS_STAND){
+		if ((p_collision&COL_LEFT)!=COL_LEFT){
+			if (player.status==STAIRS_STAND&&(p_collision&COL_GROUND)!=COL_GROUND){
 				player.x-=player.h_step;
 				player.status=ST_STAIRS;
 			}
@@ -361,9 +400,9 @@ void player_logic()
 	//down stairs
 	if ((player.direct&JOY_DOWN)==JOY_DOWN) {
 		for (j=0;j<2;j++) {
-			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(player_collision()&COL_GROUND)!=COL_GROUND) {
+			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(down_collision()&COL_GROUND)!=COL_GROUND) {
 				player.y++;
-				if ((player_collision()&COL_DOWN_SCR)==COL_DOWN_SCR){
+				if ((down_collision()&COL_DOWN_SCR)==COL_DOWN_SCR){
 					down_screen();
 					break;
 				}
@@ -419,17 +458,18 @@ void player_logic()
 // drop down
 	if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS&&player.v_speed<=0){
 		player.v_speed-=GRAVITY;
+		d_collision=down_collision();
 		for (j=0;j>player.v_speed;j--)
 		{
-			if ((p_collision&COL_DOWN)!=COL_DOWN&&(p_collision&COL_STAIRS)!=COL_STAIRS){
+			if ((d_collision&COL_DOWN)!=COL_DOWN&&(d_collision&COL_STAIRS)!=COL_STAIRS){
 				player.y++;
-				p_collision=player_collision();
-				if ((p_collision&COL_WATER)==COL_WATER)
+				d_collision=down_collision();
+				if ((d_collision&COL_WATER)==COL_WATER)
 					return;
-				if ((p_collision&COL_DOWN_SCR)==COL_DOWN_SCR)
+				if ((d_collision&COL_DOWN_SCR)==COL_DOWN_SCR)
 					down_screen();
 			}
-			if ((p_collision&COL_DOWN)==COL_DOWN||(p_collision&COL_STAIRS)==COL_STAIRS){
+			if ((d_collision&COL_DOWN)==COL_DOWN||(d_collision&COL_STAIRS)==COL_STAIRS){
 				
 				sfx_play(SFX_JUMP_DOWN,8);
 				
