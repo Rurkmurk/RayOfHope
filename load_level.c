@@ -182,9 +182,9 @@ void load_level()
 			screen=0;
 			player.x=8;//8
 			player.y=112;//112
-			player.health=5;
-			player.life=3;
-			player.ammo=5;
+			//player.health=5;
+			//player.life=3;
+			//player.ammo=5;
 			player.frame=25;
 			player.enemy_collision=0;
 			player.v_speed=0;
@@ -206,9 +206,9 @@ void load_level()
 			screen=2;
 			player.x=130;
 			player.y=63;
-			player.health=5;
-			player.life=3;
-			player.ammo=5;
+			//player.health=5;
+			//player.life=3;
+			//player.ammo=5;
 			player.frame=25;
 			player.enemy_collision=0;
 			player.v_speed=0;

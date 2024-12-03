@@ -218,7 +218,7 @@ void init_screen()
 					enemy[enemy_summ].y=8*(y-1);
 					enemy[enemy_summ].type=OWL;
 					enemy[enemy_summ].health=1;
-					enemy[enemy_summ].skip=5;
+					enemy[enemy_summ].skip=6;
 					enemy[enemy_summ].skip_count=0;
 					enemy[enemy_summ].direct=LEFT;
 					map[y][x]=0;

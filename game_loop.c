@@ -4,9 +4,10 @@
 void game_loop()
 {
 	//static u8 name[6];
+	t_player=time();
 	
-	for (;;) {
-		
+	while (TRUE) {
+
 		control_player();
 		
 		if (t_player+3<time()) {
@@ -18,9 +19,9 @@ void game_loop()
 		if (t_player+2==time()) {
 			terrain_animation();
 		}
-		
+
 		enemy_logic();
-		
+
 		shot_logic();
 
 		update_screen();

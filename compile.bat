@@ -7,7 +7,7 @@ set output=ray.scl
 rem сообщение, которое отображается при загрузке
 rem 32 символа, стандартный шрифт
 
-set title="          Ray of Hope"
+set title="             LOADING"
 
 rem список изображений, откуда брать палитры
 rem в программе они вызываются по автоматически генерируемым
@@ -18,7 +18,6 @@ set palette.0=res\tile_snow.bmp
 set palette.1=res\tile_mine.bmp
 set palette.2=res\tile_lab.bmp
 set palette.3=res\sun.bmp
-set palette.4=res\palette_dark.bmp
 
 rem список изображений, откуда брать графику
 

@@ -24,7 +24,6 @@
 #define PAL_TILE_MINE	1
 #define PAL_TILE_LAB	2
 #define PAL_SUN	3
-#define PAL_PALETTE_DARK	4
 
 
 

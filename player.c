@@ -47,7 +47,7 @@ u16 down_collision()
 {
 	static u16 collision;
 	static u8 pxl, pxc, pxr, pyu, pyc, pyd, py_ground, py_stairs;
-	
+
 	collision=0;
 
 	pxl=(player.x+2)/4;
@@ -66,8 +66,8 @@ u16 down_collision()
 	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxc]==WALL)||(map[py_ground][pxr]==WALL))
 		collision^=COL_DOWN;
 	//ground
-	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxr]==WALL))
-		collision^=COL_GROUND;
+	// if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxr]==WALL))
+		// collision^=COL_DOWN;
 	//stairs
 	if (map[py_stairs][pxl]==STAIRS&&map[py_stairs][pxr]==STAIRS)
 		collision^=COL_STAIRS;
@@ -81,13 +81,69 @@ u16 down_collision()
 	return (collision);
 }
 
+u16 up_collision()
+{
+	static u16 collision;
+	static u8 pxl, pxr, pyu;
+	
+	collision=0;
 
+	pxl=(player.x+2)/4;
+	
+	pxr=(player.x+5)/4;
+	
+	pyu=player.y/8;
+	
+	
+	if ((map[pyu][pxl]==1)&&(map[pyu][pxr]==1))
+		collision^=COL_UP;
+	
+	return (collision);
+}
+
+u16 left_collision()
+{
+	static u16 collision;
+	static u8 pxl, pyu, pyc, pyd;
+
+	collision=0;
+
+	pxl=(player.x+2)/4;
+		
+	pyu=player.y/8;
+	pyc=(player.y+7)/8;
+	pyd=(player.y+15)/8;
+		
+	if ((map[pyu][pxl]==WALL)||(map[pyc][pxl]==WALL)||(map[pyd][pxl]==WALL))
+		collision^=COL_LEFT;
+	
+	return (collision);
+}
+
+u16 right_collision()
+{
+	static u16 collision;
+	static u8 pxr, pyu, pyc, pyd;
+
+	collision=0;
+
+	pxr=(player.x+5)/4;
+	
+	pyu=player.y/8;
+	pyc=(player.y+7)/8;
+	pyd=(player.y+15)/8;
+	
+	if (map[pyu][pxr]==WALL||map[pyc][pxr]==WALL||map[pyd][pxr]==WALL)
+		collision^=COL_RIGHT;
+	
+	return (collision);
+}
 
 u16 player_collision()
 {
 	static u16 collision;
 	static u8 pxl, pxc, pxr, pyu, pyc, pyd, py_ground, py_stairs;
-	
+
 	collision=0;
 
 	pxl=(player.x+2)/4;
@@ -114,8 +170,8 @@ u16 player_collision()
 	if ((map[pyu][pxl]==WALL)||(map[pyc][pxl]==WALL)||(map[pyd][pxl]==WALL))
 		collision^=COL_LEFT;
 	//ground
-	if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxr]==WALL))
-		collision^=COL_GROUND;
+	// if ((map[py_ground][pxl]==WALL)||(map[py_ground][pxr]==WALL))
+		// collision^=COL_DOWN;
 	//stairs
 	if (map[py_stairs][pxl]==STAIRS&&map[py_stairs][pxr]==STAIRS)
 		collision^=COL_STAIRS;
@@ -128,49 +184,94 @@ u16 player_collision()
 	if (map[pyd][pxc]==DANGER||map[pyu][pxc]==DANGER)
 		collision^=COL_DANGER;
 	
-	//box ammo
-	if (map[pyd][pxl]==AMMO){
-		if (player.ammo<AMMO_MAX){
+	//loot
+	switch (map[pyd][pxl])
+	{
+		case AMMO:
+			if (player.ammo<AMMO_MAX){
+				map[pyd][pxl]=0;
+				player.ammo++;
+				sfx_play(SFX_LOAD,8);
+				open_box(pyd, pxl);
+			}
+			break;
+		case AMMO_FULL:
+			if (player.ammo<AMMO_MAX){
 			map[pyd][pxl]=0;
-			player.ammo++;
-			sfx_play(SFX_LOAD,8);
+			if (player.ammo>5)
+				player.ammo=AMMO_MAX;
+			else player.ammo+=5;
+			sfx_play(SFX_LOAD_FULL,8);
 			open_box(pyd, pxl);
-		}
+			}
+			break;
+		case HEALTH:
+			if (player.health<HEALTH_MAX){
+				map[pyd][pxl]=0;
+				
+				if (player.health>7)
+					player.health=HEALTH_MAX;
+				else player.health+=3;
+				
+				sfx_play(SFX_HEALTH,8);
+				open_box(pyd, pxl);
+			}
+			break;
+		case LIFE:
+			if (player.life<LIFE_MAX){
+				map[pyd][pxl]=0;
+				player.life++;
+				sfx_play(SFX_HEALTH_FULL,8);
+				open_box(pyd, pxl);
+			}
+			break;
+		default:
+		break;
 	}
-	if (map[pyd][pxl]==AMMO_FULL){
-		if (player.ammo<AMMO_MAX){
-		map[pyd][pxl]=0;
-		if (player.ammo>5)
-			player.ammo=AMMO_MAX;
-		else player.ammo+=5;
-		sfx_play(SFX_LOAD_FULL,8);
-		open_box(pyd, pxl);
-		}
-	}
+	
+	//box ammo
+	// if (map[pyd][pxl]==AMMO){
+		// if (player.ammo<AMMO_MAX){
+			// map[pyd][pxl]=0;
+			// player.ammo++;
+			// sfx_play(SFX_LOAD,8);
+			// open_box(pyd, pxl);
+		// }
+	// }
+	// if (map[pyd][pxl]==AMMO_FULL){
+		// if (player.ammo<AMMO_MAX){
+		// map[pyd][pxl]=0;
+		// if (player.ammo>5)
+			// player.ammo=AMMO_MAX;
+		// else player.ammo+=5;
+		// sfx_play(SFX_LOAD_FULL,8);
+		// open_box(pyd, pxl);
+		// }
+	// }
 	
 	//box health
-	if (map[pyd][pxl]==HEALTH){
-		if (player.health<HEALTH_MAX){
-			map[pyd][pxl]=0;
+	// if (map[pyd][pxl]==HEALTH){
+		// if (player.health<HEALTH_MAX){
+			// map[pyd][pxl]=0;
 			
-			if (player.health>7)
-				player.health=HEALTH_MAX;
-			else player.health+=3;
+			// if (player.health>7)
+				// player.health=HEALTH_MAX;
+			// else player.health+=3;
 			
-			sfx_play(SFX_HEALTH,8);
-			open_box(pyd, pxl);
-		}
-	}
+			// sfx_play(SFX_HEALTH,8);
+			// open_box(pyd, pxl);
+		// }
+	// }
 	
 	//box life
-	if (map[pyd][pxl]==LIFE){
-		if (player.life<LIFE_MAX){
-			map[pyd][pxl]=0;
-			player.life++;
-			sfx_play(SFX_HEALTH_FULL,8);
-			open_box(pyd, pxl);
-		}
-	}
+	// if (map[pyd][pxl]==LIFE){
+		// if (player.life<LIFE_MAX){
+			// map[pyd][pxl]=0;
+			// player.life++;
+			// sfx_play(SFX_HEALTH_FULL,8);
+			// open_box(pyd, pxl);
+		// }
+	// }
 	
 	//screen right
 	if (pxc==39)
@@ -199,7 +300,7 @@ u16 player_collision()
 		win_screen();
 		menu_main();
 	}
-	
+
 	return (collision);
 }
 
@@ -298,7 +399,7 @@ void player_logic()
 				up_screen();
 			player.status=ST_STAIRS;
 		}
-		if ((p_collision&COL_GROUND)==COL_GROUND&&player.status!=ST_STAIRS&&trig_jump) {
+		if ((p_collision&COL_DOWN)==COL_DOWN&&player.status!=ST_STAIRS&&trig_jump) {
 			player.v_speed=player.jump_impulse-GRAVITY;
 			player.status=ST_JUMP;
 			sfx_play(SFX_JUMP_UP,8);
@@ -309,7 +410,7 @@ void player_logic()
 	if (player.v_speed>0) {
 		player.v_speed--;
 		for (j=0;j<=player.v_speed;j++) {
-			if ((player_collision()&COL_UP)!=COL_UP) player.y--;
+			if ((up_collision()&COL_UP)!=COL_UP) player.y--;
 			else {
 				player.v_speed=0;
 				break;
@@ -321,7 +422,7 @@ void player_logic()
 	
 	if (player.direct==JOY_RIGHT+JOY_FIRE||player.direct==JOY_RIGHT)
 		if ((p_collision&COL_RIGHT)!=COL_RIGHT){
-			if (player.status==STAIRS_STAND&&(p_collision&COL_GROUND)!=COL_GROUND){
+			if (player.status==STAIRS_STAND&&(p_collision&COL_DOWN)!=COL_DOWN){
 				player.x+=player.h_step;
 				player.status=ST_STAIRS;
 			}
@@ -353,7 +454,7 @@ void player_logic()
 			}
 		}
 	}
-	if ((player_collision()&COL_RIGHT)==COL_RIGHT)
+	if ((right_collision()&COL_RIGHT)==COL_RIGHT)
 		player.x-=player.h_step;
 	
 	
@@ -361,7 +462,7 @@ void player_logic()
 	//left
 	if (player.direct==JOY_LEFT+JOY_FIRE||player.direct==JOY_LEFT)
 		if ((p_collision&COL_LEFT)!=COL_LEFT){
-			if (player.status==STAIRS_STAND&&(p_collision&COL_GROUND)!=COL_GROUND){
+			if (player.status==STAIRS_STAND&&(p_collision&COL_DOWN)!=COL_DOWN){
 				player.x-=player.h_step;
 				player.status=ST_STAIRS;
 			}
@@ -392,7 +493,7 @@ void player_logic()
 			}
 		}	
 	}
-	if ((player_collision()&COL_LEFT)==COL_LEFT)
+	if ((left_collision()&COL_LEFT)==COL_LEFT)
 		player.x+=player.h_step;
 	
 	
@@ -400,7 +501,7 @@ void player_logic()
 	//down stairs
 	if ((player.direct&JOY_DOWN)==JOY_DOWN) {
 		for (j=0;j<2;j++) {
-			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(down_collision()&COL_GROUND)!=COL_GROUND) {
+			if ((p_collision&COL_STAIRS)==COL_STAIRS&&(down_collision()&COL_DOWN)!=COL_DOWN) {
 				player.y++;
 				if ((down_collision()&COL_DOWN_SCR)==COL_DOWN_SCR){
 					down_screen();
@@ -480,6 +581,7 @@ void player_logic()
 						player.health-=3;
 						sfx_play(SFX_DAMAGE,8);
 					}
+					update_hud();
 				}
 				/* else if (player.v_speed<=player.danger_height){
 					//if (player.health)
@@ -489,7 +591,7 @@ void player_logic()
 				
 				player.v_speed=0;
 				player.status=ST_DOWN_PUSH;
-				update_hud();
+				//update_hud();
 				break;
 			}
 			
@@ -554,7 +656,7 @@ void player_logic()
 
 	
 	// fire
-	if ((player.direct&JOY_DOWN)==JOY_DOWN&&(player_collision()&COL_GROUND)==COL_GROUND) {
+	if ((player.direct&JOY_DOWN)==JOY_DOWN&&(down_collision()&COL_DOWN)==COL_DOWN) {
 		if (trig_left==TRUE){
 			if (player.ammo)
 				player.status=DOWN_LEFT;
@@ -669,7 +771,7 @@ void player_animation()
 		break;
 
 		default:
-			if (player.status==ST_IDLE&&(player_collision()&COL_STAIRS)!=COL_STAIRS&&
+			if (player.status==ST_IDLE&&(down_collision()&COL_STAIRS)!=COL_STAIRS&&
 			player.health) {
 				if (t_idle+30>time())
 					player.frame=24;

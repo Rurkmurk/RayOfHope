@@ -185,7 +185,7 @@ void menu_control()
 	bright_down();
 	clear_screen(0);
 	draw_image(0,0,IMG_BACK_MENU);
-	output_string(13, 8, menu_control);
+	output_string(13, 9, menu_control);
 	swap_screen();
 	bright_up();
 	switch (press_key())
@@ -275,7 +275,7 @@ void menu_main()
 	pal_select(PAL_SUN);
 	clear_screen(0);
 	draw_image(0,0,IMG_BACK_MENU);
-	output_string(13, 8, menu_main);
+	output_string(14, 9, menu_main);
 	swap_screen();
 	bright_up();
 	switch (press_key())

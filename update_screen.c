@@ -4,7 +4,7 @@
 void update_screen()
 {
 	static u8 n;
-	
+
 	//player
 	set_sprite(0,player.x,player.y,player.frame);
 
@@ -31,7 +31,7 @@ void update_screen()
 	
 	//end
 	set_sprite(enemy_summ+waterplant_summ+water_summ+light_summ+fan_summ+2,0,0,SPRITE_END);
-		
+
 	swap_screen();
 }
 
