@@ -360,13 +360,15 @@ void player_logic()
 	}
 	
 	//idle
-	if (!player.direct&&player.status!=ST_JUMP&&player.status!=ST_STAIRS)
+	if (!player.direct&&player.status!=ST_JUMP&&player.status!=STAIRS_STAND)
 		player.status=ST_IDLE;
 	if ((player.direct&JOY_UP)==JOY_UP&&trig_jump==FALSE)
 		player.status=ST_IDLE;
 	 
 	//stairs stand
-	if (!player.direct&&(p_collision&COL_STAIRS)==COL_STAIRS)
+	// if (!player.direct&&(p_collision&COL_STAIRS)==COL_STAIRS)
+		// player.status=STAIRS_STAND;
+	if ((p_collision&COL_STAIRS)==COL_STAIRS)
 		player.status=STAIRS_STAND;
 	
 	//water 

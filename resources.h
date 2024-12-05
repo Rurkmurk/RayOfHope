@@ -25,6 +25,7 @@
 #define PAL_TILE_LAB	2
 #define PAL_SUN	3
 
+#define MUS_MENU	0
 
 
 #define SPR_PLAYER	0

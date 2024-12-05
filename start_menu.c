@@ -282,6 +282,7 @@ void menu_main()
 	{
 		case KEY_1:
 			sfx_play(SFX_MENU,8);
+			music_stop();
 			intro();
 		break;
 		case KEY_2:
@@ -308,6 +309,7 @@ void start_image()
 	draw_image(0,0,IMG_SUN);
 	swap_screen();
 	bright_up();
+	music_play(MUS_MENU);
 	press_key();
 	sfx_play(SFX_MENU,8);
 }
