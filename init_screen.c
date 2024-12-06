@@ -404,6 +404,8 @@ void start_level()
 
 	init_screen();
 	
+	music_play(level_music_default);
+	
 	bright_up();
 }
 
@@ -432,6 +434,8 @@ void restart_level()
 	draw_hud();
 
 	init_screen();
+	
+	music_play(level_music_default);
 	
 	bright_up();
 }

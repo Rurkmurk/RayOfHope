@@ -298,6 +298,7 @@ u16 player_collision()
 	//win
 	if (map[pyu][pxc]==VAC){
 		win_screen();
+		music_play(MUS_MENU);
 		menu_main();
 	}
 
@@ -319,10 +320,12 @@ void player_logic()
 	player.h_step=1;
 	
 	if (!player.health) {
+		music_stop();
 		if (player.status==ST_DEATH&&t_death+100<time()){
 			player.status=ST_IDLE;
 			if (!player.life){
 				death_screen();
+				music_play(MUS_MENU);
 				menu_main();
 			}
 			else

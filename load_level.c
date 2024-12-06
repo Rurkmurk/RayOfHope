@@ -169,6 +169,7 @@ void load_level()
 			player.v_speed=0;
 			
 			level_palett_default=0;
+			level_music_default=1;
 		break;
 		case 1:
 			load_file("lev2_gfx", PAGE_GFX, 1);
@@ -190,6 +191,8 @@ void load_level()
 			player.v_speed=0;
 			
 			level_palett_default=1;
+			level_music_default=2;
+			
 		break;
 		case 2:
 			load_file("lev3_gfx", PAGE_GFX, 1);
@@ -214,6 +217,7 @@ void load_level()
 			player.v_speed=0;
 			
 			level_palett_default=2;
+			level_music_default=3;
 		break;
 	}
 }

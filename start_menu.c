@@ -68,7 +68,7 @@ void chapter()
 {
 	u8 n;
 	n=0;
-
+	music_stop();
 	pal_select(level_palett_default);
 	clear_screen(0);
 	switch (level){

@@ -26,6 +26,7 @@
 #define PAL_SUN	3
 
 #define MUS_MENU	0
+#define MUS_LEVEL1	1
 
 
 #define SPR_PLAYER	0

@@ -83,6 +83,7 @@ set soundfx=res\sound.afb
 rem музыка, нужное число треков
 
 set music.0=res\menu.pt3
+set music.1=res\level1.pt3
 
 rem сэмплы
 

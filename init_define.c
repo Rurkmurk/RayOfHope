@@ -121,6 +121,7 @@ static u8 level_size;
 static u8 level_back;
 static u8 level_tile;
 static u8 level_palett_default;
+static u8 level_music_default;
 static u8 screen;
 static u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
