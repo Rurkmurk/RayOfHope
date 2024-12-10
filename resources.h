@@ -27,6 +27,8 @@
 
 #define MUS_MENU	0
 #define MUS_LEVEL1	1
+#define MUS_LEVEL2	2
+#define MUS_LEVEL3	3
 
 
 #define SPR_PLAYER	0
