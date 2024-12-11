@@ -22,11 +22,6 @@ void terrain_animation()
 		else {
 			light[n].frame=light[n].n_spr;
 		}
-		// if (level==2){
-			// if (light[n].frame==light[n].n_spr||light[n].frame==light[n].n_spr+2)
-				// pal_select(2);
-			// else pal_select(4);
-		// }
 	}
 	
 	for (n=1;n<=fan_summ;n++){

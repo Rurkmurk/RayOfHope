@@ -3,7 +3,6 @@
 
 void game_loop()
 {
-	//static u8 name[6];
 	t_player=time();
 	
 	while (TRUE) {
@@ -25,12 +24,6 @@ void game_loop()
 		shot_logic();
 
 		update_screen();
-
-		/* output_string(0, 0, "   ");
-		if (player.v_speed<(-12)){
-		itoa((100+player.v_speed), name);
-		output_string(0, 0, name);
-		} */
 	}
 }
 

@@ -22,8 +22,6 @@ void init_screen()
 	light_summ=0;
 	fan_summ=0;
 	
-	//pal_select(level_palett_default);
-	
 	draw_image(0,0,level_back);
 	select_image(level_tile);
 	color_key(15);
@@ -429,8 +427,6 @@ void restart_level()
 	
 	clear_screen(0);
 	
-	//pal_select(level_palett_default);
-	
 	draw_hud();
 
 	init_screen();
@@ -455,7 +451,6 @@ void nxt_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
-	//pal_select(level_palett_default);
 }
 
 
@@ -466,7 +461,6 @@ void prv_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
-	//pal_select(level_palett_default);
 }
 
 
@@ -485,7 +479,6 @@ void down_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
-	//pal_select(level_palett_default);
 }
 
 void up_screen()
@@ -495,7 +488,6 @@ void up_screen()
 	player.enemy_collision=0;
 	init_screen();
 	update_screen();
-	//pal_select(level_palett_default);
 }
 
 

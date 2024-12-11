@@ -2,7 +2,7 @@
 
 rem имя SCL файла
 
-set output=ray.scl
+set output=Ray_of_hope_1_0.scl
 
 rem сообщение, которое отображается при загрузке
 rem 32 символа, стандартный шрифт

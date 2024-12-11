@@ -25,13 +25,13 @@ u8 shot_collision()
 				if (shot.x>enemy[n].x-4&&shot.x<enemy[n].x+4) {
 					collision=TRUE;
 					if (shot.frame==SPR_SHOT+4){
-						if (enemy[n].type!=ANGRY_PLANT){//
+						if (enemy[n].type!=ANGRY_PLANT){
 							enemy[n].health--;
 							sfx_play(SFX_BOOM,8);
 						}
-						else 							//
-							if (enemy[n].direct==ANGRY){	//
-								enemy[n].health--;		//
+						else
+							if (enemy[n].direct==ANGRY){
+								enemy[n].health--;
 								sfx_play(SFX_BOOM,8);
 							}
 					}
@@ -105,7 +105,6 @@ void shot_logic()
 	
 	if (n==0){
 		shot.frame=SPR_SHOT+4;
-		//sfx_play(SFX_BOOM,8);
 		n++;
 		}
 	else if (n>0&&n<6){

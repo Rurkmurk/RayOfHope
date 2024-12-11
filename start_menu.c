@@ -209,7 +209,7 @@ void menu_control()
 
 void info()
 {
-	static u8 info[]="ЛУЧ НАДЕЖДЫ v1.0^ ^код графика звук^ ^  Роман Скорик^ ^      2024";
+	static u8 info[]="  ЛУЧ  НАДЕЖДЫ^ ^код графика звук^ ^  Роман Скорик^ ^      2024";
 	
 	bright_down();
 	clear_screen(0);
