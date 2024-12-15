@@ -112,6 +112,8 @@ u16 left_collision()
 		
 	if ((map[pyu][pxl]==WALL)||(map[pyc][pxl]==WALL)||(map[pyd][pxl]==WALL))
 		collision^=COL_LEFT;
+	if ((map[pyd][pxl-1]==BLOCK)||(map[pyd+1][pxl-1]==BLOCK)||(map[pyd+2][pxl-1]==BLOCK))
+		collision^=COL_LEFT;
 	
 	return (collision);
 }
@@ -130,6 +132,8 @@ u16 right_collision()
 	pyd=(player.y+15)/8;
 	
 	if (map[pyu][pxr]==WALL||map[pyc][pxr]==WALL||map[pyd][pxr]==WALL)
+		collision^=COL_RIGHT;
+	if (map[pyd][pxr]==BLOCK||map[pyd+1][pxr]==BLOCK||map[pyd+2][pxr]==BLOCK)
 		collision^=COL_RIGHT;
 	
 	return (collision);
@@ -162,8 +166,12 @@ u16 player_collision()
 	//right
 	if (map[pyu][pxr]==WALL||map[pyc][pxr]==WALL||map[pyd][pxr]==WALL)
 		collision^=COL_RIGHT;
+	if (map[pyd][pxr]==BLOCK||map[pyd+1][pxr]==BLOCK||map[pyd+2][pxr]==BLOCK)
+		collision^=COL_RIGHT;
 	//left
 	if ((map[pyu][pxl]==WALL)||(map[pyc][pxl]==WALL)||(map[pyd][pxl]==WALL))
+		collision^=COL_LEFT;
+	if ((map[pyd][pxl-1]==BLOCK)||(map[pyd+1][pxl-1]==BLOCK)||(map[pyd+2][pxl-1]==BLOCK))
 		collision^=COL_LEFT;
 
 	//stairs

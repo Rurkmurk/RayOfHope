@@ -25,15 +25,15 @@ void player_enemy_collision_pull(u8 n)
 	}
 }
 
-void player_enemy_collision_block(u8 n)
-{
-	if (player.y+16>(enemy[n].y)&&player.y<(enemy[n].y+16)){
-		if (player.x+6==enemy[n].x||player.x+5==enemy[n].x||player.x+4==enemy[n].x)
-			player.enemy_collision=COL_ENEMY_LEFT+COL_ENEMY_CENTR;
-		else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5||player.x==enemy[n].x+4)
-			player.enemy_collision=COL_ENEMY_RIGHT+COL_ENEMY_CENTR;
-	}
-}
+// void player_enemy_collision_block(u8 n)
+// {
+	// if (player.y<=enemy[n].y&&player.y>(enemy[n].y-15)){
+		// if (player.x+6==enemy[n].x||player.x+5==enemy[n].x||player.x+4==enemy[n].x||player.x+3==enemy[n].x)
+			// player.enemy_collision=COL_ENEMY_LEFT+COL_ENEMY_CENTR;
+		// else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5||player.x==enemy[n].x+4||player.x==enemy[n].x+3)
+			// player.enemy_collision=COL_ENEMY_RIGHT+COL_ENEMY_CENTR;
+	// }
+// }
 
 u16 enemy_collision(u8 n)
 {
@@ -98,9 +98,9 @@ u16 enemy_collision(u8 n)
 			player_enemy_collision_pull(n);
 		break;
 		
-		case BLOCK:
-			player_enemy_collision_block(n);
-		break;
+		// case BLOCK:
+			// player_enemy_collision_block(n);
+		// break;
 		
 		case ICE_SPIKE:
 			if (player.y==enemy[n].y){
