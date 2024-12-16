@@ -9,13 +9,13 @@ void game_loop()
 
 		control_player();
 		
-		if (t_player+3<time()) {
+		if (t_player+4<=time()) {
 			player_logic();
 			player_animation();
 			t_player=time();
 		}
 
-		if (t_player+2==time()) {
+		if (t_player+3<=time()) {
 			terrain_animation();
 		}
 

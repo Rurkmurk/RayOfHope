@@ -268,7 +268,7 @@ u16 enemy_collision(u8 n)
 					for (i=1;i<=enemy_summ;i++){
 						if (n==i)
 							continue;
-						if (enemy[i].y<=enemy[n].y)
+						if (enemy[i].y==enemy[n].y)
 							if (enemy[i].x+3>=enemy[n].x&&enemy[i].x<=enemy[n].x+3)
 							enemy[i].health=0;
 						}
