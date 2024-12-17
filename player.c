@@ -244,7 +244,7 @@ u16 player_collision()
 		collision^=COL_DOWN_SCR;
 	
 	// screen up
-	if (player.y==0)
+	if (player.y<=1)
 		collision^=COL_UP_SCR;
 	
 	//next level
