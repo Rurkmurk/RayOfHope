@@ -5,10 +5,10 @@
 #define	HIGH_LEVEL		22
 #define	WIDTH_LEVEL		40
 
-#define PAGE_GFX		60
-#define PAGE_MAP		61
-#define PAGE_GFX_TMP	62
-#define PAGE_MAP_TMP	63
+#define PAGE_GFX		59
+#define PAGE_MAP		60
+#define PAGE_GFX_TMP	61
+#define PAGE_MAP_TMP	62
 
 /* collizion ************************/
 #define COL_UP			#0x1
@@ -107,6 +107,11 @@
 #define LIFE_MAX		3
 #define DEATH_SPEED		7
 
+#define ATM				0
+#define EVO				1
+
+static u8 model;
+
 static u32 t_player, t_idle, t_death;
 
 static u8 control_type;
@@ -125,7 +130,6 @@ static u8 level_music_default;
 static u8 screen;
 static u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
-
 static u8 acid_summ;
 static u8 water_summ;
 static u8 waterplant_summ;
@@ -133,7 +137,7 @@ static u8 enemy_summ;
 static u8 light_summ;
 static u8 fan_summ;
 
-
+static u8 stalact_speed;
 
 static struct player
 {
@@ -151,11 +155,10 @@ static struct player
 	u16 enemy_collision;
 	u8 skip;
 	i8 danger_height;
-	i8 death_height;
 	u8 ammo;
 } player;
 
-struct shot
+static struct shot
 {
 	u8 x;	
 	u8 y;
@@ -174,8 +177,8 @@ struct enemy
 	u8 y_start;
 	u16 direct;
 	u8 h_step;
-	u8 skip;
-	u8 skip_count;
+	u32 skip;
+	u32 skip_count;
 	u8 type;
 	u8 health;
 	u16 frame;

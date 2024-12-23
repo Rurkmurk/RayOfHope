@@ -7,7 +7,7 @@ void game_loop();
 
 u8 press_key()
 {
-	u8 keys[40];
+	static u8 keys[40];
 	while (TRUE)
 	{
 		keyboard(keys);
@@ -66,7 +66,7 @@ void death_screen()
 
 void chapter()
 {
-	u8 n;
+	static u8 n;
 	n=0;
 	music_stop();
 	pal_select(level_palett_default);
@@ -91,8 +91,8 @@ void chapter()
 
 u8 read_key()
 {
-	u8 keys[40];
-	u8 key;
+	static u8 keys[40];
+	static u8 key;
 	key=255;
 	while (key==255)
 	{
@@ -210,11 +210,21 @@ void menu_control()
 void info()
 {
 	static u8 info[]="  ЛУЧ  НАДЕЖДЫ^ ^код графика звук^ ^  Роман Скорик^ ^      2024";
-	
+	static u8 ver_atm[]="7 МГц АТМ режим";
+	static u8 ver_evo[]="14МГц EVO режим";
 	bright_down();
 	clear_screen(0);
 	draw_image(0,0,IMG_BACK_MENU);
-	output_string(12, 10, info);
+	output_string(12, 8, info);
+	switch (model)
+	{
+		case ATM:
+			output_string(13, 16, ver_atm);
+		break;
+		case EVO:
+			output_string(13, 16, ver_evo);
+		break;
+	}
 	swap_screen();
 	bright_up();
 	while (TRUE)

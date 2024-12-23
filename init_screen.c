@@ -82,6 +82,7 @@ void init_screen()
 				break;
 				
 				case LIGHT_1:
+					if (model==ATM) break;
 					light_summ++;
 					light[light_summ].x=4*x;
 					light[light_summ].y=8*y;
@@ -102,6 +103,7 @@ void init_screen()
 				break;
 				
 				case LIGHT_2:
+					if (model==ATM)	break;
 					light_summ++;
 					light[light_summ].x=4*x;
 					light[light_summ].y=8*y;
@@ -123,6 +125,7 @@ void init_screen()
 				
 				
 				case FAN:
+					if (model==ATM)	break;
 					fan_summ++;
 					fan[fan_summ].x=4*x;
 					fan[fan_summ].y=8*y;
@@ -140,9 +143,8 @@ void init_screen()
 					enemy[enemy_summ].type=BLOCK;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=10;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
-					//map[y][x]=0;
 					switch (level){
 						case 0:
 							enemy[enemy_summ].frame=SPR_BLOCK+12;
@@ -165,6 +167,7 @@ void init_screen()
 					enemy[enemy_summ].type=STALACT;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=10;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					enemy[enemy_summ].frame=SPR_STALACT+12;
 				break;
@@ -178,6 +181,7 @@ void init_screen()
 					enemy[enemy_summ].type=B_SLIME;
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=10;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=LEFT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_B_SLIME;
@@ -192,6 +196,7 @@ void init_screen()
 					enemy[enemy_summ].type=S_SLIME;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=8;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=RIGHT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_S_SLIME;
@@ -217,7 +222,7 @@ void init_screen()
 					enemy[enemy_summ].type=OWL;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=6;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=LEFT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_OWL;
@@ -232,7 +237,7 @@ void init_screen()
 					enemy[enemy_summ].type=BAT;
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=4;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=UP;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_BAT;
@@ -247,7 +252,7 @@ void init_screen()
 					enemy[enemy_summ].type=ICE_SPIKE;
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=14;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ICE_SPIKE+12;
@@ -262,7 +267,7 @@ void init_screen()
 					enemy[enemy_summ].type=SPIDER;
 					enemy[enemy_summ].health=2;
 					enemy[enemy_summ].skip=12;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_SPIDER+12;
@@ -277,7 +282,7 @@ void init_screen()
 					enemy[enemy_summ].type=ZOMBI;
 					enemy[enemy_summ].health=3;
 					enemy[enemy_summ].skip=15;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ZOMBI+12;
@@ -292,7 +297,7 @@ void init_screen()
 					enemy[enemy_summ].type=ZOMBI_HAT;
 					enemy[enemy_summ].health=3;
 					enemy[enemy_summ].skip=20;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ZOMBI_HAT+12;
@@ -307,7 +312,7 @@ void init_screen()
 					enemy[enemy_summ].type=SNOW_JUMP;
 					enemy[enemy_summ].health=3;
 					enemy[enemy_summ].skip=6;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_SNOW_JUMP;
@@ -322,7 +327,7 @@ void init_screen()
 					enemy[enemy_summ].type=MINE_JUMP;
 					enemy[enemy_summ].health=4;
 					enemy[enemy_summ].skip=8;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_MINE_JUMP;
@@ -337,7 +342,7 @@ void init_screen()
 					enemy[enemy_summ].type=ANGRY_PLANT_R;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=7;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ANGRY_PLANT_R+12;
@@ -352,7 +357,7 @@ void init_screen()
 					enemy[enemy_summ].type=ANGRY_PLANT_L;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=7;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ANGRY_PLANT_L+12;
@@ -367,7 +372,7 @@ void init_screen()
 					enemy[enemy_summ].type=ANGRY_PLANT;
 					enemy[enemy_summ].health=1;
 					enemy[enemy_summ].skip=14;
-					enemy[enemy_summ].skip_count=0;
+					enemy[enemy_summ].skip_count=time();
 					enemy[enemy_summ].direct=WAIT;
 					map[y][x]=0;
 					enemy[enemy_summ].frame=SPR_ANGRY_PLANT+12;
@@ -377,6 +382,7 @@ void init_screen()
 		}
 		addr+=(level_size-1)*40;
 	}
+	if (model==ATM) waterplant_summ=0;
 	set_sprite(0,0,0,SPRITE_END);
 	swap_screen();
 }
@@ -411,7 +417,6 @@ void start_level()
 
 void restart_level()
 {
-	i8 i;
 	screen=tmp_save.screen;
 	player.x=tmp_save.x;
 	player.y=tmp_save.y;

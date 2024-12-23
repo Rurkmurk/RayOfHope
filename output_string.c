@@ -1,10 +1,47 @@
 #ifndef _OUTPUT_STRING
 #define _OUTPUT_STRING
 
+
+/* void itoa(i16 val, u8* buf)
+{
+    static u8 *p;                 
+    static  u8 *firstdig;          
+    static i8 temp;               
+    static i8 digval;         
+	static u8 a;
+	for(a=0;a<16;a++)buf[a]=0;
+	
+    p = buf;
+    firstdig = p;           
+ 
+    do {
+        digval = (unsigned) (val % 10);
+        val /= 10;       
+ 
+        
+        if (digval > 9)*p++ = (char) (digval - 10 + 'a'); 
+        else *p++ = (char) (digval + '0');       
+ 
+    } 
+	while (val > 0);
+	 
+    *p-- = '\0';            
+ 
+    do 
+	{
+        temp = *p;
+        *p = *firstdig;
+        *firstdig = temp;   
+        --p;
+        ++firstdig;         
+    } while (firstdig < p); 
+} */
+
 void output_string(u8 output_x, u8 output_y, u8* str)
 {
-	u8 n;
-	u8 save_output_x=output_x;
+	static u8 n;
+	static u8 save_output_x;
+	save_output_x=output_x;
 	select_image(IMG_FONT);
 	color_key (15);
 	while(1)
@@ -19,6 +56,24 @@ void output_string(u8 output_x, u8 output_y, u8* str)
 		}
 		draw_tile_key(output_x,output_y,n-32);
 		output_x++;
+	}
+}
+
+void speed_meter()
+{
+	u16 tic;
+	u32 time_tic;
+	
+	tic=0;
+	time_tic=time();
+	vsync();
+	while (time_tic+2>time())
+		tic++;
+
+	if (tic<500)
+	{
+		model=ATM;
+		stalact_speed=4;
 	}
 }
 

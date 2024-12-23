@@ -16,10 +16,11 @@
 void main()
 {
 	
+	model=EVO;
 
 /* player setup ***********************************************************/
 	player.danger_height=-16;
-	player.skip=3;
+	//player.skip=3;
 	//player.v_speed=0;
 	player.jump_impulse=7;
 	player.h_step=1;
@@ -29,12 +30,14 @@ void main()
 	shot.speed=1;
 	shot.frame=SPRITE_END;
 /* enemy setup ************************************************************/
-
+	stalact_speed=1;
 /* terrain setup **********************************************************/
 	
 // /**************************************************************************/
 
 	sprites_start();
+	
+	speed_meter();
 	
 	start_image();
 	

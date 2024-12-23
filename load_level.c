@@ -1,7 +1,7 @@
 #ifndef _LOAD_LEVEL
 #define _LOAD_LEVEL
 
-#define dospage			63
+#define dospage		63
 #define _MEMSLOT2	0x0000FF52
 #define _DOS_3D13	0x0000E0A1
 
@@ -206,9 +206,9 @@ void load_level()
 			screen=2;
 			player.x=130;
 			player.y=63;
-			//player.health=5;
-			//player.life=3;
-			//player.ammo=5;
+			// player.health=5;
+			// player.life=3;
+			// player.ammo=5;
 			player.frame=25;
 			player.enemy_collision=0;
 			player.v_speed=0;
