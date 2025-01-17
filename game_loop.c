@@ -46,7 +46,6 @@ void game_loop()
 				if (t_player==time()) vsync();
 				shot_logic();
 				enemy_logic();
-				//t_player=time();
 				update_screen();
 				
 				t_player=time();

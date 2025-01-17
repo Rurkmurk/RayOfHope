@@ -50,7 +50,6 @@
 #define ST_LAVA			#0x80
 #define ST_WATER		#0x100
 #define ST_DEATH		#0x200
-//#define ST_WATERPLANT	#0x400
 /*******************************************/
 
 /* direct **********************************/
@@ -61,6 +60,7 @@
 #define WAIT			#0x10
 #define ANGRY			#0x20
 #define STALACT_DOWN	#0x40
+#define BOOM			#0x80
 /*******************************************/
 
 
@@ -130,7 +130,7 @@ static u8 level_music_default;
 static u8 screen;
 static u8 map[HIGH_LEVEL][WIDTH_LEVEL];
 
-static u8 acid_summ;
+//static u8 acid_summ;
 static u8 water_summ;
 static u8 waterplant_summ;
 static u8 enemy_summ;
@@ -169,7 +169,7 @@ static struct shot
 	u8 speed;
 } shot;
 
-struct enemy
+static struct enemy
 {
 	u8 x;	
 	u8 y;
@@ -182,9 +182,9 @@ struct enemy
 	u8 type;
 	u8 health;
 	u16 frame;
-} enemy[10]; //max enemy summ
+} enemy[11];
 
-struct water
+static struct water
 {
 	u8 x;	
 	u8 y;
@@ -192,7 +192,7 @@ struct water
 	u16 frame;
 }water[10];
 
-struct waterplant
+static struct waterplant
 {
 	u8 x;	
 	u8 y;
@@ -200,7 +200,7 @@ struct waterplant
 	u16 frame;
 }waterplant[10];
 
-struct light
+static struct light
 {
 	u8 x;
 	u8 y;
@@ -208,7 +208,7 @@ struct light
 	u16 frame;
 }light[4];
 
-struct fan
+static struct fan
 {
 	u8 x;
 	u8 y;

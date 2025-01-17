@@ -1,43 +1,35 @@
 #ifndef _SHOT
 #define _SHOT
 
-u8 shot_collision()
+void shot_collision()
 {
 	static u8 n;
-	static u8 collision;
-	static u8 shot_enemy;
 	static u8 sxl, sxr, sy;
-	
-	collision=FALSE;
-	
+
 	sxl=(shot.x+1)/4;
 	sxr=(shot.x+6)/4;
 	sy=(shot.y+8)/8;
 
 	if (map[sy][sxl]==WALL||map[sy][sxr]==WALL){
-		collision=TRUE;
+		shot.direct=BOOM;
 		sfx_play(SFX_BOOM,8);
 	}
-	
 	for (n=1;n<=enemy_summ;n++)
 		if (enemy[n].direct!=FALSE)
 			if (shot.y+8>=enemy[n].y&&shot.y<=enemy[n].y)
-				if (shot.x>enemy[n].x-4&&shot.x<enemy[n].x+4) {
-					collision=TRUE;
-					if (shot.frame==SPR_SHOT+4){
-						if (enemy[n].type!=ANGRY_PLANT){
+				if (shot.x>enemy[n].x-4&&shot.x<enemy[n].x+4)
+				{
+					shot.direct=BOOM;
+					if (enemy[n].type!=ANGRY_PLANT){
+						enemy[n].health--;
+						sfx_play(SFX_BOOM,8);
+					}
+					else
+						if (enemy[n].direct==ANGRY){
 							enemy[n].health--;
 							sfx_play(SFX_BOOM,8);
 						}
-						else
-							if (enemy[n].direct==ANGRY){
-								enemy[n].health--;
-								sfx_play(SFX_BOOM,8);
-							}
-					}
 				}
-	
-	return (collision);
 }
 
 void shot_logic()
@@ -46,6 +38,8 @@ void shot_logic()
 	
 	if (!shot.direct)
 		return;
+	
+	
 	
 	switch (shot.direct){
 		case RIGHT:
@@ -62,16 +56,15 @@ void shot_logic()
 				return;
 			}
 			
-			if (!shot_collision()&&(m<shot.dist)){
-				shot.x+=shot.speed;
-				if (shot.x>151) {
-					m=shot.dist;
-					n=10;
-					return;
-				}
-				shot.frame=SPR_SHOT+1;
-				m++;
-				return;
+			shot.x+=shot.speed;
+			m++;
+			shot.frame=SPR_SHOT+1;
+			
+			shot_collision();
+			
+			if (shot.x>151||m==shot.dist) {
+				n=10;
+				shot.direct=BOOM;
 			}
 		break;
 
@@ -89,37 +82,36 @@ void shot_logic()
 				return;
 			}
 			
-			if (!shot_collision()&&(m<shot.dist)){
-				shot.x-=shot.speed;
-				if (shot.x<2) {
-					m=shot.dist;
-					n=10;
-					return;
-				}
-				shot.frame=SPR_SHOT+3;
-				m++;
-				return;
+			shot.x-=shot.speed;
+			m++;
+			shot.frame=SPR_SHOT+3;
+			
+			shot_collision();
+			
+			if (shot.x<2||m==shot.dist) {
+				n=10;
+				shot.direct=BOOM;
 			}
 		break;
+		
+		case BOOM:
+			switch (n)
+			{
+				case 2:
+					shot.frame=SPR_SHOT+5;
+				break;
+				case 6:
+					shot.frame=SPR_SHOT+6;
+				break;
+				case 10:
+					shot.frame=SPRITE_END;
+					shot.status=FALSE;
+					shot.direct=FALSE;
+				break;
+			}
+			n++;
+		break;
 	}	
-	
-	if (n==0){
-		shot.frame=SPR_SHOT+4;
-		n++;
-		}
-	else if (n>0&&n<6){
-		shot.frame=SPR_SHOT+5;
-		n++;
-		}
-	else if (n>=6&&n<10){
-		shot.frame=SPR_SHOT+6;
-		n++;
-		}
-	else {
-		shot.frame=SPRITE_END;
-		shot.status=FALSE;
-		shot.direct=FALSE;
-		}
 }
 
 #endif

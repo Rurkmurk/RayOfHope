@@ -2,41 +2,6 @@
 #define _OUTPUT_STRING
 
 
-/* void itoa(i16 val, u8* buf)
-{
-    static u8 *p;                 
-    static  u8 *firstdig;          
-    static i8 temp;               
-    static i8 digval;         
-	static u8 a;
-	for(a=0;a<16;a++)buf[a]=0;
-	
-    p = buf;
-    firstdig = p;           
- 
-    do {
-        digval = (unsigned) (val % 10);
-        val /= 10;       
- 
-        
-        if (digval > 9)*p++ = (char) (digval - 10 + 'a'); 
-        else *p++ = (char) (digval + '0');       
- 
-    } 
-	while (val > 0);
-	 
-    *p-- = '\0';            
- 
-    do 
-	{
-        temp = *p;
-        *p = *firstdig;
-        *firstdig = temp;   
-        --p;
-        ++firstdig;         
-    } while (firstdig < p); 
-} */
-
 void output_string(u8 output_x, u8 output_y, u8* str)
 {
 	static u8 n;
@@ -61,8 +26,8 @@ void output_string(u8 output_x, u8 output_y, u8* str)
 
 void speed_meter()
 {
-	u16 tic;
-	u32 time_tic;
+	static u16 tic;
+	static u32 time_tic;
 	
 	tic=0;
 	time_tic=time();

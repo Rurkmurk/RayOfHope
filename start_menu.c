@@ -5,26 +5,66 @@ void menu_main();
 void start_level();
 void game_loop();
 
-u8 press_key()
+static u8 letter;
+
+u8 read_key()
 {
 	static u8 keys[40];
-	while (TRUE)
+	static u8 key;
+	
+	key=255;
+	while (key==255)
 	{
 		keyboard(keys);
-		if (keys[KEY_SPACE]==KEY_DOWN)
-			return KEY_SPACE;
-		if (keys[KEY_1]==KEY_DOWN)
-			return KEY_1;
-		if (keys[KEY_2]==KEY_DOWN)
-			return KEY_2;
-		if (keys[KEY_3]==KEY_DOWN)
-			return KEY_3;
+		if(keys[KEY_0]&KEY_PRESS) {key=KEY_0; letter='0';}
+		if(keys[KEY_1]&KEY_PRESS) {key=KEY_1; letter='1';}
+		if(keys[KEY_2]&KEY_PRESS) {key=KEY_2; letter='2';}
+		if(keys[KEY_3]&KEY_PRESS) {key=KEY_3; letter='3';}
+		if(keys[KEY_4]&KEY_PRESS) {key=KEY_4; letter='4';}
+		if(keys[KEY_5]&KEY_PRESS) {key=KEY_5; letter='5';}
+		if(keys[KEY_6]&KEY_PRESS) {key=KEY_6; letter='6';}
+		if(keys[KEY_7]&KEY_PRESS) {key=KEY_7; letter='7';}
+		if(keys[KEY_8]&KEY_PRESS) {key=KEY_8; letter='8';}
+		if(keys[KEY_9]&KEY_PRESS) {key=KEY_9; letter='9';}
+													 
+		if(keys[KEY_A]&KEY_PRESS) {key=KEY_A; letter='A';}
+		if(keys[KEY_B]&KEY_PRESS) {key=KEY_B; letter='B';}
+		if(keys[KEY_C]&KEY_PRESS) {key=KEY_C; letter='C';}
+		if(keys[KEY_D]&KEY_PRESS) {key=KEY_D; letter='D';}
+		if(keys[KEY_E]&KEY_PRESS) {key=KEY_E; letter='E';}
+		if(keys[KEY_F]&KEY_PRESS) {key=KEY_F; letter='F';}
+		if(keys[KEY_G]&KEY_PRESS) {key=KEY_G; letter='G';}
+		if(keys[KEY_H]&KEY_PRESS) {key=KEY_H; letter='H';}
+		if(keys[KEY_I]&KEY_PRESS) {key=KEY_I; letter='I';}
+		if(keys[KEY_J]&KEY_PRESS) {key=KEY_J; letter='J';}
+		if(keys[KEY_K]&KEY_PRESS) {key=KEY_K; letter='K';}
+		if(keys[KEY_L]&KEY_PRESS) {key=KEY_L; letter='L';}
+		if(keys[KEY_M]&KEY_PRESS) {key=KEY_M; letter='M';}
+		if(keys[KEY_N]&KEY_PRESS) {key=KEY_N; letter='N';}
+		if(keys[KEY_O]&KEY_PRESS) {key=KEY_O; letter='O';}
+		if(keys[KEY_P]&KEY_PRESS) {key=KEY_P; letter='P';}
+		if(keys[KEY_Q]&KEY_PRESS) {key=KEY_Q; letter='Q';}
+		if(keys[KEY_R]&KEY_PRESS) {key=KEY_R; letter='R';}
+		if(keys[KEY_S]&KEY_PRESS) {key=KEY_S; letter='S';}
+		if(keys[KEY_T]&KEY_PRESS) {key=KEY_T; letter='T';}
+		if(keys[KEY_U]&KEY_PRESS) {key=KEY_U; letter='U';}
+		if(keys[KEY_V]&KEY_PRESS) {key=KEY_V; letter='V';}
+		if(keys[KEY_W]&KEY_PRESS) {key=KEY_W; letter='W';}
+		if(keys[KEY_X]&KEY_PRESS) {key=KEY_X; letter='X';}
+		if(keys[KEY_Y]&KEY_PRESS) {key=KEY_Y; letter='Y';}
+		if(keys[KEY_Z]&KEY_PRESS) {key=KEY_Z; letter='Z';}
+
+		if(keys[KEY_SPACE]&KEY_PRESS) {key=KEY_SPACE; letter='_';}
+		//if(keys[KEY_ENTER]&KEY_PRESS) key=KEY_ENTER;
 	}
+	sfx_play(SFX_MENU,8);
+
+	return key;
 }
 
 void bright_down()
 {
-	i8 i;
+	static i8 i;
 	for (i=BRIGHT_MID;i>=BRIGHT_MIN;i--){
 		pal_bright(i);
 		delay(3);
@@ -33,7 +73,7 @@ void bright_down()
 
 void bright_up()
 {
-	i8 i;
+	static i8 i;
 	for (i=BRIGHT_MIN;i<=BRIGHT_MID;i++){
 		pal_bright(i);
 		delay(3);
@@ -49,7 +89,7 @@ void win_screen()
 	draw_image(7,3,IMG_WIN);
 	swap_screen();
 	bright_up();
-	press_key();
+	read_key();
 }
 
 void death_screen()
@@ -61,7 +101,7 @@ void death_screen()
 	draw_image(7,3,IMG_DEATH);
 	swap_screen();
 	bright_up();
-	press_key();
+	read_key();
 }
 
 void chapter()
@@ -85,73 +125,24 @@ void chapter()
 	draw_image(10,6,n);
 	swap_screen();
 	bright_up();
-	press_key();
+	read_key();
 	bright_down();
 }
 
-u8 read_key()
-{
-	static u8 keys[40];
-	static u8 key;
-	key=255;
-	while (key==255)
-	{
-		keyboard(keys);
-		if(keys[KEY_0]&KEY_PRESS) key=KEY_0;
-		if(keys[KEY_1]&KEY_PRESS) key=KEY_1;
-		if(keys[KEY_2]&KEY_PRESS) key=KEY_2;
-		if(keys[KEY_3]&KEY_PRESS) key=KEY_3;
-		if(keys[KEY_4]&KEY_PRESS) key=KEY_4;
-		if(keys[KEY_5]&KEY_PRESS) key=KEY_5;
-		if(keys[KEY_6]&KEY_PRESS) key=KEY_6;
-		if(keys[KEY_7]&KEY_PRESS) key=KEY_7;
-		if(keys[KEY_8]&KEY_PRESS) key=KEY_8;
-		if(keys[KEY_9]&KEY_PRESS) key=KEY_9;
 
-		if(keys[KEY_A]&KEY_PRESS) key=KEY_A;
-		if(keys[KEY_B]&KEY_PRESS) key=KEY_B;
-		if(keys[KEY_C]&KEY_PRESS) key=KEY_C;
-		if(keys[KEY_D]&KEY_PRESS) key=KEY_D;
-		if(keys[KEY_E]&KEY_PRESS) key=KEY_E;
-		if(keys[KEY_F]&KEY_PRESS) key=KEY_F;
-		if(keys[KEY_G]&KEY_PRESS) key=KEY_G;
-		if(keys[KEY_H]&KEY_PRESS) key=KEY_H;
-		if(keys[KEY_I]&KEY_PRESS) key=KEY_I;
-		if(keys[KEY_J]&KEY_PRESS) key=KEY_J;
-		if(keys[KEY_K]&KEY_PRESS) key=KEY_K;
-		if(keys[KEY_L]&KEY_PRESS) key=KEY_L;
-		if(keys[KEY_M]&KEY_PRESS) key=KEY_M;
-		if(keys[KEY_N]&KEY_PRESS) key=KEY_N;
-		if(keys[KEY_O]&KEY_PRESS) key=KEY_O;
-		if(keys[KEY_P]&KEY_PRESS) key=KEY_P;
-		if(keys[KEY_Q]&KEY_PRESS) key=KEY_Q;
-		if(keys[KEY_R]&KEY_PRESS) key=KEY_R;
-		if(keys[KEY_S]&KEY_PRESS) key=KEY_S;
-		if(keys[KEY_T]&KEY_PRESS) key=KEY_T;
-		if(keys[KEY_U]&KEY_PRESS) key=KEY_U;
-		if(keys[KEY_V]&KEY_PRESS) key=KEY_V;
-		if(keys[KEY_W]&KEY_PRESS) key=KEY_W;
-		if(keys[KEY_X]&KEY_PRESS) key=KEY_X;
-		if(keys[KEY_Y]&KEY_PRESS) key=KEY_Y;
-		if(keys[KEY_Z]&KEY_PRESS) key=KEY_Z;
-
-		if(keys[KEY_SPACE]&KEY_PRESS) key=KEY_SPACE;
-		if(keys[KEY_ENTER]&KEY_PRESS) key=KEY_ENTER;
-	}
-	sfx_play(SFX_MENU,8);
-	return key;
-}
 
 void redefine_keys()
 {
+	static u8 key_temp;
 	static u8 redefine[]="ÂÛÁÅÐÈÒÅ";
 	static u8 up[]="ÂÂÅÐÕ";
 	static u8 down[]="ÂÍÈÇ";
 	static u8 right[]="ÂÏÐÀÂÎ";
 	static u8 left[]="ÂËÅÂÎ";
 	static u8 fire[]="ÎÃÎÍÜ";
-	
+	static u8 check[]="ÂÑÅ ÂÅÐÍÎ? Y/N";
 
+	
 	clear_screen(0);
 	swap_screen();
 	clear_screen(0);
@@ -160,35 +151,52 @@ void redefine_keys()
 	output_string(16, 7, up);
 	swap_screen();
 	key_up=read_key();
-
+	draw_tile_key(23,7,letter-32);
+	
 	output_string(16, 9, down);
 	swap_screen();
-	key_down=read_key();
+	do key_temp=read_key();
+	while (key_temp==key_up);
+	key_down=key_temp;
+	draw_tile_key(23,9,letter-32);
 
 	output_string(16, 11, right);
 	swap_screen();
-	key_right=read_key();
+	do key_temp=read_key();
+	while (key_temp==key_up||key_temp==key_down);
+	key_right=key_temp;
+	draw_tile_key(23,11,letter-32);
 
 	output_string(16, 13, left);
 	swap_screen();
-	key_left=read_key();
+	do key_temp=read_key();
+	while (key_temp==key_up||key_temp==key_down||key_temp==key_right);
+	key_left=key_temp;
+	draw_tile_key(23,13,letter-32);
 
 	output_string(16, 15, fire);
 	swap_screen();
-	key_fire=read_key();
+	do key_temp=read_key();
+	while (key_temp==key_up||key_temp==key_down||key_temp==key_right||key_temp==key_left);
+	key_fire=key_temp;
+	draw_tile_key(23,15,letter-32);
+	
+	output_string(13, 17, check);
+	swap_screen();
+	if (read_key()!=KEY_Y) redefine_keys();
 	menu_main();
 }
 
 void menu_control()
 {
-	static u8 menu_control[]="1 ÊÅÌÏÑÒÎÍ^ ^2 ÊÓÐÑÎÐ+ÏÐÎÁÅË^ ^3 ÂÛÁÐÀÒÜ ÑÂÎÅ";
+	static u8 control[]="1 ÊÅÌÏÑÒÎÍ^ ^2 ÊÓÐÑÎÐ+ÏÐÎÁÅË^ ^3 ÂÛÁÐÀÒÜ ÑÂÎÅ";
 	bright_down();
 	clear_screen(0);
 	draw_image(0,0,IMG_BACK_MENU);
-	output_string(13, 9, menu_control);
+	output_string(13, 9, control);
 	swap_screen();
 	bright_up();
-	switch (press_key())
+	switch (read_key())
 	{
 		case KEY_1:
 			control_type=0;
@@ -202,6 +210,10 @@ void menu_control()
 			control_type=1;
 			sfx_play(SFX_MENU,8);
 			redefine_keys();
+		break;
+		default:
+			sfx_play(SFX_MENU,8);
+			menu_control();
 		break;
 	}
 	menu_main();
@@ -227,13 +239,9 @@ void info()
 	}
 	swap_screen();
 	bright_up();
-	while (TRUE)
-	{
-		if (press_key()==KEY_SPACE){
-			sfx_play(SFX_MENU,8);
-			menu_main();
-		}
-	}
+	read_key();
+	sfx_play(SFX_MENU,8);
+	menu_main();
 }
 
 void intro()
@@ -251,7 +259,7 @@ void intro()
 	draw_image(16,14,IMG_VIRUS);
 	swap_screen();
 	bright_up();
-	press_key();
+	read_key();
 	
 	bright_down();
 	pal_select(0);
@@ -260,16 +268,15 @@ void intro()
 	draw_image(10,14,IMG_MINE);
 	swap_screen();
 	bright_up();
-	press_key();
+	read_key();
 	
 	bright_down();
-	pal_select(0);
 	clear_screen(0);
 	output_string(4, 3, text3);
 	draw_image(10,14,IMG_SNOWMOB);
 	swap_screen();
 	bright_up();
-	press_key();
+	read_key();
 	
 	level=0;
 	start_level();
@@ -278,17 +285,17 @@ void intro()
 
 void menu_main()
 {
-	static u8 menu_main[]="1 ÈÃÐÀ^ ^2 ÓÏÐÀÂËÅÍÈÅ^ ^3 ÈÍÔÎÐÌÀÖÈß";
+	static u8 menu[]="1 ÈÃÐÀ^ ^2 ÓÏÐÀÂËÅÍÈÅ^ ^3 ÈÍÔÎÐÌÀÖÈß";
 	
 	set_sprite(0,0,0,SPRITE_END);
 	bright_down();
 	pal_select(PAL_SUN);
 	clear_screen(0);
 	draw_image(0,0,IMG_BACK_MENU);
-	output_string(14, 9, menu_main);
+	output_string(14, 9, menu);
 	swap_screen();
 	bright_up();
-	switch (press_key())
+	switch (read_key())
 	{
 		case KEY_1:
 			sfx_play(SFX_MENU,8);
@@ -305,7 +312,7 @@ void menu_main()
 		break;
 		default:
 			sfx_play(SFX_MENU,8);
-			info();
+			menu_main();
 		break;
 	}
 }
@@ -320,7 +327,7 @@ void start_image()
 	swap_screen();
 	bright_up();
 	music_play(MUS_MENU);
-	press_key();
+	read_key();
 	sfx_play(SFX_MENU,8);
 }
 

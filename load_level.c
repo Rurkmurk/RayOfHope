@@ -148,6 +148,11 @@ void load_file(u8 *filename,u8 page,u8 saveload)
 
 void load_level()
 {
+	player.frame=25;
+	player.enemy_collision=0;
+	player.v_speed=0;
+	level_size=18;
+	
 	switch (level) {
 		case 0:
 			load_file("lev1_gfx", PAGE_GFX, 1);
@@ -156,7 +161,6 @@ void load_level()
 			load_file("lev1_map", PAGE_MAP_TMP, 1);
 			level_back=IMG_BACK_SNOW;
 			level_tile=IMG_TILE_SNOW;
-			level_size=18;
 			
 			screen=0;
 			player.x=8;//8
@@ -164,9 +168,6 @@ void load_level()
 			player.health=5;
 			player.life=3;
 			player.ammo=0;
-			player.frame=25;
-			player.enemy_collision=0;
-			player.v_speed=0;
 			
 			level_palett_default=0;
 			level_music_default=1;
@@ -178,18 +179,11 @@ void load_level()
 			load_file("lev2_map", PAGE_MAP_TMP, 1);
 			level_back=IMG_BACK_MINE;
 			level_tile=IMG_TILE_MINE;
-			level_size=18;
 			
 			screen=0;
 			player.x=8;//8
 			player.y=112;//112
-			// player.health=5;
-			// player.life=3;
-			// player.ammo=5;
-			player.frame=25;
-			player.enemy_collision=0;
-			player.v_speed=0;
-			
+
 			level_palett_default=1;
 			level_music_default=2;
 			
@@ -201,17 +195,10 @@ void load_level()
 			load_file("lev3_map", PAGE_MAP_TMP, 1);
 			level_back=IMG_BACK_LAB;
 			level_tile=IMG_TILE_LAB;
-			level_size=18;
 			
 			screen=2;
 			player.x=130;
 			player.y=63;
-			// player.health=5;
-			// player.life=3;
-			// player.ammo=5;
-			player.frame=25;
-			player.enemy_collision=0;
-			player.v_speed=0;
 			
 			level_palett_default=2;
 			level_music_default=3;
@@ -221,9 +208,9 @@ void load_level()
 
 void reload_level()
 {
-	u16 i, j;
-	u16 addr;
-	u8 data;
+	static u16 i, j;
+	static u16 addr;
+	static u8 data;
 	
 	switch (tmp_save.screen){
 		case 6:

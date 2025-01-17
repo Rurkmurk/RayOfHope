@@ -20,14 +20,14 @@ void main()
 
 /* player setup ***********************************************************/
 	player.danger_height=-16;
-	//player.skip=3;
-	//player.v_speed=0;
 	player.jump_impulse=7;
 	player.h_step=1;
 
 /* shot setup *************************************************************/
 	shot.dist=22;
 	shot.speed=1;
+	shot.direct=FALSE;
+	shot.status=FALSE;
 	shot.frame=SPRITE_END;
 /* enemy setup ************************************************************/
 	stalact_speed=1;
@@ -35,9 +35,9 @@ void main()
 	
 // /**************************************************************************/
 
-	sprites_start();
-	
 	speed_meter();
+	
+	sprites_start();
 	
 	start_image();
 	

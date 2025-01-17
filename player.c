@@ -390,13 +390,13 @@ void player_logic()
 	
 	if (player.direct==JOY_RIGHT+JOY_FIRE||player.direct==JOY_RIGHT)
 		if ((p_collision&COL_RIGHT)!=COL_RIGHT){
+			trig_left=FALSE;
 			if (player.status==STAIRS_STAND&&(p_collision&COL_DOWN)!=COL_DOWN){
 				player.x+=player.h_step;
 				player.status=ST_STAIRS;
 			}
 			else {
 				player.status=ST_RIGHT;
-				trig_left=FALSE;
 				player.x+=player.h_step;
 				if ((player_collision()&COL_NXT_SCR)==COL_NXT_SCR)
 					nxt_screen();
@@ -430,13 +430,13 @@ void player_logic()
 	//left
 	if (player.direct==JOY_LEFT+JOY_FIRE||player.direct==JOY_LEFT)
 		if ((p_collision&COL_LEFT)!=COL_LEFT){
+			trig_left=TRUE;
 			if (player.status==STAIRS_STAND&&(p_collision&COL_DOWN)!=COL_DOWN){
 				player.x-=player.h_step;
 				player.status=ST_STAIRS;
 			}
 			else {
 				player.status=ST_LEFT;
-				trig_left=TRUE;
 				player.x-=player.h_step;
 				if ((player_collision()&COL_PRV_SCR)==COL_PRV_SCR)
 					prv_screen();
@@ -587,23 +587,26 @@ void player_logic()
 		}
 	}	
 
-	if (player.status==DOWN_RIGHT&&(player.direct&(JOY_LEFT+JOY_DOWN))==(JOY_LEFT+JOY_DOWN)) {
-		player.status=DOWN_LEFT;
-		trig_left=TRUE;
-	}	
-	
-	if (player.status==DOWN_LEFT&&(player.direct&(JOY_RIGHT+JOY_DOWN))==(JOY_RIGHT+JOY_DOWN)) {
-		player.status=DOWN_RIGHT;
-		trig_left=FALSE;
-	}	
-	
-	if (player.status==DOWN_LEFT&&(player.direct&JOY_FIRE)==JOY_FIRE&&player.ammo) {
-		shot.direct=LEFT;
-	}	
-	
-	if (player.status==DOWN_RIGHT&&(player.direct&JOY_FIRE)==JOY_FIRE&&player.ammo) {
-		shot.direct=RIGHT;
-	}	
+	switch (player.status){
+		case DOWN_RIGHT:
+			if ((player.direct&(JOY_LEFT+JOY_DOWN))==(JOY_LEFT+JOY_DOWN))
+			{
+				player.status=DOWN_LEFT;
+				trig_left=TRUE;
+			}
+			if ((player.direct&JOY_FIRE)==JOY_FIRE&&!shot.status)
+				shot.direct=RIGHT;
+		break;
+		case DOWN_LEFT:
+			if ((player.direct&(JOY_RIGHT+JOY_DOWN))==(JOY_RIGHT+JOY_DOWN))
+			{
+				player.status=DOWN_RIGHT;
+				trig_left=FALSE;
+			}
+			if ((player.direct&JOY_FIRE)==JOY_FIRE&&!shot.status)
+				shot.direct=LEFT;
+		break;
+	}
 
 	if ((player.direct&JOY_UP)!=JOY_UP)
 		trig_jump=TRUE;

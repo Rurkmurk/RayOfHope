@@ -25,19 +25,9 @@ void player_enemy_collision_pull(u8 n)
 	}
 }
 
-// void player_enemy_collision_block(u8 n)
-// {
-	// if (player.y<=enemy[n].y&&player.y>(enemy[n].y-15)){
-		// if (player.x+6==enemy[n].x||player.x+5==enemy[n].x||player.x+4==enemy[n].x||player.x+3==enemy[n].x)
-			// player.enemy_collision=COL_ENEMY_LEFT+COL_ENEMY_CENTR;
-		// else if (player.x==enemy[n].x+6||player.x==enemy[n].x+5||player.x==enemy[n].x+4||player.x==enemy[n].x+3)
-			// player.enemy_collision=COL_ENEMY_RIGHT+COL_ENEMY_CENTR;
-	// }
-// }
-
 u16 enemy_collision(u8 n)
 {
-	u8 i;
+	static u8 i;
 	
 	static u8 exl, exr, eyu, eyd;
 	
@@ -78,7 +68,7 @@ u16 enemy_collision(u8 n)
 						collision=COL_UP;
 				break;
 				case DOWN:
-					if (map[eyd][exl]==WALL||eyd==21)
+					if (map[eyd][exl]==WALL||map[eyd][exl]==WATER||map[eyd][exr]==WATER||eyd==21)
 						collision=COL_DOWN;
 				break;
 				case LEFT:
@@ -97,10 +87,6 @@ u16 enemy_collision(u8 n)
 			
 			player_enemy_collision_pull(n);
 		break;
-		
-		// case BLOCK:
-			// player_enemy_collision_block(n);
-		// break;
 		
 		case ICE_SPIKE:
 			if (player.y==enemy[n].y){
@@ -435,7 +421,6 @@ void enemy_animation(u8 n)
 				if (enemy[n].type!=STALACT&&enemy[n].type!=BLOCK)
 					sfx_play(SFX_ENEMY_DEATH,8);
 			}
-			//enemy[n].skip_count++;
 			if (enemy[n].skip_count+DEATH_SPEED<=time()){
 				enemy[n].skip_count=time();
 				enemy[n].frame++;
@@ -511,7 +496,6 @@ void enemy_logic()
 		}
 		
 		if (enemy[n].direct==WAIT) {	
-				//enemy[n].skip_count++;
 				if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 					enemy[n].skip_count=time();
 					enemy_animation(n);
@@ -539,7 +523,6 @@ void enemy_logic()
 				if ((e_collision&COL_LEFT)==COL_LEFT)
 					enemy[n].direct=RIGHT;
 				if ((e_collision&COL_UP)!=COL_UP){
-					//enemy[n].skip_count++;
 					if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 						enemy[n].y-=2;
 						enemy[n].skip_count=time();
@@ -555,7 +538,6 @@ void enemy_logic()
 				if ((e_collision&COL_LEFT)==COL_LEFT)
 					enemy[n].direct=RIGHT;
 				if ((e_collision&COL_DOWN)!=COL_DOWN){
-					//enemy[n].skip_count++;
 					if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 						enemy[n].y+=2;
 						enemy[n].skip_count=time();
@@ -568,7 +550,6 @@ void enemy_logic()
 			
 			case RIGHT:
 				if ((e_collision&COL_RIGHT)!=COL_RIGHT){
-					//enemy[n].skip_count++;
 					if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 						enemy[n].x++;
 						enemy[n].skip_count=time();
@@ -580,7 +561,6 @@ void enemy_logic()
 			
 			case LEFT:
 				if ((e_collision&COL_LEFT)!=COL_LEFT){
-					//enemy[n].skip_count++;
 					if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 						enemy[n].x--;
 						enemy[n].skip_count=time();
@@ -589,8 +569,6 @@ void enemy_logic()
 				}
 				else enemy[n].direct=RIGHT;
 			break;
-			
-			
 			
 			case STALACT_DOWN:
 				if ((e_collision&COL_DOWN)!=COL_DOWN){
@@ -611,7 +589,6 @@ void enemy_logic()
 						enemy[n].direct=WAIT;
 						enemy[n].skip=10;
 				}
-				//enemy[n].skip_count++;
 				if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 					enemy[n].skip_count=time();
 					enemy_animation(n);
