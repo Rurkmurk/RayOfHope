@@ -22,6 +22,10 @@ void init_screen()
 	light_summ=0;
 	fan_summ=0;
 	
+	shot.frame=SPRITE_END;
+	shot.status=FALSE;
+	shot.direct=FALSE;
+	
 	draw_image(0,0,level_back);
 	select_image(level_tile);
 	color_key(15);

@@ -522,7 +522,7 @@ void enemy_logic()
 					enemy[n].direct=LEFT;
 				if ((e_collision&COL_LEFT)==COL_LEFT)
 					enemy[n].direct=RIGHT;
-				if ((e_collision&COL_UP)!=COL_UP){
+				if ((e_collision&COL_UP)!=COL_UP&&enemy[n].direct==UP){
 					if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 						enemy[n].y-=2;
 						enemy[n].skip_count=time();
@@ -537,7 +537,7 @@ void enemy_logic()
 					enemy[n].direct=LEFT;
 				if ((e_collision&COL_LEFT)==COL_LEFT)
 					enemy[n].direct=RIGHT;
-				if ((e_collision&COL_DOWN)!=COL_DOWN){
+				if ((e_collision&COL_DOWN)!=COL_DOWN&&enemy[n].direct==DOWN){
 					if ((enemy[n].skip_count+enemy[n].skip)<=time()){
 						enemy[n].y+=2;
 						enemy[n].skip_count=time();
