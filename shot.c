@@ -16,7 +16,7 @@ void shot_collision()
 	}
 	for (n=1;n<=enemy_summ;n++)
 		if (enemy[n].direct!=FALSE)
-			if (shot.y+8>=enemy[n].y&&shot.y<=enemy[n].y)
+			if (enemy[n].y-shot.y<9&&shot.y-enemy[n].y<3)
 				if (shot.x>enemy[n].x-4&&shot.x<enemy[n].x+4)
 				{
 					shot.direct=BOOM;
